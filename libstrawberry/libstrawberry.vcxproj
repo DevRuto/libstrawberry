@@ -18,6 +18,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="core\memory.c" />
+    <ClCompile Include="crypto\asymmetric\diffiehellman.c" />
+    <ClCompile Include="crypto\symmetric\rijndael.c" />
+    <ClCompile Include="structures\crypto.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core\memory.h" />
+    <ClInclude Include="core\types\bool.h" />
+    <ClInclude Include="structures\crypto.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4784001C-D073-4623-8689-8624AFEF1A19}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -89,6 +100,10 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBSTRAWBERRY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,8 +160,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
