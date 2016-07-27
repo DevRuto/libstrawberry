@@ -1,5 +1,5 @@
-#ifndef SB_CORE_SBAPI_H
-#define SB_CORE_SBAPI_H
+#ifndef __SB_CORE_SBAPI_H
+#define __SB_CORE_SBAPI_H
 
 
 #ifdef LIBSTRAWBERRY_EXPORTS

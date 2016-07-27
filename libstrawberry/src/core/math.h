@@ -1,5 +1,5 @@
-#ifndef SB_CORE_MATH_H
-#define SB_CORE_MATH_H
+#ifndef __SB_CORE_MATH_H
+#define __SB_CORE_MATH_H
 
 
 #include <stdint.h>

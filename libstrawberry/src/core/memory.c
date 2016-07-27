@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "memory.h"
@@ -55,6 +56,28 @@ void sb_memset(void *dst, int value, size_t size) {
 	(__sb_memset ? __sb_memset : memset)(dst, value, size);
 }
 
-int sb_memcmp(void * cmp1, void * cmp2, size_t size) {
+int sb_memcmp(void *cmp1, void *cmp2, size_t size) {
 	return (__sb_memcmp ? __sb_memcmp : memcmp)(cmp1, cmp2, size);
+}
+
+sb_bool_t sb_memequ(void *cmp1, void *cmp2, size_t size) {
+	return (sb_memcmp(cmp1, cmp2, size) == 0);
+}
+
+void sb_memdump_ex(void *src, size_t size, size_t columns) {
+	if (src && size && columns) {
+		uint8_t *ptr = src;
+		size_t i = 0, c = 0;
+		for (i = 0; i < size; ++i) {
+			printf("%02X ", *(ptr++));
+			if (++c == columns) {
+				c = 0;
+				puts("");
+			}
+		}
+	}
+}
+
+void sb_memdump(void *src, size_t size) {
+	sb_memdump_ex(src, size, 16);
 }

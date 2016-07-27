@@ -1,5 +1,5 @@
-#ifndef SB_CORE_TYPE_BOOL_H
-#define SB_CORE_TYPE_BOOL_H
+#ifndef __SB_CORE_TYPE_BOOL_H
+#define __SB_CORE_TYPE_BOOL_H
 
 
 #include <stdint.h>

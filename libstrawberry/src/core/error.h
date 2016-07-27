@@ -1,5 +1,5 @@
-#ifndef SB_CORE_ERROR_H
-#define SB_CORE_ERROR_H
+#ifndef __SB_CORE_ERROR_H
+#define __SB_CORE_ERROR_H
 
 #include <stdint.h>
 

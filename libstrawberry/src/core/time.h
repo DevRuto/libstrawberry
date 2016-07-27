@@ -1,5 +1,5 @@
-#ifndef SB_CORE_TIME_H
-#define SB_CORE_TIME_H
+#ifndef __SB_CORE_TIME_H
+#define __SB_CORE_TIME_H
 
 
 #include <stdint.h>

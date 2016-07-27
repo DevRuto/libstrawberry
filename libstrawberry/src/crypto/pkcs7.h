@@ -1,5 +1,5 @@
-#ifndef SB_CRYPTO_PKCS7_H
-#define SB_CRYPTO_PKCS7_H
+#ifndef __SB_CRYPTO_PKCS7_H
+#define __SB_CRYPTO_PKCS7_H
 
 
 #include <stdint.h>

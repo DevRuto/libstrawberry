@@ -1,10 +1,11 @@
-#ifndef SB_CORE_MEMORY_H
-#define SB_CORE_MEMORY_H
+#ifndef __SB_CORE_MEMORY_H
+#define __SB_CORE_MEMORY_H
 
 
 #include <stdint.h>
 
-#include "../core/sbapi.h"
+#include "sbapi.h"
+#include "types/bool.h"
 
 
 #define SB_PRIORITY_MEMORY					100
@@ -27,6 +28,10 @@ extern "C" {
 	SBAPI void sb_memcpy(void *dst, void *src, size_t size);
 	SBAPI void sb_memset(void *dst, int value, size_t size);
 	SBAPI int sb_memcmp(void *cmp1, void *cmp2, size_t size);
+	SBAPI sb_bool_t sb_memequ(void *cmp1, void *cmp2, size_t size);
+
+	SBAPI void sb_memdump_ex(void *src, size_t size, size_t columns);
+	SBAPI void sb_memdump(void *src, size_t size);
 
 #ifdef __cplusplus
 }

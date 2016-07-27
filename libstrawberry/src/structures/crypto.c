@@ -3,7 +3,7 @@
 #include "../core/error.h"
 
 
-void sb_crypto_init(sb_crypto_t *crypto) {
+void sb_crypto_init(sb_crypto_ctx_t *crypto) {
 	sb_error_reset();
 
 	if (crypto) {
@@ -15,7 +15,7 @@ void sb_crypto_init(sb_crypto_t *crypto) {
 	}
 }
 
-void sb_crypto_clear(sb_crypto_t* crypto) {
+void sb_crypto_clear(sb_crypto_ctx_t* crypto) {
 	sb_error_reset();
 
 	if (crypto) {
@@ -26,7 +26,7 @@ void sb_crypto_clear(sb_crypto_t* crypto) {
 	}
 }
 
-sb_bool_t sb_crypto_entry_add(sb_crypto_t *crypto, uint16_t type, void *data, uint16_t *index) {
+sb_bool_t sb_crypto_entry_add(sb_crypto_ctx_t *crypto, uint16_t type, void *data, uint16_t *index) {
 	sb_error_reset();
 
 	if (!crypto || !type || !data) {
@@ -61,15 +61,15 @@ sb_bool_t sb_crypto_entry_add(sb_crypto_t *crypto, uint16_t type, void *data, ui
 	return sb_false;
 }
 
-/*sb_bool_t sb_crypto_entry_remove(sb_crypto_t *crypto, uint16_t index) {
+/*sb_bool_t sb_crypto_entry_remove(sb_crypto_ctx_t *crypto, uint16_t index) {
 	return sb_false;
 }
 
-sb_bool_t sb_crypto_entry_find(sb_crypto_t *crypto, uint16_t type, void *data, uint16_t *index) {
+sb_bool_t sb_crypto_entry_find(sb_crypto_ctx_t *crypto, uint16_t type, void *data, uint16_t *index) {
 	return sb_false;
 }*/
 
-size_t sb_crypto_block_calculate(sb_crypto_t *crypto, size_t have_size) {
+size_t sb_crypto_block_calculate(sb_crypto_ctx_t *crypto, size_t have_size) {
 	sb_error_reset();
 
 	if (crypto && crypto->size && crypto->types && crypto->ptrs) {
@@ -82,10 +82,10 @@ size_t sb_crypto_block_calculate(sb_crypto_t *crypto, size_t have_size) {
 	return 0;
 }
 
-sb_bool_t sb_crypto_block_encrypt(sb_crypto_t *crypto, uint8_t *out, uint8_t *in, size_t size) {
+sb_bool_t sb_crypto_block_encrypt(sb_crypto_ctx_t *crypto, uint8_t *out, uint8_t *in, size_t size) {
 	return sb_false;
 }
 
-sb_bool_t sb_crypto_block_decrypt(sb_crypto_t *crypto, uint8_t *out, uint8_t *in, size_t size) {
+sb_bool_t sb_crypto_block_decrypt(sb_crypto_ctx_t *crypto, uint8_t *out, uint8_t *in, size_t size) {
 	return sb_false;
 }

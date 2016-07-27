@@ -1,5 +1,5 @@
-#ifndef SB_CRYPTO_BLOCKMODE_H
-#define SB_CRYPTO_BLOCKMODE_H
+#ifndef __SB_CRYPTO_BLOCKMODE_H
+#define __SB_CRYPTO_BLOCKMODE_H
 
 
 #include <stdint.h>

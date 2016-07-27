@@ -2,24 +2,25 @@
 #include <stdint.h>
 #include <string.h>
 
+/*#include "../../libstrawberry/src/core/bits.h"
+#include "../../libstrawberry/src/core/time.h"
+#include "../../libstrawberry/src/core/error.h"
 #include "../../libstrawberry/src/core/memory.h"
-//#include "../../libstrawberry/src/structures/crypto.h"
-#include "../../libstrawberry/src/core/bits.h"
+#include "../../libstrawberry/src/structures/crypto.h"
 #include "../../libstrawberry/src/crypto/hashing/ripemd160.h"
-#include "../../libstrawberry/src/crypto/symmetric/rijndael.h"
-#include "../../libstrawberry/src//core/time.h"
+#include "../../libstrawberry/src/crypto/symmetric/rijndael.h"*/
+#include "../../libstrawberry/src/crypto/symmetric/salsa20.h"
+#include "tests.h"
 
-typedef struct test {
-	uint8_t flags;
-	/*char bit1 : 1;
-	char bit2 : 1;
-	char bit3 : 1;
-	char bit4 : 1;
-	char bit5 : 1;
-	char bit6 : 1;
-	char bit7 : 1;
-	char bit8 : 1;*/
-} test_t;
+
+void test(const char *name, sb_bool_t(*func)()) {
+	if (func()) {
+		printf(status_passed" %s\n", name);
+	} else {
+		printf(status_failed" %s\n", name);
+	}
+}
+
 
 int main(int argc, char **argv, char **env) {
 	/*uint8_t digest[20], digest_str[41];
@@ -60,112 +61,54 @@ int main(int argc, char **argv, char **env) {
 	char out[20], str[41];
 	sb_memset(out, 0, 20);
 
-	sb_crypto_rijndael_t rijndael;
+	sb_crypto_rijndael_ctx_t rijndael;
 
 	uint8_t i;
 	for (i = 0; i < 10; ++i) {
 		sb_memset(key, i, 32);
 		sb_memset(blk, i, 16);
 		sb_crypto_rijndael_init(&rijndael, 3, &key);
-		sb_crypto_rijndael_encrypt_block(&rijndael, out, blk);
+		sb_crypto_rijndael_encrypt(&rijndael, out, blk);
 		sb_crypto_ripemd160_str(str, out, 0);
 		printf("%02X %s\n", i, str);
-		sb_crypto_rijndael_decrypt_block(&rijndael, blk, out);
+		sb_crypto_rijndael_decrypt(&rijndael, blk, out);
 		sb_crypto_ripemd160_str(str, blk, 0);
 		printf("   %s\n", str);
 		sb_crypto_rijndael_clear(&rijndael);
 	}*/
 
-	test_t test;
-	sb_memset(&test, 0, sizeof(test));
+	/*sb_crypto_salsa20_ctx_t ctx;
 
-	unsigned long long iter, ns_start = sb_time_nsec(), ns_stop = 0;
-	for (iter = 0; iter < 50000000; ++iter) {
-		/*if (test.bit1) {
-			test.bit1 = 0;
-		} else {
-			test.bit1 = 1;
-		}
-		if (test.bit2) {
-			test.bit2 = 0;
-		} else {
-			test.bit2 = 1;
-		}
-		if (test.bit3) {
-			test.bit3 = 0;
-		} else {
-			test.bit3 = 1;
-		}
-		if (test.bit4) {
-			test.bit4 = 0;
-		} else {
-			test.bit4 = 1;
-		}
-		if (test.bit5) {
-			test.bit5 = 0;
-		} else {
-			test.bit5 = 1;
-		}
-		if (test.bit6) {
-			test.bit6 = 0;
-		} else {
-			test.bit6 = 1;
-		}
-		if (test.bit7) {
-			test.bit7 = 0;
-		} else {
-			test.bit7 = 1;
-		}
-		if (test.bit8) {
-			test.bit8 = 0;
-		} else {
-			test.bit8 = 1;
-		}*/
-		if (test.flags & SB_BIT_1) {
-			test.flags &= ~SB_BIT_1;
-		} else {
-			test.flags |= SB_BIT_1;
-		}
-		if (test.flags & SB_BIT_2) {
-			test.flags &= ~SB_BIT_2;
-		} else {
-			test.flags |= SB_BIT_2;
-		}
-		if (test.flags & SB_BIT_3) {
-			test.flags &= ~SB_BIT_3;
-		} else {
-			test.flags |= SB_BIT_3;
-		}
-		if (test.flags & SB_BIT_4) {
-			test.flags &= ~SB_BIT_4;
-		} else {
-			test.flags |= SB_BIT_4;
-		}
-		if (test.flags & SB_BIT_5) {
-			test.flags &= ~SB_BIT_5;
-		} else {
-			test.flags |= SB_BIT_5;
-		}
-		if (test.flags & SB_BIT_6) {
-			test.flags &= ~SB_BIT_6;
-		} else {
-			test.flags |= SB_BIT_6;
-		}
-		if (test.flags & SB_BIT_7) {
-			test.flags &= ~SB_BIT_7;
-		} else {
-			test.flags |= SB_BIT_7;
-		}
-		if (test.flags & SB_BIT_8) {
-			test.flags &= ~SB_BIT_8;
-		} else {
-			test.flags |= SB_BIT_8;
-		}
-	}
 
-	ns_stop = sb_time_nsec();
+	uint8_t key[32];
+	sb_memset(key, 0, 32);
+	key[0] = 0x80;
 
-	printf("start: %llu\nstop : %llu\nspan : %llu\n", ns_start, ns_stop, (ns_stop - ns_start));
+	uint8_t iv[8];
+	sb_memset(iv, 0, 8);
+
+#define DATASIZE 512
+	uint8_t data[DATASIZE], cipher[DATASIZE], plain[DATASIZE];
+	sb_memset(data, 0, DATASIZE);
+	sb_memset(cipher, 0, DATASIZE);
+	sb_memset(plain, 0, DATASIZE);
+
+
+	sb_crypto_salsa20_init(&ctx, key, SB_CRYPTO_SALSA20_128, iv);
+	sb_crypto_salsa20_encrypt(&ctx, data, cipher, DATASIZE);
+	sb_crypto_salsa20_decrypt(&ctx, cipher, plain, DATASIZE);
+
+
+	sb_memdump(data, DATASIZE);
+	puts("");
+	sb_memdump(cipher, DATASIZE);
+	puts("");
+	sb_memdump(plain, DATASIZE);
+	puts("");*/
+
+	test("s rijndael", test_rijndael);
+	test("s salsa20", test_salsa20);
+	test("h ripemd160", test_ripemd160);
 
 	fgetc(stdin);
 

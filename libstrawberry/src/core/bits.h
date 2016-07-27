@@ -1,5 +1,5 @@
-#ifndef SB_CORE_BITS_H
-#define SB_CORE_BITS_H
+#ifndef __SB_CORE_BITS_H
+#define __SB_CORE_BITS_H
 
 
 #include <stdint.h>
