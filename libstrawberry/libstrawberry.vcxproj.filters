@@ -15,28 +15,76 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="crypto\asymmetric\diffiehellman.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="crypto\symmetric\rijndael.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="structures\crypto.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\memory.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="src\core\types\bool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structures\crypto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crypto\hashing\ripemd160.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\bits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\sbapi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crypto\symmetric\rijndael.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crypto\blockmode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crypto\pkcs7.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="structures\crypto.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="core\types\bool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="core\memory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="src\core\memory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\asymmetric\diffiehellman.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\symmetric\rijndael.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\structures\crypto.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dllmain.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\hashing\ripemd160.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\error.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\blockmode.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\time.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\pkcs7.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\math.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

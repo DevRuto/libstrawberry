@@ -8,6 +8,7 @@ static void(*__sb_free)(void*) = NULL;
 static void*(*__sb_realloc)(void*, size_t) = NULL;
 static void*(*__sb_memcpy)(void*, void*, size_t) = NULL;
 static void*(*__sb_memset)(void*, int, size_t) = NULL;
+static int(*__sb_memcmp)(void *cmp1, void *cmp2, size_t size) = NULL;
 
 void sb_memory_set_malloc(void*(*func)(size_t size)) {
 	__sb_malloc = func;
@@ -29,6 +30,10 @@ void sb_memory_set_memset(void*(*func)(void *dst, int value, size_t size)) {
 	__sb_memset = func;
 }
 
+void sb_memory_set_memcmp(int(*func)(void *cmp1, void *cmp2, size_t size)) {
+	__sb_memcmp = func;
+}
+
 
 void* sb_malloc(size_t size) {
 	return (__sb_malloc ? __sb_malloc : malloc)(size);
@@ -48,4 +53,8 @@ void sb_memcpy(void *dst, void *src, size_t size) {
 
 void sb_memset(void *dst, int value, size_t size) {
 	(__sb_memset ? __sb_memset : memset)(dst, value, size);
+}
+
+int sb_memcmp(void * cmp1, void * cmp2, size_t size) {
+	return (__sb_memcmp ? __sb_memcmp : memcmp)(cmp1, cmp2, size);
 }
