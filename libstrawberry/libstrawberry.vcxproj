@@ -176,6 +176,7 @@
     <ClInclude Include="src\core\time.h" />
     <ClInclude Include="src\core\types\bool.h" />
     <ClInclude Include="src\core\sbapi.h" />
+    <ClInclude Include="src\crypto\asymmetric\diffiehellman.h" />
     <ClInclude Include="src\crypto\blockmode.h" />
     <ClInclude Include="src\crypto\hashing\ripemd160.h" />
     <ClInclude Include="src\crypto\pkcs7.h" />

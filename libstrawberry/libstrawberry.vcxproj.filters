@@ -51,6 +51,9 @@
     <ClInclude Include="src\core\math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\crypto\asymmetric\diffiehellman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\memory.c">
