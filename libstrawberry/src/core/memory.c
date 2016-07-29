@@ -48,13 +48,6 @@ void* sb_malloc(size_t size) {
 	return ptr;
 }
 
-void sb_free(void *ptr) {
-	if (!ptr) {
-		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
-	}
-	(__sb_free ? __sb_free : free)(ptr);
-}
-
 void* sb_realloc(void *ptr, size_t size) {
 	if (!ptr) {
 		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
@@ -64,6 +57,22 @@ void* sb_realloc(void *ptr, size_t size) {
 		sb_error_fatal(SB_ERROR_FATAL_OUT_OF_MEMORY);
 	}
 	return nptr;
+}
+
+void* sb_cpyalloc(void *ptr, size_t size) {
+	if (ptr && size) {
+		void *p = sb_malloc(size);
+		sb_memcpy(p, ptr, size);
+		return p;
+	}
+	return NULL;
+}
+
+void sb_free(void *ptr) {
+	if (!ptr) {
+		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
+	}
+	(__sb_free ? __sb_free : free)(ptr);
 }
 
 void sb_memcpy(void *dst, void *src, size_t size) {

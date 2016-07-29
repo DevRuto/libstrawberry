@@ -41,19 +41,23 @@ IDENTID("md5.c", "0.1", "1", "2016-07-29");
 }
 
 #if defined(__i386__) || defined(__x86_64__) || defined(__vax__)
-#define MD5RSET(n) \
-	(*(uint32_t*)&ptr[(n) * 4])
-#define MD5RGET(n) \
-	MD5RSET(n)
+#	define MD5RSET(n) (						\
+		(*(uint32_t*)&ptr[(n) * 4])			\
+	)
+#	define MD5RGET(n) (						\
+		MD5RSET(n)							\
+	)
 #else
-#define MD5RSET(n) \
-	(ctx->block[(n)] = \
-	(uint32_t)ptr[(n) * 4] | \
-	((uint32_t)ptr[(n) * 4 + 1] << 8) | \
-	((uint32_t)ptr[(n) * 4 + 2] << 16) | \
-	((uint32_t)ptr[(n) * 4 + 3] << 24))
-#define MD5RGET(n) \
-	(ctx->block[(n)])
+#	define MD5RSET(n) (						\
+		(ctx->block[(n)] =					\
+		(uint32_t)ptr[(n) * 4] |			\
+		((uint32_t)ptr[(n) * 4 + 1] << 8) |	\
+		((uint32_t)ptr[(n) * 4 + 2] << 16) |\
+		((uint32_t)ptr[(n) * 4 + 3] << 24)) \
+	)
+#	define MD5RGET(n) (						\
+		(ctx->block[(n)])					\
+	)
 #endif
 
 static void *sb_crypto_md5_internal_update(sb_crypto_md5_ctx_t *ctx, void *data, size_t size) {
