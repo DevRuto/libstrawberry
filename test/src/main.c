@@ -6,7 +6,6 @@
 #include "../../libstrawberry/src/core/time.h"
 #include "../../libstrawberry/src/core/error.h"
 #include "../../libstrawberry/src/core/memory.h"
-#include "../../libstrawberry/src/structures/crypto.h"
 #include "../../libstrawberry/src/crypto/hashing/ripemd160.h"
 #include "../../libstrawberry/src/crypto/symmetric/rijndael.h"
 #include "../../libstrawberry/src/core/platform.h"

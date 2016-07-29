@@ -21,9 +21,6 @@
     <ClInclude Include="src\core\memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\structures\crypto.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\crypto\hashing\ripemd160.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,6 +66,9 @@
     <ClInclude Include="src\crypto\prng\isaac.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\networking\socket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\memory.c">
@@ -78,9 +78,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\crypto\symmetric\rijndael.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\structures\crypto.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\dllmain.c">
@@ -111,6 +108,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\crypto\prng\isaac.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\networking\socket.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
