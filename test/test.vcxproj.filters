@@ -30,6 +30,9 @@
     <ClCompile Include="src\crypto\hashing\md5.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\crypto\prng\isaac.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdincl.h">

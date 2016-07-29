@@ -8,8 +8,12 @@
 
 
 typedef struct sb_crypto_md5_ctx {
-	uint32_t lo, hi;
-	uint32_t a, b, c, d;
+	uint32_t lo;
+	uint32_t hi;
+	uint32_t a;
+	uint32_t b;
+	uint32_t c;
+	uint32_t d;
 	uint8_t buffer[64];
 	uint32_t block[16];
 } sb_crypto_md5_ctx_t;

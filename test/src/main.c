@@ -133,6 +133,7 @@ int main(int argc, char **argv, char **env) {
 	test("salsa20", test_salsa20);
 	test("ripemd160", test_ripemd160);
 	test("md5", test_md5);
+	test("isaac", test_isaac);
 #endif
 
 	fgetc(stdin);
