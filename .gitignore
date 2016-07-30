@@ -13,6 +13,9 @@
 # User-specific files (Code::Blocks)
 *.layout
 
+# Gonna ignore these too
+*.depend
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
