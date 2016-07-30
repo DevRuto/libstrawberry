@@ -65,24 +65,24 @@ typedef struct sb_pssocket_ctx { // ps = "packet switched" (might not be an accu
 extern "C" {
 #endif
 
-	SBAPI sb_bool_t sb_socket_init(sb_socket_ctx_t *socket, const char *node, uint32_t flags);
-	SBAPI sb_bool_t sb_socket_clear(sb_socket_ctx_t *socket);
+	SBAPI sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags);
+	SBAPI sb_bool_t sb_socket_clear(sb_socket_ctx_t *sock);
 
-	SBAPI sb_bool_t sb_socket_start(sb_socket_ctx_t *socket, uint16_t port);
-	SBAPI sb_bool_t sb_socket_stop(sb_socket_ctx_t *socket);
+	SBAPI sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port);
+	SBAPI sb_bool_t sb_socket_stop(sb_socket_ctx_t *sock);
 
-	SBAPI ssize_t sb_socket_write(sb_socket_ctx_t *socket, void *in, ssize_t size);
-	SBAPI ssize_t sb_socket_read(sb_socket_ctx_t *socket, void *out, ssize_t size);
+	SBAPI sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_ssize_t size);
+	SBAPI sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_ssize_t size);
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	SBAPI sb_bool_t sb_pssocket_init(sb_pssocket_ctx_t *socket, const char *node, uint32_t flags);
-	SBAPI sb_bool_t sb_pssocket_clear(sb_pssocket_ctx_t *socket);
+	SBAPI sb_bool_t sb_pssocket_init(sb_pssocket_ctx_t *pssock, const char *node, uint32_t flags);
+	SBAPI sb_bool_t sb_pssocket_clear(sb_pssocket_ctx_t *pssock);
 
-	SBAPI sb_bool_t sb_pssocket_start(sb_pssocket_ctx_t *socket, uint16_t port);
-	SBAPI sb_bool_t sb_pssocket_stop(sb_pssocket_ctx_t *socket);
+	SBAPI sb_bool_t sb_pssocket_start(sb_pssocket_ctx_t *pssock, uint16_t port);
+	SBAPI sb_bool_t sb_pssocket_stop(sb_pssocket_ctx_t *pssock);
 
-	SBAPI ssize_t sb_pssocket_write(sb_pssocket_ctx_t *socket, void *in, size_t size);
+	SBAPI sb_ssize_t sb_pssocket_write(sb_pssocket_ctx_t *pssock, void *in, sb_size_t size);
 
 #ifdef __cplusplus
 }

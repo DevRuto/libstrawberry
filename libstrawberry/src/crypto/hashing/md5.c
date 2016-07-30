@@ -60,7 +60,7 @@ IDENTID("md5.c", "0.1", "1", "2016-07-29");
 	)
 #endif
 
-static void *sb_crypto_md5_internal_update(sb_crypto_md5_ctx_t *ctx, void *data, size_t size) {
+static void *sb_crypto_md5_internal_update(sb_crypto_md5_ctx_t *ctx, void *data, sb_size_t size) {
 	uint8_t *ptr = data;
 
 	register uint32_t a, b, c, d;
@@ -181,7 +181,7 @@ void sb_crypto_md5_clear(sb_crypto_md5_ctx_t *ctx) {
 	sb_memset(ctx, 0, sizeof(*ctx));
 }
 
-void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, size_t size) {
+void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t size) {
 	sb_error_reset();
 
 	if (!ctx || !in) {
@@ -190,7 +190,7 @@ void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, size_t size) {
 	}
 
 	uint32_t saved_lo;
-	size_t used, available;
+	sb_size_t used, available;
 
 	saved_lo = ctx->lo;
 	if ((ctx->lo = (saved_lo + size) & 0x1FFFFFFF) < saved_lo)
@@ -214,7 +214,7 @@ void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, size_t size) {
 	}
 
 	if (size >= 64) {
-		in = sb_crypto_md5_internal_update(ctx, in, size & ~(size_t)0x3F);
+		in = sb_crypto_md5_internal_update(ctx, in, size & ~(sb_size_t)0x3F);
 		size &= 0x3F;
 	}
 
@@ -229,7 +229,7 @@ void sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 		return;
 	}
 
-	size_t used, available;
+	sb_size_t used, available;
 
 	used = ctx->lo & 0x3F;
 
@@ -261,7 +261,7 @@ void sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 	sb_memset(ctx, 0, sizeof(*ctx));
 }
 
-void sb_crypto_md5(void *out, void *in, size_t size) {
+void sb_crypto_md5(void *out, void *in, sb_size_t size) {
 	sb_crypto_md5_ctx_t ctx;
 	sb_crypto_md5_init(&ctx);
 	sb_crypto_md5_update(&ctx, in, size);

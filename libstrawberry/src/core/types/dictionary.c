@@ -6,7 +6,7 @@ IDENTID("dictionary.c", "0.1", "1", "2016-07-30");
 #include "../memory.h"
 
 
-void sb_dictionary_init(sb_dictionary_t *dictionary, size_t size) {
+void sb_dictionary_init(sb_dictionary_t *dictionary, sb_size_t size) {
 	if (!dictionary) {
 		return;
 	}
@@ -15,7 +15,7 @@ void sb_dictionary_init(sb_dictionary_t *dictionary, size_t size) {
 
 	dictionary->__size = size;
 
-	size_t msize = (sizeof(*dictionary->entries) * dictionary->__size);
+	sb_size_t msize = (sizeof(*dictionary->entries) * dictionary->__size);
 	dictionary->entries = sb_calloc(msize);
 }
 
@@ -25,7 +25,7 @@ void sb_dictionary_clear(sb_dictionary_t *dictionary) {
 	}
 
 	if (dictionary->entries) {
-		size_t i;
+		sb_size_t i;
 		sb_dictionary_entry_t *entry;
 		for (i = 0; i < dictionary->__size; ++i) {
 			entry = &dictionary->entries[i];
@@ -40,13 +40,13 @@ void sb_dictionary_clear(sb_dictionary_t *dictionary) {
 	sb_memset(dictionary, 0, sizeof(*dictionary));
 }
 
-sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, size_t *index) {
+sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, sb_size_t *index) {
 	if (!dictionary || !dictionary->entries) {
 		return sb_false;
 	}
 
 	if (key) {
-		size_t i, keylen = strlen(key);
+		sb_size_t i, keylen = strlen(key);
 		sb_dictionary_entry_t *entry;
 		for (i = 0; i < dictionary->__size; ++i) {
 			entry = &dictionary->entries[i];
@@ -56,7 +56,7 @@ sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, 
 			}
 		}
 	} else {
-		size_t i;
+		sb_size_t i;
 		for (i = 0; i < dictionary->__size; ++i) {
 			if (!dictionary->entries[i].key) {
 				*index = i;
@@ -73,7 +73,7 @@ sb_dictionary_entry_t* sb_dictionary_get(sb_dictionary_t *dictionary, const char
 		return NULL;
 	}
 
-	size_t i, keylen = strlen(key);
+	sb_size_t i, keylen = strlen(key);
 	sb_dictionary_entry_t *entry;
 	for (i = 0; i < dictionary->__size; ++i) {
 		entry = &dictionary->entries[i];
@@ -90,7 +90,7 @@ sb_bool_t sb_dictionary_set(sb_dictionary_t *dictionary, const char *key, void *
 		return sb_false;
 	}
 	
-	size_t index;
+	sb_size_t index;
 	if (dictionary->count == dictionary->__size) {
 		index = dictionary->__size++;
 		sb_realloc(dictionary->entries, sizeof(*dictionary->entries) * dictionary->__size);

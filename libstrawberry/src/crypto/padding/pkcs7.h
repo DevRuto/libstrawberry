@@ -12,9 +12,9 @@
 extern "C" {
 #endif
 
-	SBAPI size_t sb_crypto_pad_pkcs7_size(size_t blocksize, size_t havesize);
-	SBAPI void sb_crypto_pad_pkcs7(size_t blocksize, uint8_t *out, uint8_t *in, size_t havesize);
-	SBAPI size_t sb_crypto_pad_pkcs7_offset(size_t blocksize, uint8_t *in, size_t size);
+	SBAPI sb_size_t sb_crypto_pad_pkcs7_size(sb_size_t blocksize, sb_size_t havesize);
+	SBAPI void sb_crypto_pad_pkcs7(sb_size_t blocksize, uint8_t *out, uint8_t *in, sb_size_t havesize);
+	SBAPI sb_size_t sb_crypto_pad_pkcs7_offset(sb_size_t blocksize, uint8_t *in, sb_size_t size);
 
 #ifdef __cplusplus
 }

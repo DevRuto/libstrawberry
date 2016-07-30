@@ -119,5 +119,11 @@
     <ClCompile Include="src\core\types\dictionary.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\networking\pssocket.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libstrawberry.cbp" />
   </ItemGroup>
 </Project>

@@ -36,8 +36,8 @@ extern "C" {
 	SBAPI void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *key, void *nonce, void *constant);
 	SBAPI void sb_crypto_salsa20_init(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *key, void *nonce);
 	SBAPI void sb_crypto_salsa20_clear(sb_crypto_salsa20_ctx_t *ctx);
-	SBAPI void sb_crypto_salsa20_encrypt(sb_crypto_salsa20_ctx_t *ctx, uint8_t *plain, uint8_t *cipher, size_t size);
-	SBAPI void sb_crypto_salsa20_decrypt(sb_crypto_salsa20_ctx_t *ctx, uint8_t *cipher, uint8_t *plain, size_t size);
+	SBAPI void sb_crypto_salsa20_encrypt(sb_crypto_salsa20_ctx_t *ctx, uint8_t *plain, uint8_t *cipher, sb_size_t size);
+	SBAPI void sb_crypto_salsa20_decrypt(sb_crypto_salsa20_ctx_t *ctx, uint8_t *cipher, uint8_t *plain, sb_size_t size);
 	SBAPI void sb_crypto_salsa20_nonce_increment(sb_crypto_salsa20_ctx_t *ctx);
 	SBAPI void sb_crypto_salsa20_nonce_decrement(sb_crypto_salsa20_ctx_t *ctx);
 	SBAPI void sb_crypto_salsa20_nonce_set(sb_crypto_salsa20_ctx_t *ctx, uint64_t nonce);

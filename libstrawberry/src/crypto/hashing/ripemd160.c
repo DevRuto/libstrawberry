@@ -220,13 +220,13 @@ void sb_crypto_ripemd160_update(sb_crypto_ripemd160_ctx_t *ctx, uint32_t X[16]) 
 	ctx->data[0] = D2;
 }
 
-void sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, size_t size) {
+void sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, sb_size_t size) {
 	uint32_t x[16];
 	sb_memset(x, 0, sizeof(x));
 
 	uint8_t *data = in;
 
-	register size_t i;
+	register sb_size_t i;
 	for (i = 0; i < (size & 0x3F); ++i) {
 		x[i >> 2] ^= ((uint32_t)data[i] << (8 * (i & 3)));
 	}
@@ -243,7 +243,7 @@ void sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, size_t
 	sb_crypto_ripemd160_update(ctx, x);
 }
 
-void sb_crypto_ripemd160(uint8_t digest[20], void *data, size_t size) {
+void sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size) {
 	uint32_t block[16];
 	sb_memset(&block, 0, sizeof(block));
 
@@ -252,7 +252,7 @@ void sb_crypto_ripemd160(uint8_t digest[20], void *data, size_t size) {
 
 	sb_crypto_ripemd160_init(&ctx);
 
-	register size_t i;
+	register sb_size_t i;
 	for (i = size; i > 63; i -= 64) {
 		for (ii = 0; ii < 16; ++ii) {
 			block[ii] = *data32;

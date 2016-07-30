@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-	SBAPI size_t sb_math_round_block(size_t blocksize, size_t havesize);
+	SBAPI sb_size_t sb_math_round_block(sb_size_t blocksize, sb_size_t havesize);
 
 #ifdef __cplusplus
 }

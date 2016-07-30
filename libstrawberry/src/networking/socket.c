@@ -4,14 +4,14 @@ IDENTID("socket.c", "0.1", "1", "2016-07-29");
 #include "socket.h"
 
 
-sb_bool_t sb_socket_init(sb_socket_ctx_t *socket, const char *node, uint32_t flags) {
-	if (!socket || !node) {
+sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags) {
+	if (!sock || !node) {
 		return sb_false;
 	}
 
-	sb_memset(socket, 0, sizeof(*socket));
+	sb_memset(sock, 0, sizeof(*sock));
 
-	socket->flags = flags;
+	sock->flags = flags;
 
 	sb_addrinfo_t hints;
 	sb_memset(&hints, 0, sizeof(hints));
@@ -20,23 +20,23 @@ sb_bool_t sb_socket_init(sb_socket_ctx_t *socket, const char *node, uint32_t fla
 	hints.ai_flags = (SB_FLAG(flags, SB_SOCKET_SERVER) ? AI_PASSIVE : 0);
 	hints.ai_protocol = 0;
 
-	if (getaddrinfo(node, NULL, &hints, &socket->addrinfo) != 0) {
+	if (getaddrinfo(node, NULL, &hints, &sock->addrinfo) != 0) {
 		return sb_false;
 	}
 
 	return sb_true;
 }
 
-sb_bool_t sb_socket_clear(sb_socket_ctx_t *socket) {
-	if (socket) {
+sb_bool_t sb_socket_clear(sb_socket_ctx_t *sock) {
+	if (sock) {
 		return sb_false;
 	}
 
-	if (socket->addrinfo) {
-		freeaddrinfo(socket->addrinfo);
+	if (sock->addrinfo) {
+		freeaddrinfo(sock->addrinfo);
 	}
 
-	sb_memset(socket, 0, sizeof(*socket));
+	sb_memset(sock, 0, sizeof(*sock));
 
 	return sb_true;
 }
@@ -119,22 +119,26 @@ sb_bool_t sb_socket_stop(sb_socket_ctx_t *sock) {
 	return sb_true;
 }
 
-ssize_t sb_socket_write(sb_socket_ctx_t *socket, void *in, ssize_t size) {
-	if (!socket || !in || size < 1) {
-		return -5;
+sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_ssize_t size) {
+	if (!sock || !in || size < 1) {
+		return -2;
 	}
 
-	// ...
+	if (!SB_GOOD_SOCKFD(sock->fd)) {
+		return -3;
+	}
 
-	return -6;
+	return send(sock->fd, in, size, 0);
 }
 
-ssize_t sb_socket_read(sb_socket_ctx_t *socket, void *out, ssize_t size) {
-	if (!socket || !out || size < 1) {
-		return -5;
+sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_ssize_t size) {
+	if (!sock || !out || size < 1) {
+		return -2;
 	}
 
-	// ...
+	if (!SB_GOOD_SOCKFD(sock->fd)) {
+		return -3;
+	}
 
-	return -6;
+	return recv(sock->fd, out, size, 0);
 }

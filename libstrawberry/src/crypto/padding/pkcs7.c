@@ -7,15 +7,15 @@ IDENTID("pkcs7.c", "0.1", "1", "2016-07-29");
 #include "../../core/math.h"
 
 
-size_t sb_crypto_pad_pkcs7_size(size_t blocksize, size_t havesize) {
-	size_t size = sb_math_round_block(blocksize, havesize);
+sb_size_t sb_crypto_pad_pkcs7_size(sb_size_t blocksize, sb_size_t havesize) {
+	sb_size_t size = sb_math_round_block(blocksize, havesize);
 	if (size == havesize) {
 		size += blocksize;
 	}
 	return size;
 }
 
-void sb_crypto_pad_pkcs7(size_t blocksize, uint8_t *out, uint8_t *in, size_t havesize) {
+void sb_crypto_pad_pkcs7(sb_size_t blocksize, uint8_t *out, uint8_t *in, sb_size_t havesize) {
 	sb_error_reset();
 
 	if (!out || !in) {
@@ -23,7 +23,7 @@ void sb_crypto_pad_pkcs7(size_t blocksize, uint8_t *out, uint8_t *in, size_t hav
 		return;
 	}
 
-	size_t size = sb_crypto_pad_pkcs7_size(blocksize, havesize);
+	sb_size_t size = sb_crypto_pad_pkcs7_size(blocksize, havesize);
 	if (size <= havesize) {
 		sb_error_set(SB_ERROR_FAILSAFE);
 		return;
@@ -36,7 +36,7 @@ void sb_crypto_pad_pkcs7(size_t blocksize, uint8_t *out, uint8_t *in, size_t hav
 	}
 }
 
-size_t sb_crypto_pad_pkcs7_offset(size_t blocksize, uint8_t *in, size_t size) {
+sb_size_t sb_crypto_pad_pkcs7_offset(sb_size_t blocksize, uint8_t *in, sb_size_t size) {
 	sb_error_reset();
 
 	if (size == 0) {
