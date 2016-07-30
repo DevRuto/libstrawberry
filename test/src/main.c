@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "../../libstrawberry/src/core/types/dictionary.h"
 #include "../../libstrawberry/src/core/bits.h"
 #include "../../libstrawberry/src/core/time.h"
 #include "../../libstrawberry/src/core/error.h"
@@ -125,7 +126,7 @@ int main(int argc, char **argv, char **env) {
 
 	sb_memdump(hash, 16);*/
 
-#define TESTS
+//#define TESTS
 
 #ifdef TESTS
 	test("rijndael", test_rijndael);
@@ -134,6 +135,33 @@ int main(int argc, char **argv, char **env) {
 	test("md5", test_md5);
 	test("isaac", test_isaac);
 #endif
+
+	puts("trigger memory alloc for stdio");
+
+	sb_dictionary_t dictionary;
+	sb_dictionary_init(&dictionary, 3);
+	sb_dictionary_set(&dictionary, "ruto", (void*)0xDEADBEEF);
+	sb_dictionary_set(&dictionary, "maus", (void*)0xCAFEBABE);
+	sb_dictionary_set(&dictionary, "uni", (void*)0x00BAC001);
+
+	sb_dictionary_entry_t *entry;
+
+	entry = sb_dictionary_get(&dictionary, "ruto");
+	if (entry && entry->value == (void*)0xDEADBEEF) {
+		puts("ruto ok");
+	}
+
+	entry = sb_dictionary_get(&dictionary, "maus");
+	if (entry && entry->value == (void*)0xCAFEBABE) {
+		puts("maus fiiiine as usual");
+	}
+
+	entry = sb_dictionary_get(&dictionary, "uni");
+	if (entry && entry->value == (void*)0x00BAC001) {
+		puts("uni ok");
+	}
+
+	sb_dictionary_clear(&dictionary);
 
 	fgetc(stdin);
 

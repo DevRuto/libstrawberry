@@ -23,8 +23,10 @@ extern "C" {
 	SBAPI void sb_memory_set_memcmp(int(*func)(void *cmp1, void *cmp2, size_t size));
 
 	SBAPI void* sb_malloc(size_t size);
+	SBAPI void* sb_calloc(size_t size);
 	SBAPI void* sb_realloc(void *ptr, size_t size);
 	SBAPI void* sb_cpyalloc(void *ptr, size_t size);
+	SBAPI void* sb_ntcpyalloc(void *ptr, size_t size);
 	SBAPI void sb_free(void *ptr);
 	SBAPI void sb_memcpy(void *dst, void *src, size_t size);
 	SBAPI void sb_memset(void *dst, int value, size_t size);

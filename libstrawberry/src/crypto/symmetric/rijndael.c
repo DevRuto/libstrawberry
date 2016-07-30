@@ -408,41 +408,41 @@ static const uint32_t rcon[] = {
 	table_decrypt_3[((v3)      ) & 0xFF] ^ (k)						\
 )
 
-void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, void *key, uint16_t modes, uint16_t mode_flags, void *iv) {
+void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *ctx, uint8_t bits, void *key, uint16_t modes, uint16_t mode_flags, void *iv) {
 	sb_error_reset();
 
-	if (!key || !rijndael) {
+	if (!key || !ctx) {
 		sb_error_set(SB_ERROR_NULL_PTR);
 		return;
 	}
 
-	sb_memset(rijndael, 0, sizeof(*rijndael));
+	sb_memset(ctx, 0, sizeof(*ctx));
 
 	if (bits == SB_CRYPTO_RIJNDAEL_128) {
-		rijndael->rounds = 10;
-		rijndael->size = 44;
+		ctx->rounds = 10;
+		ctx->size = 44;
 	} else if (bits == SB_CRYPTO_RIJNDAEL_192) {
-		rijndael->rounds = 12;
-		rijndael->size = 52;
+		ctx->rounds = 12;
+		ctx->size = 52;
 	} else if (bits == SB_CRYPTO_RIJNDAEL_256) {
-		rijndael->rounds = 14;
-		rijndael->size = 60;
+		ctx->rounds = 14;
+		ctx->size = 60;
 	} else {
 		sb_error_set(SB_ERROR_PARAM_RANGE);
 		return;
 	}
-	rijndael->size *= sizeof(uint32_t);
+	ctx->size *= sizeof(uint32_t);
 
-	rijndael->key_encrypt = sb_malloc(rijndael->size);
-	rijndael->key_decrypt = sb_malloc(rijndael->size);
+	ctx->key_encrypt = sb_malloc(ctx->size);
+	ctx->key_decrypt = sb_malloc(ctx->size);
 
-	rijndael->modes = modes;
-	rijndael->mode_flags = mode_flags;
-	rijndael->iv = iv;
+	ctx->modes = modes;
+	ctx->mode_flags = mode_flags;
+	ctx->iv = iv;
 
 	uint32_t *k, i, *k32 = key;
 
-	k = rijndael->key_encrypt;
+	k = ctx->key_encrypt;
 
 	k[0] = SB_BE32(k32[0]);
 	k[1] = SB_BE32(k32[1]);
@@ -509,11 +509,11 @@ void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, v
 	}
 
 __sb_crypto_rijndael_init_expand_decrypt:
-	sb_memcpy(rijndael->key_decrypt, rijndael->key_encrypt, rijndael->size);
-	k = rijndael->key_decrypt;
+	sb_memcpy(ctx->key_decrypt, ctx->key_encrypt, ctx->size);
+	k = ctx->key_decrypt;
 
 	uint32_t tmp, j;
-	for (i = 0, j = (4 * rijndael->rounds); i < j; i += 4, j -= 4) {
+	for (i = 0, j = (4 * ctx->rounds); i < j; i += 4, j -= 4) {
 		tmp      = k[i    ];
 		k[i    ] = k[j    ];
 		k[j    ] = tmp     ;
@@ -531,7 +531,7 @@ __sb_crypto_rijndael_init_expand_decrypt:
 		k[j + 3] = tmp     ;
 	}
 
-	for (i = 1; i < rijndael->rounds; ++i) {
+	for (i = 1; i < ctx->rounds; ++i) {
 		k += 4;
 		k[0] = sb_crypto_rijndael_imct(k[0]);
 		k[1] = sb_crypto_rijndael_imct(k[1]);
@@ -540,34 +540,34 @@ __sb_crypto_rijndael_init_expand_decrypt:
 	}
 }
 
-void sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *rijndael) {
+void sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *ctx) {
 	sb_error_reset();
 
-	if (rijndael) {
-		if (rijndael->key_encrypt) {
-			sb_memset(rijndael->key_encrypt, 0, rijndael->size);
-			sb_free(rijndael->key_encrypt);
+	if (ctx) {
+		if (ctx->key_encrypt) {
+			sb_memset(ctx->key_encrypt, 0, ctx->size);
+			sb_free(ctx->key_encrypt);
 		}
-		if (rijndael->key_decrypt) {
-			sb_memset(rijndael->key_decrypt, 0, rijndael->size);
-			sb_free(rijndael->key_decrypt);
+		if (ctx->key_decrypt) {
+			sb_memset(ctx->key_decrypt, 0, ctx->size);
+			sb_free(ctx->key_decrypt);
 		}
-		if (rijndael->iv) {
-			sb_memset(rijndael->iv, 0, SB_CRYPTO_RIJNDAEL_BLOCK_SIZE);
-			sb_free(rijndael->iv);
+		if (ctx->iv) {
+			sb_memset(ctx->iv, 0, SB_CRYPTO_RIJNDAEL_BLOCK_SIZE);
+			sb_free(ctx->iv);
 		}
-		rijndael->flags = 0;
-		rijndael->rounds = 0;
-		rijndael->size = 0;
+		ctx->flags = 0;
+		ctx->rounds = 0;
+		ctx->size = 0;
 	} else {
 		sb_error_set(SB_ERROR_NULL_PTR);
 	}
 }
 
-void sb_crypto_rijndael_encrypt(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in) {
+void sb_crypto_rijndael_encrypt(sb_crypto_rijndael_ctx_t *ctx, void *out, void *in) {
 	sb_error_reset();
 
-	if (!rijndael || !out || !in) {
+	if (!ctx || !out || !in) {
 		sb_error_set(SB_ERROR_NULL_PTR);
 		return;
 	}
@@ -575,7 +575,7 @@ void sb_crypto_rijndael_encrypt(sb_crypto_rijndael_ctx_t *rijndael, void *out, v
 	uint32_t
 		*in32 = in,
 		*out32 = out,
-		r, *k = rijndael->key_encrypt;
+		r, *k = ctx->key_encrypt;
 	register uint32_t s0, s1, s2, s3, t0, t1, t2, t3;
 
 	s0 = SB_BE32(in32[0]) ^ k[0];
@@ -583,7 +583,7 @@ void sb_crypto_rijndael_encrypt(sb_crypto_rijndael_ctx_t *rijndael, void *out, v
 	s2 = SB_BE32(in32[2]) ^ k[2];
 	s3 = SB_BE32(in32[3]) ^ k[3];
 
-	r = (rijndael->rounds >> 1);
+	r = (ctx->rounds >> 1);
 	for (;;) {
 		t0 = sb_crypto_rijndael_round_encrypt(s0, s1, s2, s3, k[4]);
 		t1 = sb_crypto_rijndael_round_encrypt(s1, s2, s3, s0, k[5]);
@@ -612,10 +612,10 @@ void sb_crypto_rijndael_encrypt(sb_crypto_rijndael_ctx_t *rijndael, void *out, v
 	out32[3] = SB_BE32(s3);
 }
 
-void sb_crypto_rijndael_decrypt(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in) {
+void sb_crypto_rijndael_decrypt(sb_crypto_rijndael_ctx_t *ctx, void *out, void *in) {
 	sb_error_reset();
 
-	if (!rijndael || !out || !in) {
+	if (!ctx || !out || !in) {
 		sb_error_set(SB_ERROR_NULL_PTR);
 		return;
 	}
@@ -623,7 +623,7 @@ void sb_crypto_rijndael_decrypt(sb_crypto_rijndael_ctx_t *rijndael, void *out, v
 	uint32_t
 		*in32 = in,
 		*out32 = out,
-		r, *k = rijndael->key_decrypt;
+		r, *k = ctx->key_decrypt;
 	register uint32_t s0, s1, s2, s3, t0, t1, t2, t3;
 
 	s0 = SB_BE32(in32[0]) ^ k[0];
@@ -631,7 +631,7 @@ void sb_crypto_rijndael_decrypt(sb_crypto_rijndael_ctx_t *rijndael, void *out, v
 	s2 = SB_BE32(in32[2]) ^ k[2];
 	s3 = SB_BE32(in32[3]) ^ k[3];
 
-	r = (rijndael->rounds >> 1);
+	r = (ctx->rounds >> 1);
 	for (;;) {
 		t0 = sb_crypto_rijndael_round_decrypt(s0, s3, s2, s1, k[4]);
 		t1 = sb_crypto_rijndael_round_decrypt(s1, s0, s3, s2, k[5]);

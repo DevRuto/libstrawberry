@@ -69,6 +69,9 @@
     <ClInclude Include="src\networking\socket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\types\dictionary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\memory.c">
@@ -111,6 +114,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\networking\socket.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\types\dictionary.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

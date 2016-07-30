@@ -48,6 +48,12 @@ void* sb_malloc(size_t size) {
 	return ptr;
 }
 
+void* sb_calloc(size_t size) {
+	void *ptr = sb_malloc(size);
+	sb_memset(ptr, 0, size);
+	return ptr;
+}
+
 void* sb_realloc(void *ptr, size_t size) {
 	if (!ptr) {
 		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
@@ -63,6 +69,15 @@ void* sb_cpyalloc(void *ptr, size_t size) {
 	if (ptr && size) {
 		void *p = sb_malloc(size);
 		sb_memcpy(p, ptr, size);
+		return p;
+	}
+	return NULL;
+}
+
+void* sb_ntcpyalloc(void *ptr, size_t size) {
+	if (ptr && size) {
+		void *p = sb_cpyalloc(ptr, size + 1);
+		((uint8_t*)p)[size] = 0;
 		return p;
 	}
 	return NULL;

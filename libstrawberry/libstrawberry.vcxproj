@@ -190,6 +190,7 @@
     <ClInclude Include="src\core\time.h" />
     <ClInclude Include="src\core\types\bool.h" />
     <ClInclude Include="src\core\sbapi.h" />
+    <ClInclude Include="src\core\types\dictionary.h" />
     <ClInclude Include="src\crypto\asymmetric\diffiehellman.h" />
     <ClInclude Include="src\crypto\blockmode.h" />
     <ClInclude Include="src\crypto\hashing\md5.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="src\core\error.c" />
     <ClCompile Include="src\core\math.c" />
     <ClCompile Include="src\core\time.c" />
+    <ClCompile Include="src\core\types\dictionary.c" />
     <ClCompile Include="src\crypto\blockmode.c" />
     <ClCompile Include="src\crypto\hashing\md5.c" />
     <ClCompile Include="src\crypto\hashing\ripemd160.c" />
