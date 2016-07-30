@@ -1,3 +1,8 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 /* This is an implementation of the threads API of POSIX 1003.1-2001.
  *
  * --------------------------------------------------------------------------
@@ -1366,3 +1371,8 @@ PTW32_DLLPORT DWORD PTW32_CDECL ptw32_get_exception_services_code(void);
 #endif /* ! RC_INVOKED */
 
 #endif /* PTHREAD_H */
+
+
+#ifdef __cplusplus
+}
+#endif
