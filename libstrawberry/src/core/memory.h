@@ -29,6 +29,8 @@ extern "C" {
 	SBAPI void sb_memset(void *dst, int value, size_t size);
 	SBAPI int sb_memcmp(void *cmp1, void *cmp2, size_t size);
 	SBAPI sb_bool_t sb_memequ(void *cmp1, void *cmp2, size_t size);
+	SBAPI void sb_strcpy(void *dst, const char *str);
+	SBAPI void sb_strappend(void **dst, const char *str);
 
 	SBAPI void sb_memdump_ex(void *src, size_t size, size_t columns);
 	SBAPI void sb_memdump(void *src, size_t size);

@@ -1,3 +1,6 @@
+#include "rcsid.h"
+RCSID("math.c", "0.1", "1", "2016-07-29");
+
 #include "math.h"
 #include <math.h>
 

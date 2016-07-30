@@ -1,4 +1,9 @@
+#include "rcsid.h"
+RCSID("error.c", "0.1", "1", "2016-07-29");
+
 #include <stdint.h>
+#include <stdio.h>
+#include <signal.h>
 
 #include "../core/error.h"
 
@@ -31,4 +36,13 @@ void _sb_error_set_ex(sb_error_t _errno, sb_error_t _errparam) {
 void _sb_error_reset() {
 	__sb_errno = 0;
 	__sb_errparam = 0;
+}
+
+void sb_error_fatal_ex(sb_error_t _errno, sb_error_t _errparam) {
+	printf("STRAWBERRY FATAL: %08X %08X\n", _errno, _errparam);
+	raise(SIGABRT);
+}
+
+void sb_error_fatal(sb_error_t _errno) {
+	sb_error_fatal_ex(_errno, 0);
 }

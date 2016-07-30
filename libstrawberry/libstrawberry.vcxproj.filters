@@ -45,9 +45,6 @@
     <ClInclude Include="src\core\time.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\crypto\pkcs7.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\core\math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -55,6 +52,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\crypto\symmetric\salsa20.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crypto\hashing\md5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crypto\padding\pkcs7.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\rcsid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -86,13 +95,16 @@
     <ClCompile Include="src\core\time.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\crypto\pkcs7.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\math.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\crypto\symmetric\salsa20.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\hashing\md5.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\padding\pkcs7.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

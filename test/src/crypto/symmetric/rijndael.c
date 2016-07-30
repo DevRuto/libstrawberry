@@ -34,44 +34,68 @@ static uint8_t vectors_256[4][16] = {
 
 sb_bool_t test_rijndael() {
 	sb_crypto_rijndael_ctx_t ctx;
-	uint8_t buffer[16];
+	uint8_t buffer[16], buffdec[16];
 
 	sb_bool_t valid = sb_true;
 
 	uint32_t i;
 
-	sb_crypto_rijndael_init(&ctx, SB_CRYPTO_RIJNDAEL_128, key_128);
+	sb_crypto_rijndael_init(&ctx, SB_CRYPTO_RIJNDAEL_128, key_128, 0, 0, NULL);
 	for (i = 0; i < 4; ++i) {
 		sb_crypto_rijndael_encrypt(&ctx, buffer, vectors_input[i]);
 		if (!sb_memequ(buffer, vectors_128[i], 16)) {
 			valid = sb_false;
-			status("s rijndael", "128-ECB", status_failed);
+			status("rijndael", "128-ECB encryption", status_failed);
 		} else {
-			status("s rijndael", "128-ECB", status_passed);
+			status("rijndael", "128-ECB encryption", status_passed);
+		}
+
+		sb_crypto_rijndael_decrypt(&ctx, buffdec, buffer);
+		if (!sb_memequ(buffdec, vectors_input[i], 16)) {
+			valid = sb_false;
+			status("rijndael", "128-ECB decryption", status_failed);
+		} else {
+			status("rijndael", "128-ECB decryption", status_passed);
 		}
 	}
 	sb_crypto_rijndael_clear(&ctx);
 
-	sb_crypto_rijndael_init(&ctx, SB_CRYPTO_RIJNDAEL_192, key_192);
+	sb_crypto_rijndael_init(&ctx, SB_CRYPTO_RIJNDAEL_192, key_192, 0, 0, NULL);
 	for (i = 0; i < 4; ++i) {
 		sb_crypto_rijndael_encrypt(&ctx, buffer, vectors_input[i]);
 		if (!sb_memequ(buffer, vectors_192[i], 16)) {
 			valid = sb_false;
-			status("s rijndael", "192-ECB", status_failed);
+			status("rijndael", "192-ECB encryption", status_failed);
 		} else {
-			status("s rijndael", "192-ECB", status_passed);
+			status("rijndael", "192-ECB encryption", status_passed);
+		}
+
+		sb_crypto_rijndael_decrypt(&ctx, buffdec, buffer);
+		if (!sb_memequ(buffdec, vectors_input[i], 16)) {
+			valid = sb_false;
+			status("rijndael", "192-ECB decryption", status_failed);
+		} else {
+			status("rijndael", "192-ECB decryption", status_passed);
 		}
 	}
 	sb_crypto_rijndael_clear(&ctx);
 
-	sb_crypto_rijndael_init(&ctx, SB_CRYPTO_RIJNDAEL_256, key_256);
+	sb_crypto_rijndael_init(&ctx, SB_CRYPTO_RIJNDAEL_256, key_256, 0, 0, NULL);
 	for (i = 0; i < 4; ++i) {
 		sb_crypto_rijndael_encrypt(&ctx, buffer, vectors_input[i]);
 		if (!sb_memequ(buffer, vectors_256[i], 16)) {
 			valid = sb_false;
-			status("s rijndael", "256-ECB", status_failed);
+			status("rijndael", "256-ECB encryption", status_failed);
 		} else {
-			status("s rijndael", "256-ECB", status_passed);
+			status("rijndael", "256-ECB encryption", status_passed);
+		}
+
+		sb_crypto_rijndael_decrypt(&ctx, buffdec, buffer);
+		if (!sb_memequ(buffdec, vectors_input[i], 16)) {
+			valid = sb_false;
+			status("rijndael", "256-ECB decryption", status_failed);
+		} else {
+			status("rijndael", "256-ECB decryption", status_passed);
 		}
 	}
 	sb_crypto_rijndael_clear(&ctx);

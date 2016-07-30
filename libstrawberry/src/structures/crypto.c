@@ -1,3 +1,6 @@
+#include "../core/rcsid.h"
+RCSID("crypto.c", "0.1", "1", "2016-07-29");
+
 #include "crypto.h"
 #include "../core/memory.h"
 #include "../core/error.h"

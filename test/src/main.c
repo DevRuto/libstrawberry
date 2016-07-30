@@ -2,20 +2,30 @@
 #include <stdint.h>
 #include <string.h>
 
-/*#include "../../libstrawberry/src/core/bits.h"
+#include "../../libstrawberry/src/core/bits.h"
 #include "../../libstrawberry/src/core/time.h"
 #include "../../libstrawberry/src/core/error.h"
 #include "../../libstrawberry/src/core/memory.h"
 #include "../../libstrawberry/src/structures/crypto.h"
 #include "../../libstrawberry/src/crypto/hashing/ripemd160.h"
-#include "../../libstrawberry/src/crypto/symmetric/rijndael.h"*/
+#include "../../libstrawberry/src/crypto/symmetric/rijndael.h"
+#include "../../libstrawberry/src/core/platform.h"
 #include "../../libstrawberry/src/crypto/symmetric/salsa20.h"
+#include "../../libstrawberry/src/crypto/hashing/md5.h"
 #include "tests.h"
 
 
 void test(const char *name, sb_bool_t(*func)()) {
-	if (func()) {
-		printf(status_passed" %s\n", name);
+	sb_bool_t valid = sb_true;
+	register uint64_t ns_start = sb_time_nsec(), ns_stop, i;
+	for (i = 0; i < 500; ++i) {
+		if (!func()) {
+			valid = sb_false;
+		}
+	}
+	if (valid) {
+		ns_stop = sb_time_nsec();
+		printf(status_passed" %10s: %llu\n", name, (ns_stop - ns_start));
 	} else {
 		printf(status_failed" %s\n", name);
 	}
@@ -106,9 +116,24 @@ int main(int argc, char **argv, char **env) {
 	sb_memdump(plain, DATASIZE);
 	puts("");*/
 
-	test("s rijndael", test_rijndael);
-	test("s salsa20", test_salsa20);
-	test("h ripemd160", test_ripemd160);
+	/*char data[] = "The quick brown fox jumps over the lazy dog.", hash[16];
+	sb_memset(hash, 0, 16);
+
+	sb_crypto_md5_ctx_t ctx;
+	sb_crypto_md5_init(&ctx);
+	sb_crypto_md5_update(&ctx, data, strlen(data));
+	sb_crypto_md5_finish(&ctx, hash);
+
+	sb_memdump(hash, 16);*/
+
+#define TESTS
+
+#ifdef TESTS
+	test("rijndael", test_rijndael);
+	test("salsa20", test_salsa20);
+	test("ripemd160", test_ripemd160);
+	test("md5", test_md5);
+#endif
 
 	fgetc(stdin);
 

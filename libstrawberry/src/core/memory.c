@@ -1,7 +1,11 @@
+#include "rcsid.h"
+RCSID("memory.c", "0.1", "1", "2016-07-29");
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "memory.h"
+#include "error.h"
 
 
 static void*(*__sb_malloc)(size_t) = NULL;
@@ -37,34 +41,76 @@ void sb_memory_set_memcmp(int(*func)(void *cmp1, void *cmp2, size_t size)) {
 
 
 void* sb_malloc(size_t size) {
-	return (__sb_malloc ? __sb_malloc : malloc)(size);
+	void *ptr = (__sb_malloc ? __sb_malloc : malloc)(size);
+	if (!ptr) {
+		sb_error_fatal(SB_ERROR_FATAL_OUT_OF_MEMORY);
+	}
+	return ptr;
 }
 
 void sb_free(void *ptr) {
+	if (!ptr) {
+		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
+	}
 	(__sb_free ? __sb_free : free)(ptr);
 }
 
 void* sb_realloc(void *ptr, size_t size) {
-	return (__sb_realloc ? __sb_realloc : realloc)(ptr, size);
+	if (!ptr) {
+		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
+	}
+	void *nptr = (__sb_realloc ? __sb_realloc : realloc)(ptr, size);
+	if (!nptr) {
+		sb_error_fatal(SB_ERROR_FATAL_OUT_OF_MEMORY);
+	}
+	return nptr;
 }
 
 void sb_memcpy(void *dst, void *src, size_t size) {
+	if (!dst || !src) {
+		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
+	}
 	(__sb_memcpy ? __sb_memcpy : memcpy)(dst, src, size);
 }
 
 void sb_memset(void *dst, int value, size_t size) {
+	if (!dst) {
+		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
+	}
 	(__sb_memset ? __sb_memset : memset)(dst, value, size);
 }
 
 int sb_memcmp(void *cmp1, void *cmp2, size_t size) {
-	return (__sb_memcmp ? __sb_memcmp : memcmp)(cmp1, cmp2, size);
+	if (cmp1 && cmp2) {
+		return (__sb_memcmp ? __sb_memcmp : memcmp)(cmp1, cmp2, size);
+	} else {
+		return 2147483647;
+	}
 }
 
 sb_bool_t sb_memequ(void *cmp1, void *cmp2, size_t size) {
 	return (sb_memcmp(cmp1, cmp2, size) == 0);
 }
 
+void sb_strcpy(void *dst, const char *str) {
+	if (dst && str) {
+		sb_memcpy(dst, str, strlen(str));
+	}
+}
+
+void sb_strappend(void **dst, const char *str) {
+	if (dst && *dst && str) {
+		size_t size = strlen(str);
+		sb_memcpy(*dst, str, size);
+		(uint8_t*)*dst += size;
+	}
+}
+
 void sb_memdump_ex(void *src, size_t size, size_t columns) {
+	if (!src) {
+		printf("%s: invalid pointer (%p)\n", __func__, src);
+		return;
+	}
 	if (src && size && columns) {
 		uint8_t *ptr = src;
 		size_t i = 0, c = 0;

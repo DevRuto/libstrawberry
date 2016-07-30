@@ -43,22 +43,24 @@ static uint8_t vectors[10][256] = {
 sb_bool_t test_salsa20() {
 	sb_crypto_salsa20_ctx_t ctx;
 
-	uint8_t plain[512], buffer[512];
-	sb_memset(plain, 0, 512);
-	sb_memset(buffer, 0, 512);
+#define SIZE 512
+
+	uint8_t plain[SIZE], buffer[SIZE];
+	sb_memset(plain, 0, SIZE);
+	sb_memset(buffer, 0, SIZE);
 
 	sb_bool_t valid = sb_true;
 
 	uint32_t i;
 	for (i = 0; i < 10; ++i) {
-		sb_crypto_salsa20_init(&ctx, vector_keys[i], SB_CRYPTO_SALSA20_128, vector_ivs[i]);
-		sb_crypto_salsa20_encrypt(&ctx, plain, buffer, 512);
+		sb_crypto_salsa20_init(&ctx, SB_CRYPTO_SALSA20_128, vector_keys[i], vector_ivs[i]);
+		sb_crypto_salsa20_encrypt(&ctx, plain, buffer, SIZE);
 		sb_crypto_salsa20_clear(&ctx);
 		if (!sb_memequ(buffer, vectors[i], 64) || !sb_memequ(buffer + 192, vectors[i] + 64, 64) || !sb_memequ(buffer + 256, vectors[i] + 128, 64) || !sb_memequ(buffer + 448, vectors[i] + 192, 64)) {
 			valid = sb_false;
-			status("s salsa20", "128", status_failed);
+			status("salsa20", "128", status_failed);
 		} else {
-			status("s salsa20", "128", status_passed);
+			status("salsa20", "128", status_passed);
 		}
 	}
 

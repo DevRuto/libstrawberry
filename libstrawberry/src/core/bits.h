@@ -3,6 +3,7 @@
 
 
 #include <stdint.h>
+#include "platform.h"
 
 
 #define SB_BIT_1							1
@@ -23,33 +24,30 @@
 #define SB_BIT_16							32768
 
 
-#define SB_FLAG(x, y)						(SB_AND(x, y) == (y))
-
-
 #define SB_OR(x, y)							((x) | (y))
 #define SB_XOR(x, y)						((x) ^ (y))
 #define SB_AND(x, y)						((x) & (y))
 #define SB_NOT(x)							(~(x))
 
-#define SB_NOR(x, y)						(SB_NOT(SB_OR(x, y)))
+#define SB_NOR(x, y)						(SB_NOT( SB_OR(x, y)))
 #define SB_NXOR(x, y)						(SB_NOT(SB_XOR(x, y)))
 #define SB_NAND(x, y)						(SB_NOT(SB_AND(x, y)))
 
 
-#define SB_ROTL8(x, y)						(uint8_t)(((y) == 0) ? (x) : (((x) << (y)) | ((x) >> (-(y) &  7))))
-#define SB_ROTR8(x, y)						(uint8_t)(((y) == 0) ? (x) : (((x) >> (y)) | ((x) << (-(y) &  7))))
+#define SB_FLAG(x, y)						(SB_AND(x, y)/* == (y)*/)
 
-#define SB_ROTL16(x, y)						(uint16_t)(((y) == 0) ? (x) : (((x) << (y)) | ((x) >> (-(y) & 15))))
-#define SB_ROTR16(x, y)						(uint16_t)(((y) == 0) ? (x) : (((x) >> (y)) | ((x) << (-(y) & 15))))
 
-#define SB_ROTL32(x, y)						(uint32_t)(((y) == 0) ? (x) : (((x) << (y)) | ((x) >> (-(y) & 31))))
-#define SB_ROTR32(x, y)						(uint32_t)(((y) == 0) ? (x) : (((x) >> (y)) | ((x) << (-(y) & 31))))
+#define SB_ROTL8(x, y)						(((x) << (y)) | ((x) >> (-(y) &  7)))
+#define SB_ROTR8(x, y)						(((x) >> (y)) | ((x) << (-(y) &  7)))
 
-/*#pragma GCC diagnostic ignored "-Wshift-count-overflow"
-#pragma GCC diagnostic push*/
-#define SB_ROTL64(x, y)						(uint64_t)(((y) == 0) ? (x) : (((x) << (y)) | ((x) >> (-(y) & 63))))
-#define SB_ROTR64(x, y)						(uint64_t)(((y) == 0) ? (x) : (((x) >> (y)) | ((x) << (-(y) & 63))))
-/*#pragma GCC diagnostic pop*/
+#define SB_ROTL16(x, y)						(((x) << (y)) | ((x) >> (-(y) & 15)))
+#define SB_ROTR16(x, y)						(((x) >> (y)) | ((x) << (-(y) & 15)))
+
+#define SB_ROTL32(x, y)						(((x) << (y)) | ((x) >> (-(y) & 31)))
+#define SB_ROTR32(x, y)						(((x) >> (y)) | ((x) << (-(y) & 31)))
+
+#define SB_ROTL64(x, y)						(((x) << (y)) | ((x) >> (-(y) & 63)))
+#define SB_ROTR64(x, y)						(((x) >> (y)) | ((x) << (-(y) & 63)))
 
 
 #define SB_8M16(x, y)						(((uint16_t)(x) <<  8) | (uint16_t)(y))
@@ -68,6 +66,28 @@
 
 
 #define SB_LFSR(x,y)						(((x) & 1) ? ((((x) ^ 0x80000055) >> (y)) | 0x80000000) : ((x) >> (y)))
+
+
+#define SB_IBO_SWAP16(x)					(SB_ROTL16((x), 8))
+#define SB_IBO_SWAP32(x)					((SB_ROTL32((x), 8) & 0x00FF00FF) | (SB_ROTR32((x), 8) & 0xFF00FF00))
+#define SB_IBO_SWAP64(x)					((SB_ROTL64((x), 8) & 0x00FF00FF00FF00FF) | (SB_ROTR64((x), 8) & 0xFF00FF00FF00FF00))
+
+
+#if (SB_ENDIANNESS == SB_ENDIANNESS_BIG)
+#	define SB_LE16(x)						SB_IBO_SWAP16(x)
+#	define SB_BE16(x)						(x)
+#	define SB_LE32(x)						SB_IBO_SWAP32(x)
+#	define SB_BE32(x)						(x)
+#	define SB_LE64(x)						SB_IBO_SWAP64(x)
+#	define SB_BE64(x)						(x)
+#else
+#	define SB_LE16(x)						(x)
+#	define SB_BE16(x)						SB_IBO_SWAP16(x)
+#	define SB_LE32(x)						(x)
+#	define SB_BE32(x)						SB_IBO_SWAP32(x)
+#	define SB_LE64(x)						(x)
+#	define SB_BE64(x)						SB_IBO_SWAP64(x)
+#endif
 
 
 #endif

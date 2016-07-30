@@ -32,8 +32,8 @@ typedef union sb_crypto_salsa20_ctx {
 extern "C" {
 #endif
 
-	SBAPI void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, void *key, uint8_t bits, void *nonce, void *constant);
-	SBAPI void sb_crypto_salsa20_init(sb_crypto_salsa20_ctx_t *ctx, void *key, uint8_t bits, void *nonce);
+	SBAPI void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *key, void *nonce, void *constant);
+	SBAPI void sb_crypto_salsa20_init(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *key, void *nonce);
 	SBAPI void sb_crypto_salsa20_clear(sb_crypto_salsa20_ctx_t *ctx);
 	SBAPI void sb_crypto_salsa20_encrypt(sb_crypto_salsa20_ctx_t *ctx, uint8_t *plain, uint8_t *cipher, size_t size);
 	SBAPI void sb_crypto_salsa20_decrypt(sb_crypto_salsa20_ctx_t *ctx, uint8_t *cipher, uint8_t *plain, size_t size);

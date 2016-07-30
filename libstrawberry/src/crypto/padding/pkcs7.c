@@ -1,10 +1,13 @@
+#include "../../core/rcsid.h"
+RCSID("pkcs7.c", "0.1", "1", "2016-07-29");
+
 #include "pkcs7.h"
-#include "../core/error.h"
-#include "../core/memory.h"
-#include "../core/math.h"
+#include "../../core/error.h"
+#include "../../core/memory.h"
+#include "../../core/math.h"
 
 
-size_t sb_crypto_pkcs7_size(size_t blocksize, size_t havesize) {
+size_t sb_crypto_pad_pkcs7_size(size_t blocksize, size_t havesize) {
 	size_t size = sb_math_round_block(blocksize, havesize);
 	if (size == havesize) {
 		size += blocksize;
@@ -12,7 +15,7 @@ size_t sb_crypto_pkcs7_size(size_t blocksize, size_t havesize) {
 	return size;
 }
 
-void sb_crypto_pkcs7(size_t blocksize, uint8_t *out, uint8_t *in, size_t havesize) {
+void sb_crypto_pad_pkcs7(size_t blocksize, uint8_t *out, uint8_t *in, size_t havesize) {
 	sb_error_reset();
 
 	if (!out || !in) {
@@ -20,7 +23,7 @@ void sb_crypto_pkcs7(size_t blocksize, uint8_t *out, uint8_t *in, size_t havesiz
 		return;
 	}
 
-	size_t size = sb_crypto_pkcs7_size(blocksize, havesize);
+	size_t size = sb_crypto_pad_pkcs7_size(blocksize, havesize);
 	if (size <= havesize) {
 		sb_error_set(SB_ERROR_FAILSAFE);
 		return;
@@ -33,7 +36,7 @@ void sb_crypto_pkcs7(size_t blocksize, uint8_t *out, uint8_t *in, size_t havesiz
 	}
 }
 
-size_t sb_crypto_pkcs7_offset(size_t blocksize, uint8_t *in, size_t size) {
+size_t sb_crypto_pad_pkcs7_offset(size_t blocksize, uint8_t *in, size_t size) {
 	sb_error_reset();
 
 	if (size == 0) {

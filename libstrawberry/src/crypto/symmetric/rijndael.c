@@ -1,6 +1,10 @@
+#include "../../core/rcsid.h"
+RCSID("rijndael.c", "0.1", "1", "2016-07-29");
+
 #include <stdint.h>
 
 #include "rijndael.h"
+#include "../../core/bits.h"
 #include "../../core/error.h"
 #include "../../core/memory.h"
 #include "../../core/types/bool.h"
@@ -355,60 +359,57 @@ static const uint32_t rcon[] = {
 };
 
 
-/// Inverse MixColumn Transform
-static inline uint32_t sb_crypto_rijndael_imct(uint32_t rk) {
-	return
-		table_decrypt_0[table_encrypt_4[(rk >> 24) & 0xFF] & 0xFF] ^
-		table_decrypt_1[table_encrypt_4[(rk >> 16) & 0xFF] & 0xFF] ^
-		table_decrypt_2[table_encrypt_4[(rk >>  8) & 0xFF] & 0xFF] ^
-		table_decrypt_3[table_encrypt_4[ rk        & 0xFF] & 0xFF];
-}
+// inverse mix column transform
+#define sb_crypto_rijndael_imct(k) (								\
+	table_decrypt_0[table_encrypt_4[((k) >> 24) & 0xFF] & 0xFF] ^	\
+	table_decrypt_1[table_encrypt_4[((k) >> 16) & 0xFF] & 0xFF] ^	\
+	table_decrypt_2[table_encrypt_4[((k) >>  8) & 0xFF] & 0xFF] ^	\
+	table_decrypt_3[table_encrypt_4[((k)      ) & 0xFF] & 0xFF]		\
+)
 
+// key expansion lookup
+#define sb_crypto_rijndael_lookup_kx(z, k, rc) (					\
+	((z) ^ (table_encrypt_4[((k) >> 16) & 0xFF] & 0xFF000000) ^		\
+	(table_encrypt_4[((k) >>  8) & 0xFF] & 0x00FF0000)	^			\
+	(table_encrypt_4[((k)      ) & 0xFF] & 0x0000FF00)	^			\
+	(table_encrypt_4[((k) >> 24) & 0xFF] & 0x000000FF))	^ (rc)		\
+)
 
-/// Lookup 1.
-static inline uint32_t sb_crypto_rijndael_lookup_m(const uint32_t *table, uint32_t v0, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t rk) {
-	return
-		(table[(v0 >> 24) & 0xFF] & 0xFF000000) ^
-		(table[(v1 >> 16) & 0xFF] & 0x00FF0000) ^
-		(table[(v2 >>  8) & 0xFF] & 0x0000FF00) ^
-		(table[ v3        & 0xFF] & 0x000000FF) ^ rk;
-}
+// key expansion lookup - 256-bits
+#define sb_crypto_rijndael_lookup_kxx(z, k) (						\
+	(z) ^															\
+	(table_encrypt_4[((k) >> 24) & 0xFF] & 0xFF000000) ^			\
+	(table_encrypt_4[((k) >> 16) & 0xFF] & 0x00FF0000) ^			\
+	(table_encrypt_4[((k) >>  8) & 0xFF] & 0x0000FF00) ^			\
+	(table_encrypt_4[((k)      ) & 0xFF] & 0x000000FF)				\
+)
 
+// encrypt/decrypt final round
+#define sb_crypto_rijndael_round_finish(table, v0, v1, v2, v3, k) (	\
+	((table)[((v0) >> 24) & 0xFF] & 0xFF000000) ^					\
+	((table)[((v1) >> 16) & 0xFF] & 0x00FF0000) ^					\
+	((table)[((v2) >>  8) & 0xFF] & 0x0000FF00) ^					\
+	((table)[((v3)      ) & 0xFF] & 0x000000FF) ^ (k)				\
+)
 
-/// Lookup 2.
-static inline uint32_t sb_crypto_rijndael_lookup_mz(const uint32_t *table, uint32_t z, uint32_t rk) {
-	return z ^
-		(table_encrypt_4[(rk >> 16) & 0xFF] & 0xFF000000) ^
-		(table_encrypt_4[(rk >>  8) & 0xFF] & 0x00FF0000) ^
-		(table_encrypt_4[ rk        & 0xFF] & 0x0000FF00) ^
-		(table_encrypt_4[(rk >> 24) & 0xFF] & 0x000000FF);
-}
+// encrypt round
+#define sb_crypto_rijndael_round_encrypt(v0, v1, v2, v3, k) (		\
+	table_encrypt_0[((v0) >> 24) & 0xFF] ^							\
+	table_encrypt_1[((v1) >> 16) & 0xFF] ^							\
+	table_encrypt_2[((v2) >>  8) & 0xFF] ^							\
+	table_encrypt_3[((v3)      ) & 0xFF] ^ (k)						\
+)
 
+// decrypt round
+#define sb_crypto_rijndael_round_decrypt(v0, v1, v2, v3, k) (		\
+	table_decrypt_0[((v0) >> 24) & 0xFF] ^							\
+	table_decrypt_1[((v1) >> 16) & 0xFF] ^							\
+	table_decrypt_2[((v2) >>  8) & 0xFF] ^							\
+	table_decrypt_3[((v3)      ) & 0xFF] ^ (k)						\
+)
 
-/// Lookup 3.
-static inline uint32_t sb_crypto_rijndael_lookup_mzr(const uint32_t *table, uint32_t z, uint32_t rk, uint32_t rc) {
-	return sb_crypto_rijndael_lookup_mz(table, z, rk) ^ rc;
-}
-
-static inline uint32_t sb_crypto_rijndael_round_encrypt(uint32_t v0, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t rk) {
-	return
-		table_encrypt_0[(v0 >> 24) & 0xFF] ^
-		table_encrypt_1[(v1 >> 16) & 0xFF] ^
-		table_encrypt_2[(v2 >>  8) & 0xFF] ^
-		table_encrypt_3[ v3        & 0xFF] ^ rk;
-}
-
-static inline uint32_t sb_crypto_rijndael_round_decrypt(uint32_t v0, uint32_t v1, uint32_t v2, uint32_t v3, uint32_t rk) {
-	return
-		table_decrypt_0[(v0 >> 24) & 0xFF] ^
-		table_decrypt_1[(v1 >> 16) & 0xFF] ^
-		table_decrypt_2[(v2 >>  8) & 0xFF] ^
-		table_decrypt_3[ v3        & 0xFF] ^ rk;
-}
-
-void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, void *key) {
+void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, void *key, uint16_t modes, uint16_t mode_flags, void *iv) {
 	sb_error_reset();
-	uint64_t size = sizeof(sb_crypto_rijndael_ctx_t), ssize = sizeof(sb_crypto_blockmode_t);
 
 	if (!key || !rijndael) {
 		sb_error_set(SB_ERROR_NULL_PTR);
@@ -435,19 +436,22 @@ void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, v
 	rijndael->key_encrypt = sb_malloc(rijndael->size);
 	rijndael->key_decrypt = sb_malloc(rijndael->size);
 
-	uint32_t *k, i;
+	rijndael->modes = modes;
+	rijndael->mode_flags = mode_flags;
+	rijndael->iv = iv;
+
+	uint32_t *k, i, *k32 = key;
 
 	k = rijndael->key_encrypt;
 
-	uint8_t *_key = key;
-	k[0] = SB_CRYPTO_RIJNDAEL_GET32(_key);
-	k[1] = SB_CRYPTO_RIJNDAEL_GET32(_key +  4);
-	k[2] = SB_CRYPTO_RIJNDAEL_GET32(_key +  8);
-	k[3] = SB_CRYPTO_RIJNDAEL_GET32(_key + 12);
+	k[0] = SB_BE32(k32[0]);
+	k[1] = SB_BE32(k32[1]);
+	k[2] = SB_BE32(k32[2]);
+	k[3] = SB_BE32(k32[3]);
 
 	if (bits == SB_CRYPTO_RIJNDAEL_128) {
 		for (i = 0;;) {
-			k[ 4] = sb_crypto_rijndael_lookup_mzr(table_encrypt_4, k[0], k[3], rcon[i]);
+			k[ 4] = sb_crypto_rijndael_lookup_kx(k[0], k[3], rcon[i]);
 			k[ 5] = k[ 1] ^ k[ 4];
 			k[ 6] = k[ 2] ^ k[ 5];
 			k[ 7] = k[ 3] ^ k[ 6];
@@ -460,12 +464,12 @@ void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, v
 		}
 	}
 
-	k[4] = SB_CRYPTO_RIJNDAEL_GET32(_key + 16);
-	k[5] = SB_CRYPTO_RIJNDAEL_GET32(_key + 20);
+	k[4] = SB_BE32(k32[4]);
+	k[5] = SB_BE32(k32[5]);
 
 	if (bits == SB_CRYPTO_RIJNDAEL_192) {
 		for (i = 0;;) {
-			k[ 6] = sb_crypto_rijndael_lookup_mzr(table_encrypt_4, k[0], k[5], rcon[i]);
+			k[ 6] = sb_crypto_rijndael_lookup_kx(k[0], k[5], rcon[i]);
 			k[ 7] = k[ 1] ^ k[ 6];
 			k[ 8] = k[ 2] ^ k[ 7];
 			k[ 9] = k[ 3] ^ k[ 8];
@@ -481,12 +485,12 @@ void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, v
 		}
 	}
 
-	k[6] = SB_CRYPTO_RIJNDAEL_GET32(_key + 24);
-	k[7] = SB_CRYPTO_RIJNDAEL_GET32(_key + 28);
+	k[6] = SB_BE32(k32[6]);
+	k[7] = SB_BE32(k32[7]);
 
 	if (bits == SB_CRYPTO_RIJNDAEL_256) {
 		for (i = 0;;) {
-			k[ 8] = sb_crypto_rijndael_lookup_mzr(table_encrypt_4, k[0], k[7], rcon[i]);
+			k[ 8] = sb_crypto_rijndael_lookup_kx(k[0], k[7], rcon[i]);
 			k[ 9] = k[ 1] ^ k[ 8];
 			k[10] = k[ 2] ^ k[ 9];
 			k[11] = k[ 3] ^ k[10];
@@ -495,7 +499,7 @@ void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, v
 				goto __sb_crypto_rijndael_init_expand_decrypt;
 			}
 
-			k[12] = sb_crypto_rijndael_lookup_mz(table_encrypt_4, k[4], k[11]);
+			k[12] = sb_crypto_rijndael_lookup_kxx(k[4], k[11]);
 			k[13] = k[ 5] ^ k[12];
 			k[14] = k[ 6] ^ k[13];
 			k[15] = k[ 7] ^ k[14];
@@ -540,10 +544,6 @@ void sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *rijndael) {
 	sb_error_reset();
 
 	if (rijndael) {
-		if (rijndael->blockmode.iv) {
-			sb_memset(rijndael->blockmode.iv, 0, 16);
-			sb_free(rijndael->blockmode.iv);
-		}
 		if (rijndael->key_encrypt) {
 			sb_memset(rijndael->key_encrypt, 0, rijndael->size);
 			sb_free(rijndael->key_encrypt);
@@ -551,6 +551,10 @@ void sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *rijndael) {
 		if (rijndael->key_decrypt) {
 			sb_memset(rijndael->key_decrypt, 0, rijndael->size);
 			sb_free(rijndael->key_decrypt);
+		}
+		if (rijndael->iv) {
+			sb_memset(rijndael->iv, 0, SB_CRYPTO_RIJNDAEL_BLOCK_SIZE);
+			sb_free(rijndael->iv);
 		}
 		rijndael->flags = 0;
 		rijndael->rounds = 0;
@@ -560,7 +564,7 @@ void sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *rijndael) {
 	}
 }
 
-void sb_crypto_rijndael_encrypt(sb_crypto_rijndael_ctx_t *rijndael, uint8_t out[16], uint8_t in[16]) {
+void sb_crypto_rijndael_encrypt(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in) {
 	sb_error_reset();
 
 	if (!rijndael || !out || !in) {
@@ -569,14 +573,15 @@ void sb_crypto_rijndael_encrypt(sb_crypto_rijndael_ctx_t *rijndael, uint8_t out[
 	}
 
 	uint32_t
-		s0, s1, s2, s3,
-		t0, t1, t2, t3,
+		*in32 = in,
+		*out32 = out,
 		r, *k = rijndael->key_encrypt;
+	register uint32_t s0, s1, s2, s3, t0, t1, t2, t3;
 
-	s0 = SB_CRYPTO_RIJNDAEL_GET32(in     ) ^ k[0];
-	s1 = SB_CRYPTO_RIJNDAEL_GET32(in +  4) ^ k[1];
-	s2 = SB_CRYPTO_RIJNDAEL_GET32(in +  8) ^ k[2];
-	s3 = SB_CRYPTO_RIJNDAEL_GET32(in + 12) ^ k[3];
+	s0 = SB_BE32(in32[0]) ^ k[0];
+	s1 = SB_BE32(in32[1]) ^ k[1];
+	s2 = SB_BE32(in32[2]) ^ k[2];
+	s3 = SB_BE32(in32[3]) ^ k[3];
 
 	r = (rijndael->rounds >> 1);
 	for (;;) {
@@ -596,18 +601,18 @@ void sb_crypto_rijndael_encrypt(sb_crypto_rijndael_ctx_t *rijndael, uint8_t out[
 		s3 = sb_crypto_rijndael_round_encrypt(t3, t0, t1, t2, k[3]);
 	}
 
-	s0 = sb_crypto_rijndael_lookup_m(table_encrypt_4, t0, t1, t2, t3, k[0]);
-	s1 = sb_crypto_rijndael_lookup_m(table_encrypt_4, t1, t2, t3, t0, k[1]);
-	s2 = sb_crypto_rijndael_lookup_m(table_encrypt_4, t2, t3, t0, t1, k[2]);
-	s3 = sb_crypto_rijndael_lookup_m(table_encrypt_4, t3, t0, t1, t2, k[3]);
+	s0 = sb_crypto_rijndael_round_finish(table_encrypt_4, t0, t1, t2, t3, k[0]);
+	s1 = sb_crypto_rijndael_round_finish(table_encrypt_4, t1, t2, t3, t0, k[1]);
+	s2 = sb_crypto_rijndael_round_finish(table_encrypt_4, t2, t3, t0, t1, k[2]);
+	s3 = sb_crypto_rijndael_round_finish(table_encrypt_4, t3, t0, t1, t2, k[3]);
 
-	SB_CRYPTO_RIJNDAEL_PUT32(out     , s0);
-	SB_CRYPTO_RIJNDAEL_PUT32(out +  4, s1);
-	SB_CRYPTO_RIJNDAEL_PUT32(out +  8, s2);
-	SB_CRYPTO_RIJNDAEL_PUT32(out + 12, s3);
+	out32[0] = SB_BE32(s0);
+	out32[1] = SB_BE32(s1);
+	out32[2] = SB_BE32(s2);
+	out32[3] = SB_BE32(s3);
 }
 
-void sb_crypto_rijndael_decrypt(sb_crypto_rijndael_ctx_t *rijndael, uint8_t out[16], uint8_t in[16]) {
+void sb_crypto_rijndael_decrypt(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in) {
 	sb_error_reset();
 
 	if (!rijndael || !out || !in) {
@@ -616,159 +621,41 @@ void sb_crypto_rijndael_decrypt(sb_crypto_rijndael_ctx_t *rijndael, uint8_t out[
 	}
 
 	uint32_t
-		s0, s1, s2, s3,
-		t0, t1, t2, t3,
-		r, *rk = rijndael->key_decrypt;
+		*in32 = in,
+		*out32 = out,
+		r, *k = rijndael->key_decrypt;
+	register uint32_t s0, s1, s2, s3, t0, t1, t2, t3;
 
-	s0 = SB_CRYPTO_RIJNDAEL_GET32(in     ) ^ rk[0];
-	s1 = SB_CRYPTO_RIJNDAEL_GET32(in +  4) ^ rk[1];
-	s2 = SB_CRYPTO_RIJNDAEL_GET32(in +  8) ^ rk[2];
-	s3 = SB_CRYPTO_RIJNDAEL_GET32(in + 12) ^ rk[3];
+	s0 = SB_BE32(in32[0]) ^ k[0];
+	s1 = SB_BE32(in32[1]) ^ k[1];
+	s2 = SB_BE32(in32[2]) ^ k[2];
+	s3 = SB_BE32(in32[3]) ^ k[3];
 
 	r = (rijndael->rounds >> 1);
 	for (;;) {
-		t0 = sb_crypto_rijndael_round_decrypt(s0, s3, s2, s1, rk[4]);
-		t1 = sb_crypto_rijndael_round_decrypt(s1, s0, s3, s2, rk[5]);
-		t2 = sb_crypto_rijndael_round_decrypt(s2, s1, s0, s3, rk[6]);
-		t3 = sb_crypto_rijndael_round_decrypt(s3, s2, s1, s0, rk[7]);
+		t0 = sb_crypto_rijndael_round_decrypt(s0, s3, s2, s1, k[4]);
+		t1 = sb_crypto_rijndael_round_decrypt(s1, s0, s3, s2, k[5]);
+		t2 = sb_crypto_rijndael_round_decrypt(s2, s1, s0, s3, k[6]);
+		t3 = sb_crypto_rijndael_round_decrypt(s3, s2, s1, s0, k[7]);
 
-		rk += 8;
+		k += 8;
 		if (--r == 0) {
 			break;
 		}
 
-		s0 = sb_crypto_rijndael_round_decrypt(t0, t3, t2, t1, rk[0]);
-		s1 = sb_crypto_rijndael_round_decrypt(t1, t0, t3, t2, rk[1]);
-		s2 = sb_crypto_rijndael_round_decrypt(t2, t1, t0, t3, rk[2]);
-		s3 = sb_crypto_rijndael_round_decrypt(t3, t2, t1, t0, rk[3]);
+		s0 = sb_crypto_rijndael_round_decrypt(t0, t3, t2, t1, k[0]);
+		s1 = sb_crypto_rijndael_round_decrypt(t1, t0, t3, t2, k[1]);
+		s2 = sb_crypto_rijndael_round_decrypt(t2, t1, t0, t3, k[2]);
+		s3 = sb_crypto_rijndael_round_decrypt(t3, t2, t1, t0, k[3]);
 	}
 
-	s0 = sb_crypto_rijndael_lookup_m(table_decrypt_4, t0, t3, t2, t1, rk[0]);
-	s1 = sb_crypto_rijndael_lookup_m(table_decrypt_4, t1, t0, t3, t2, rk[1]);
-	s2 = sb_crypto_rijndael_lookup_m(table_decrypt_4, t2, t1, t0, t3, rk[2]);
-	s3 = sb_crypto_rijndael_lookup_m(table_decrypt_4, t3, t2, t1, t0, rk[3]);
+	s0 = sb_crypto_rijndael_round_finish(table_decrypt_4, t0, t3, t2, t1, k[0]);
+	s1 = sb_crypto_rijndael_round_finish(table_decrypt_4, t1, t0, t3, t2, k[1]);
+	s2 = sb_crypto_rijndael_round_finish(table_decrypt_4, t2, t1, t0, t3, k[2]);
+	s3 = sb_crypto_rijndael_round_finish(table_decrypt_4, t3, t2, t1, t0, k[3]);
 
-	SB_CRYPTO_RIJNDAEL_PUT32(out     , s0);
-	SB_CRYPTO_RIJNDAEL_PUT32(out +  4, s1);
-	SB_CRYPTO_RIJNDAEL_PUT32(out +  8, s2);
-	SB_CRYPTO_RIJNDAEL_PUT32(out + 12, s3);
+	out32[0] = SB_BE32(s0);
+	out32[1] = SB_BE32(s1);
+	out32[2] = SB_BE32(s2);
+	out32[3] = SB_BE32(s3);
 }
-
-/*guint_fixed8_t e2c_rijndael_encrypt(e2c_bc_rijndael *rijndaelspec, guint_fixed8_t *out, guint_fixed8_t *in, guint32_t length) {
-	E2_TRACE_MEMORY(E2SFPTR" "E2SFPTR" "E2SFPTR" "E2SFU32, (E2SFTPTR)rijndaelspec, (E2SFTPTR)out, (E2SFTPTR)in, length);
-
-	if (NULLPTR(rijndaelspec)) {
-		return 1;
-	}
-	if (NULLPTR(out)) {
-		return 2;
-	}
-	if (NULLPTR(in)) {
-		return 3;
-	}
-	if (length == 0) {
-		return 4;
-	}
-
-	BENCHMARK_INIT();
-
-	e2c_spec_blop *blop = rijndaelspec->blop;
-
-	guint_fixed8_t buffer[E2C_RIJNDAEL_BLOCKSIZE], xor[E2C_RIJNDAEL_BLOCKSIZE];
-	guint32_t bufflen = (sb_crypto_pkcs7_size(E2C_RIJNDAEL_BLOCKSIZE, length) - E2C_RIJNDAEL_BLOCKSIZE), i;
-
-	if (!NULLPTR(blop)) {
-		e2c_blop_reverse(blop, 0);
-
-		guint_fixed8_t bparams = blop->params, chain = E2_FLAG(bparams, E2C_BLOP_PARAM_CHAINED);
-		if (!NULLPTR(blop->iv)) {
-			e2m_memcpy(xor, blop->iv, E2C_RIJNDAEL_BLOCKSIZE);
-		}
-
-		for (i = 0; i < bufflen; i += E2C_RIJNDAEL_BLOCKSIZE) {
-			e2c_rijndael_encryptblk(rijndaelspec, buffer, (in + i));
-			e2c_blop_process_block(blop, buffer, buffer, E2C_RIJNDAEL_BLOCKSIZE, xor);
-			if (chain) {
-				e2m_memcpy(xor, (in + i), E2C_RIJNDAEL_BLOCKSIZE);
-			}
-			e2m_memcpy((out + i), buffer, E2C_RIJNDAEL_BLOCKSIZE);
-		}
-	} else {
-		for (i = 0; i < bufflen; i += E2C_RIJNDAEL_BLOCKSIZE) {
-			e2c_rijndael_encryptblk(rijndaelspec, (out + i), (in + i));
-		}
-	}
-
-	guint32_t fbptl = (length - bufflen);
-	e2m_memcpy(buffer, (in + i), fbptl);
-
-	if (E2_FLAG(rijndaelspec->flags, E2C_BCOPT_PAD)) {
-		sb_crypto_pkcs7(E2C_RIJNDAEL_BLOCKSIZE, buffer, buffer, fbptl);
-	} else {
-		e2m_memset((buffer + fbptl), 0, (E2C_RIJNDAEL_BLOCKSIZE - fbptl));
-	}
-
-	if (!NULLPTR(blop)) {
-		e2c_rijndael_encryptblk(rijndaelspec, buffer, buffer);
-		e2c_blop_process_block(blop, buffer, buffer, E2C_RIJNDAEL_BLOCKSIZE, xor);
-		e2m_memcpy((out + i), buffer, E2C_RIJNDAEL_BLOCKSIZE);
-	} else {
-		e2c_rijndael_encryptblk(rijndaelspec, (out + i), buffer);
-	}
-
-	BENCHMARK_LOG();
-
-	return 0;
-}
-
-guint_fixed8_t e2c_rijndael_decrypt(e2c_bc_rijndael *rijndaelspec, guint_fixed8_t *out, guint_fixed8_t *in, guint32_t length, guint32_t *pad_offset) {
-	E2_TRACE_MEMORY(E2SFPTR" "E2SFPTR" "E2SFPTR" "E2SFU32, (E2SFTPTR)rijndaelspec, (E2SFTPTR)out, (E2SFTPTR)in, length);
-
-	if (NULLPTR(rijndaelspec)) {
-		return 1;
-	}
-	if (NULLPTR(out)) {
-		return 2;
-	}
-	if (NULLPTR(in)) {
-		return 3;
-	}
-	if (length == 0 || ((length % E2C_RIJNDAEL_BLOCKSIZE) != 0)) {
-		return 4;
-	}
-
-	BENCHMARK_INIT();
-
-	e2c_spec_blop *blop = rijndaelspec->blop;
-
-	guint32_t i;
-	if (!NULLPTR(blop)) {
-		e2c_blop_reverse(blop, 1);
-
-		guint_fixed8_t buffer[E2C_RIJNDAEL_BLOCKSIZE], xor[E2C_RIJNDAEL_BLOCKSIZE], bparams = blop->params, chain = E2_FLAG(bparams, E2C_BLOP_PARAM_CHAINED);
-		if (!NULLPTR(blop->iv)) {
-			e2m_memcpy(xor, blop->iv, E2C_RIJNDAEL_BLOCKSIZE);
-		}
-
-		for (i = 0; i < length; i += E2C_RIJNDAEL_BLOCKSIZE) {
-			e2c_blop_process_block(blop, buffer, (in + i), E2C_RIJNDAEL_BLOCKSIZE, xor);
-			e2c_rijndael_decryptblk(rijndaelspec, buffer, buffer);
-			if (chain) {
-				e2m_memcpy(xor, buffer, E2C_RIJNDAEL_BLOCKSIZE);
-			}
-			e2m_memcpy((out + i), buffer, E2C_RIJNDAEL_BLOCKSIZE);
-		}
-	} else {
-		for (i = 0; i < length; i += E2C_RIJNDAEL_BLOCKSIZE) {
-			e2c_rijndael_decryptblk(rijndaelspec, (out + i), (in + i));
-		}
-	}
-
-	if (!NULLPTR(pad_offset)) {
-		*pad_offset = sb_crypto_pkcs7_offset(E2C_RIJNDAEL_BLOCKSIZE, out, length);
-	}
-
-	BENCHMARK_LOG();
-
-	return 0;
-}*/

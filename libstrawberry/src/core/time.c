@@ -1,3 +1,6 @@
+#include "rcsid.h"
+RCSID("time.c", "0.1", "1", "2016-07-29");
+
 #include <stdint.h>
 #include <time.h>
 

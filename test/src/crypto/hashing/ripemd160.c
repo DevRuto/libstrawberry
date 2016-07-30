@@ -29,9 +29,9 @@ sb_bool_t test_ripemd160() {
 		sb_crypto_ripemd160(digest, tests[i], strlen(tests[i]));
 		if (sb_memcmp(digest, results[i], 20)) {
 			valid = sb_false;
-			status("h ripemd160", "http://homes.esat.kuleuven.be/~bosselae/ripemd160.html", status_failed);
+			status("ripemd160", "http://homes.esat.kuleuven.be/~bosselae/ripemd160.html", status_failed);
 		} else {
-			status("h ripemd160", "http://homes.esat.kuleuven.be/~bosselae/ripemd160.html", status_passed);
+			status("ripemd160", "http://homes.esat.kuleuven.be/~bosselae/ripemd160.html", status_passed);
 		}
 	}
 

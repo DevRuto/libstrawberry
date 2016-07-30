@@ -1,3 +1,6 @@
+#include "../../core/rcsid.h"
+RCSID("salsa20.c", "0.1", "1", "2016-07-29");
+
 #include "salsa20.h"
 #include "../../core/error.h"
 #include "../../core/memory.h"
@@ -8,7 +11,7 @@ static void sb_crypto_salsa20_wordtobyte(uint8_t out[64], uint32_t in[16]) {
 	uint32_t X[16];
 	sb_memcpy(X, in, sizeof(X));
 
-	uint32_t i;
+	register uint32_t i;
 	for (i = 20; i > 0; i -= 2) {
 		X[ 4] ^= SB_ROTL32((X[ 0] + X[12]),  7);
 		X[ 8] ^= SB_ROTL32((X[ 4] + X[ 0]),  9);
@@ -53,7 +56,7 @@ static void sb_crypto_salsa20_wordtobyte(uint8_t out[64], uint32_t in[16]) {
 static const uint8_t sigma[16] = { 'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', ' ', 'k' };
 static const uint8_t theta[16] = { 'e', 'x', 'p', 'a', 'n', 'd', ' ', '1', '6', '-', 'b', 'y', 't', 'e', ' ', 'k' };
 
-void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, void *key, uint8_t bits, void *nonce, void *constant) {
+void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *key, void *nonce, void *constant) {
 	sb_error_reset();
 
 	if (!ctx || !key) {
@@ -95,8 +98,8 @@ void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, void *key, uint8_t 
 	}
 }
 
-void sb_crypto_salsa20_init(sb_crypto_salsa20_ctx_t *ctx, void *key, uint8_t bits, void *nonce) {
-	sb_crypto_salsa20_init_ex(ctx, key, bits, nonce, NULL);
+void sb_crypto_salsa20_init(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *key, void *nonce) {
+	sb_crypto_salsa20_init_ex(ctx, bits, key, nonce, NULL);
 }
 
 void sb_crypto_salsa20_clear(sb_crypto_salsa20_ctx_t *ctx) {
@@ -126,7 +129,7 @@ void sb_crypto_salsa20_encrypt(sb_crypto_salsa20_ctx_t *ctx, uint8_t *plain, uin
 
 	ctx->layout.counter = 0;
 
-	uint32_t i;
+	register uint32_t i;
 	for (;;) {
 		sb_crypto_salsa20_wordtobyte(buffer, ctx->data);
 

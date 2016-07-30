@@ -19,6 +19,8 @@ extern "C" {
 	void _sb_error_set_param(sb_error_t _errparam);
 	void _sb_error_set_ex(sb_error_t _errno, sb_error_t _errparam);
 	void _sb_error_reset();
+	void sb_error_fatal_ex(sb_error_t _errno, sb_error_t _errparam);
+	void sb_error_fatal(sb_error_t _errno);
 
 #ifdef __cplusplus
 }
@@ -47,6 +49,9 @@ extern "C" {
 #define SB_ERROR_PARAM_INVALID				2
 #define SB_ERROR_PARAM_RANGE				3
 #define SB_ERROR_FAILSAFE					4
+#define SB_ERROR_FATAL_UNKNOWN				5
+#define SB_ERROR_FATAL_OUT_OF_MEMORY		6
+#define SB_ERROR_FATAL_PTR_INVALID			7
 
 
 #endif

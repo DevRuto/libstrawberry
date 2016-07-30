@@ -1,20 +1,46 @@
+#include "../../core/rcsid.h"
+RCSID("ripemd160.c", "0.1", "1", "2016-07-29");
+
 #include <stdio.h>
 #include <stdint.h>
 #include "ripemd160.h"
 #include "../../core/memory.h"
 
 
-void sb_crypto_ripemd160_init(uint32_t *buffer) {
-	buffer[0] = 0x67452301U;
-	buffer[1] = 0xEFCDAB89U;
-	buffer[2] = 0x98BADCFEU;
-	buffer[3] = 0x10325476U;
-	buffer[4] = 0xC3D2E1F0U;
+#define R1(x, y, z)							((x) ^ (y) ^ (z))
+#define R2(x, y, z)							(((x) & (y)) | (~(x) & (z)))
+#define R3(x, y, z)							(((x) | ~(y)) ^ (z))
+#define R4(x, y, z)							(((x) & (z)) | ((y) & ~(z)))
+#define R5(x, y, z)							((x) ^ ((y) | ~(z)))
+
+#define NR1(a,b,c,d,e,x,s)					{ (a) += R1((b), (c), (d)) + (x);               (a) = SB_ROTL32((a), (s)) + (e); (c) = SB_ROTL32((c), 10); }
+#define NR2(a,b,c,d,e,x,s)					{ (a) += R2((b), (c), (d)) + (x) + 0x5A827999U; (a) = SB_ROTL32((a), (s)) + (e); (c) = SB_ROTL32((c), 10); }
+#define NR3(a,b,c,d,e,x,s)					{ (a) += R3((b), (c), (d)) + (x) + 0x6ED9EBA1U; (a) = SB_ROTL32((a), (s)) + (e); (c) = SB_ROTL32((c), 10); }
+#define NR4(a,b,c,d,e,x,s)					{ (a) += R4((b), (c), (d)) + (x) + 0x8F1BBCDCU; (a) = SB_ROTL32((a), (s)) + (e); (c) = SB_ROTL32((c), 10); }
+#define NR5(a,b,c,d,e,x,s)					{ (a) += R5((b), (c), (d)) + (x) + 0xA953FD4EU; (a) = SB_ROTL32((a), (s)) + (e); (c) = SB_ROTL32((c), 10); }
+
+#define PR1(a,b,c,d,e,x,s)					{ (a) += R5((b), (c), (d)) + (x) + 0x50A28BE6U; (a) = SB_ROTL32((a), (s)) + (e); (c) = SB_ROTL32((c), 10); }
+#define PR2(a,b,c,d,e,x,s)					{ (a) += R4((b), (c), (d)) + (x) + 0x5C4DD124U; (a) = SB_ROTL32((a), (s)) + (e); (c) = SB_ROTL32((c), 10); }
+#define PR3(a,b,c,d,e,x,s)					{ (a) += R3((b), (c), (d)) + (x) + 0x6D703EF3U; (a) = SB_ROTL32((a), (s)) + (e); (c) = SB_ROTL32((c), 10); }
+#define PR4(a,b,c,d,e,x,s)					{ (a) += R2((b), (c), (d)) + (x) + 0x7A6D76E9U; (a) = SB_ROTL32((a), (s)) + (e); (c) = SB_ROTL32((c), 10); }
+#define PR5(a,b,c,d,e,x,s)					{ (a) += R1((b), (c), (d)) + (x);               (a) = SB_ROTL32((a), (s)) + (e); (c) = SB_ROTL32((c), 10); }
+
+
+void sb_crypto_ripemd160_init(sb_crypto_ripemd160_ctx_t *ctx) {
+	ctx->data[0] = 0x67452301U;
+	ctx->data[1] = 0xEFCDAB89U;
+	ctx->data[2] = 0x98BADCFEU;
+	ctx->data[3] = 0x10325476U;
+	ctx->data[4] = 0xC3D2E1F0U;
 }
 
-void sb_crypto_ripemd160_compress(uint32_t *buffer, uint32_t X[16]) {
-	uint32_t A1 = buffer[0], B1 = buffer[1], C1 = buffer[2], D1 = buffer[3], E1 = buffer[4];
-	uint32_t A2 = buffer[0], B2 = buffer[1], C2 = buffer[2], D2 = buffer[3], E2 = buffer[4];
+void sb_crypto_ripemd160_clear(sb_crypto_ripemd160_ctx_t *ctx) {
+	sb_memset(ctx, 0, sizeof(*ctx));
+}
+
+void sb_crypto_ripemd160_update(sb_crypto_ripemd160_ctx_t *ctx, uint32_t X[16]) {
+	register uint32_t A1 = ctx->data[0], B1 = ctx->data[1], C1 = ctx->data[2], D1 = ctx->data[3], E1 = ctx->data[4];
+	register uint32_t A2 = ctx->data[0], B2 = ctx->data[1], C2 = ctx->data[2], D2 = ctx->data[3], E2 = ctx->data[4];
 
 	NR1(A1, B1, C1, D1, E1, X[ 0], 11);
 	NR1(E1, A1, B1, C1, D1, X[ 1], 14);
@@ -186,68 +212,63 @@ void sb_crypto_ripemd160_compress(uint32_t *buffer, uint32_t X[16]) {
 	PR5(C2, D2, E2, A2, B2, X[ 9], 11);
 	PR5(B2, C2, D2, E2, A2, X[11], 11);
 
-	D2 += C1 + buffer[1];
-	buffer[1] = buffer[2] + D1 + E2;
-	buffer[2] = buffer[3] + E1 + A2;
-	buffer[3] = buffer[4] + A1 + B2;
-	buffer[4] = buffer[0] + B1 + C2;
-	buffer[0] = D2;
+	D2 += C1 + ctx->data[1];
+	ctx->data[1] = ctx->data[2] + D1 + E2;
+	ctx->data[2] = ctx->data[3] + E1 + A2;
+	ctx->data[3] = ctx->data[4] + A1 + B2;
+	ctx->data[4] = ctx->data[0] + B1 + C2;
+	ctx->data[0] = D2;
 }
 
-void sb_crypto_ripemd160_finish(uint32_t *buffer, uint8_t *data, size_t lswlen, size_t mswlen) {
+void sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, size_t size) {
 	uint32_t x[16];
 	sb_memset(x, 0, sizeof(x));
 
-	size_t i;
-	for (i = 0; i < (lswlen & 0x3F); ++i) {
+	uint8_t *data = in;
+
+	register size_t i;
+	for (i = 0; i < (size & 0x3F); ++i) {
 		x[i >> 2] ^= ((uint32_t)data[i] << (8 * (i & 3)));
 	}
 
-	x[(lswlen >> 2) & 0x0F] ^= (1U << ((8 * (lswlen & 3)) + 7));
+	x[(size >> 2) & 0x0F] ^= (1U << ((8 * (size & 3)) + 7));
 
-	if ((lswlen & 0x3F) > 55) {
-		sb_crypto_ripemd160_compress(buffer, x);
+	if ((size & 0x3F) > 55) {
+		sb_crypto_ripemd160_update(ctx, x);
 		sb_memset(x, 0, sizeof(x));
 	}
 
-	x[14] = (uint32_t)(lswlen << 3);
-	x[15] = (uint32_t)((lswlen >> 29) | (mswlen << 3));
-	sb_crypto_ripemd160_compress(buffer, x);
+	x[14] = (uint32_t)(size << 3);
+	x[15] = (uint32_t)(size >> 29);
+	sb_crypto_ripemd160_update(ctx, x);
 }
 
 void sb_crypto_ripemd160(uint8_t digest[20], void *data, size_t size) {
 	uint32_t block[16];
 	sb_memset(&block, 0, sizeof(block));
 
-	uint32_t md[5], ii, *data32 = data;
+	sb_crypto_ripemd160_ctx_t ctx;
+	uint32_t ii, *data32 = data;
 
-	sb_crypto_ripemd160_init(md);
+	sb_crypto_ripemd160_init(&ctx);
 
-	size_t i;
+	register size_t i;
 	for (i = size; i > 63; i -= 64) {
 		for (ii = 0; ii < 16; ++ii) {
 			block[ii] = *data32;
 			++data32;
 		}
-		sb_crypto_ripemd160_compress(md, block);
+		sb_crypto_ripemd160_update(&ctx, block);
 	}
 
-	sb_crypto_ripemd160_finish(md, data, size, 0);
+	sb_crypto_ripemd160_finish(&ctx, data, size);
+
 	for (i = 0; i < 20; i += 4) {
-		digest[i    ] = ( md[i >> 2]        & 0xFF);
-		digest[i + 1] = ((md[i >> 2] >>  8) & 0xFF);
-		digest[i + 2] = ((md[i >> 2] >> 16) & 0xFF);
-		digest[i + 3] = ((md[i >> 2] >> 24) & 0xFF);
+		digest[i    ] = ( ctx.data[i >> 2]        & 0xFF);
+		digest[i + 1] = ((ctx.data[i >> 2] >>  8) & 0xFF);
+		digest[i + 2] = ((ctx.data[i >> 2] >> 16) & 0xFF);
+		digest[i + 3] = ((ctx.data[i >> 2] >> 24) & 0xFF);
 	}
-}
 
-void sb_crypto_ripemd160_str(uint8_t digest_str[41], uint8_t digest[20], sb_bool_t lowercase) {
-	uint_fast8_t i;
-	uint8_t *buffer = digest_str;
-	const char *format = (lowercase ? "%02x" : "%02X");
-	for (i = 0; i < 20; ++i) {
-		sprintf(buffer, format, digest[i]);
-		buffer += 2;
-	}
-	*buffer = 0;
+	sb_crypto_ripemd160_clear(&ctx);
 }
