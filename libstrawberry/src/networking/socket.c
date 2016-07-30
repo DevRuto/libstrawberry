@@ -1,13 +1,29 @@
 #include "../core/identid.h"
-IDENTID("socket.c", "0.1", "1", "2016-07-29");
+IDENTID("socket.c", "0.1", "1", "2016-07-30");
 
 #include "socket.h"
+
+
+#if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
+static sb_bool_t wsaStartup = sb_false;
+static WSADATA wsaData;
+#endif
 
 
 sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags) {
 	if (!sock || !node) {
 		return sb_false;
 	}
+
+#if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
+	if (!wsaStartup) {
+		if (!WSAStartup(MAKEWORD(2, 2), &wsaData)) {
+			wsaStartup = sb_true;
+		} else {
+			return sb_false;
+		}
+	}
+#endif
 
 	sb_memset(sock, 0, sizeof(*sock));
 
@@ -16,11 +32,12 @@ sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags
 	sb_addrinfo_t hints;
 	sb_memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = (SB_FLAG(flags, SB_SOCKET_STREAM) ? SOCK_STREAM : 0); // todo
+	hints.ai_socktype = (SB_FLAG(flags, SB_SOCKET_UDP) ? SOCK_DGRAM : SOCK_STREAM);
 	hints.ai_flags = (SB_FLAG(flags, SB_SOCKET_SERVER) ? AI_PASSIVE : 0);
 	hints.ai_protocol = 0;
 
-	if (getaddrinfo(node, NULL, &hints, &sock->addrinfo) != 0) {
+	int err; // TODO: remove or output/register
+	if ((err = getaddrinfo(node, NULL, &hints, &sock->addrinfo)) != 0) {
 		return sb_false;
 	}
 
@@ -47,11 +64,9 @@ sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port) {
 	}
 
 	sb_addrinfo_t *ptr;
-	struct sockaddr_in *ptraddr;
 	uint16_t _port = htons(port);
 	for (ptr = sock->addrinfo; ptr; ptr = ptr->ai_next) {
-		ptraddr = (struct sockaddr_in*)ptr->ai_addr;
-		ptraddr->sin_port = _port;
+		((struct sockaddr_in*)ptr->ai_addr)->sin_port = _port;
 
 		if (!SB_GOOD_SOCKFD(sock->fd = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol))) {
 			continue;
@@ -60,33 +75,24 @@ sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port) {
 		if (SB_FLAG(sock->flags, SB_SOCKET_SERVER)) {
 			if (bind(sock->fd, ptr->ai_addr, ptr->ai_addrlen) == 0) {
 				if (listen(sock->fd, SOMAXCONN) == 0) {
-					// success
 					break;
-				} else {
-					// error
 				}
-			} else {
-				// error
 			}
 		} else {
 			if (connect(sock->fd, ptr->ai_addr, ptr->ai_addrlen) == 0) {
 				break;
-			} else {
-				// error
 			}
 		}
+
 #if (SB_PLATFORM != SB_PLATFORM_ID_WINDOWS)
 		close(sock->fd);
 #else
-		int err = WSAGetLastError();
-		// ...
 		closesocket(sock->fd);
 #endif
 	}
 
 	if (!ptr) {
-		// error
-		sock->fd = -1;
+		sock->fd = SB_INVALID_SOCKET;
 		return sb_false;
 	}
 

@@ -4,8 +4,12 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#if LIBSTRAWBERRY_EXPORTS // quick dirty fix
 #define HAVE_STRUCT_TIMESPEC
 #include <pthread.h>
+#else
+typedef uintptr_t pthread_t;
+#endif
 
 #include "../core/sbapi.h"
 #include "../core/platform.h"
@@ -56,9 +60,9 @@ typedef struct sb_pssocket_ctx { // ps = "packet switched" (might not be an accu
 } sb_pssocket_ctx_t;
 
 
-#define SB_SOCKET_SERVER					1
-#define SB_SOCKET_EXITED					2
-#define SB_SOCKET_STREAM					3
+#define SB_SOCKET_SERVER					SB_BIT_1
+#define SB_SOCKET_EXITED					SB_BIT_2
+#define SB_SOCKET_UDP						SB_BIT_3
 
 
 #ifdef __cplusplus
@@ -76,7 +80,7 @@ extern "C" {
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 
-	SBAPI sb_bool_t sb_pssocket_init(sb_pssocket_ctx_t *pssock, const char *node, uint32_t flags);
+	SBAPI sb_bool_t sb_pssocket_init(sb_pssocket_ctx_t *pssock, const char *node, uint32_t flags, void (*on_receive)(void *ctx, void *packet));
 	SBAPI sb_bool_t sb_pssocket_clear(sb_pssocket_ctx_t *pssock);
 
 	SBAPI sb_bool_t sb_pssocket_start(sb_pssocket_ctx_t *pssock, uint16_t port);

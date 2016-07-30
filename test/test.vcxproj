@@ -176,6 +176,9 @@
     <ClInclude Include="src\stdincl.h" />
     <ClInclude Include="src\tests.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="test.cbp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

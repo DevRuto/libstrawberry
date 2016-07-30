@@ -12,6 +12,7 @@
 #include "../../libstrawberry/src/core/platform.h"
 #include "../../libstrawberry/src/crypto/symmetric/salsa20.h"
 #include "../../libstrawberry/src/crypto/hashing/md5.h"
+#include "../../libstrawberry/src/networking/socket.h"
 #include "tests.h"
 
 
@@ -136,32 +137,32 @@ int main(int argc, char **argv, char **env) {
 	test("isaac", test_isaac);
 #endif
 
-	puts("trigger memory alloc for stdio");
+	char request[] = "GET / HTTP/1.1\r\nHost: example.com\r\nAccept: */*\r\n\r\n";
+#define BUFFSIZE 128
+	char buffer[BUFFSIZE + 1];
 
-	sb_dictionary_t dictionary;
-	sb_dictionary_init(&dictionary, 3);
-	sb_dictionary_set(&dictionary, "ruto", (void*)0xDEADBEEF);
-	sb_dictionary_set(&dictionary, "maus", (void*)0xCAFEBABE);
-	sb_dictionary_set(&dictionary, "uni", (void*)0x00BAC001);
-
-	sb_dictionary_entry_t *entry;
-
-	entry = sb_dictionary_get(&dictionary, "ruto");
-	if (entry && entry->value == (void*)0xDEADBEEF) {
-		puts("ruto ok");
+	sb_socket_ctx_t socket;
+	if (!sb_socket_init(&socket, "example.com", 0)) {
+		perror("sb_socket_init()");
+		return 1;
+	}
+	if (!sb_socket_start(&socket, 80)) {
+		perror("sb_socket_start()");
+		return 1;
+	}
+	if (sb_socket_write(&socket, request, strlen(request)) < 1) {
+		perror("sb_socket_write()");
+		return 1;
 	}
 
-	entry = sb_dictionary_get(&dictionary, "maus");
-	if (entry && entry->value == (void*)0xCAFEBABE) {
-		puts("maus fiiiine as usual");
+	sb_ssize_t i;
+	while (i = sb_socket_read(&socket, &buffer, BUFFSIZE)) {
+		buffer[i] = 0;
+		puts(buffer);
 	}
 
-	entry = sb_dictionary_get(&dictionary, "uni");
-	if (entry && entry->value == (void*)0x00BAC001) {
-		puts("uni ok");
-	}
-
-	sb_dictionary_clear(&dictionary);
+	sb_socket_stop(&socket);
+	sb_socket_clear(&socket);
 
 	fgetc(stdin);
 
