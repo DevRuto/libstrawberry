@@ -72,6 +72,15 @@
     <ClInclude Include="src\core\types\dictionary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\dep\windows\include\pthread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dep\windows\include\sched.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dep\windows\include\semaphore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\memory.c">

@@ -1,3 +1,4 @@
+// why does git see this file as C++
 #ifdef __cplusplus
 extern "C" {
 #endif

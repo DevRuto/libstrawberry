@@ -181,6 +181,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\dep\windows\include\pthread.h" />
+    <ClInclude Include="..\dep\windows\include\sched.h" />
+    <ClInclude Include="..\dep\windows\include\semaphore.h" />
     <ClInclude Include="src\core\bits.h" />
     <ClInclude Include="src\core\error.h" />
     <ClInclude Include="src\core\math.h" />
