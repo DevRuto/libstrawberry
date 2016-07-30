@@ -17,15 +17,11 @@ static uint8_t vectors[3][16] = {
 sb_bool_t test_md5() {
 	sb_bool_t valid = sb_true;
 
-	sb_crypto_md5_ctx_t ctx;
-
 	uint8_t buffer[16];
 
 	uint32_t i;
 	for (i = 0; i < 3; ++i) {
-		sb_crypto_md5_init(&ctx);
-		sb_crypto_md5_update(&ctx, vectors_input[i], strlen(vectors_input[i]));
-		sb_crypto_md5_finish(&ctx, buffer);
+		sb_crypto_md5(buffer, vectors_input[i], strlen(vectors_input[i]));
 		if (!sb_memequ(buffer, vectors[i], 16)) {
 			valid = sb_false;
 			status("md5", "https://en.wikipedia.org/wiki/MD5", status_failed);
