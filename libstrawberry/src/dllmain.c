@@ -1,8 +1,8 @@
 #include "core/identid.h"
+#if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 IDENTID("dllmain.c", "0.1", "1", "2016-07-29");
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+
 #include <stdio.h>
 
 
@@ -16,3 +16,8 @@ int APIENTRY DllMain(HMODULE hModule, DWORD ulCallReason, LPVOID lpReserved) {
 	}
 	return 1;
 }
+
+
+#else
+IDENTID("dllmain.c", "-", "-", "excluded");
+#endif

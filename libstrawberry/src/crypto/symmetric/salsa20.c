@@ -69,7 +69,7 @@ void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void 
 	uint32_t *k32 = (uint32_t*)key;
 	sb_memcpy(ctx->layout.k1, k32, sizeof(ctx->layout.k1));
 
-	const char *c = constant;
+	const uint8_t *c = constant;
 	if (bits == SB_CRYPTO_SALSA20_128) {
 		if (!c) {
 			c = theta;

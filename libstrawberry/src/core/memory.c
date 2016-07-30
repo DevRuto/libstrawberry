@@ -3,17 +3,15 @@ IDENTID("memory.c", "0.1", "1", "2016-07-30");
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "memory.h"
 #include "error.h"
-
 
 static void*(*__sb_malloc)(size_t) = NULL;
 static void(*__sb_free)(void*) = NULL;
 static void*(*__sb_realloc)(void*, size_t) = NULL;
 static void*(*__sb_memcpy)(void*, void*, size_t) = NULL;
 static void*(*__sb_memset)(void*, int, size_t) = NULL;
-static int(*__sb_memcmp)(void *cmp1, void *cmp2, size_t size) = NULL;
+static int(*__sb_memcmp)(void*, void*, size_t) = NULL;
 
 void sb_memory_set_malloc(void*(*func)(size_t size)) {
 	__sb_malloc = func;
@@ -94,7 +92,11 @@ void sb_memcpy(void *dst, void *src, size_t size) {
 	if (!dst || !src) {
 		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
 	}
-	(__sb_memcpy ? __sb_memcpy : memcpy)(dst, src, size);
+	if (__sb_memcpy) {
+		__sb_memcpy(dst, src, size);
+	} else {
+		memcpy(dst, src, size);
+	}
 }
 
 void sb_memset(void *dst, int value, size_t size) {
@@ -105,11 +107,15 @@ void sb_memset(void *dst, int value, size_t size) {
 }
 
 int sb_memcmp(void *cmp1, void *cmp2, size_t size) {
+	int cmp = 2147483647;
 	if (cmp1 && cmp2) {
-		return (__sb_memcmp ? __sb_memcmp : memcmp)(cmp1, cmp2, size);
-	} else {
-		return 2147483647;
+		if (__sb_memcmp) {
+			cmp = __sb_memcmp(cmp1, cmp2, size);
+		} else {
+			cmp = memcmp(cmp1, cmp2, size);
+		}
 	}
+	return cmp;
 }
 
 sb_bool_t sb_memequ(void *cmp1, void *cmp2, size_t size) {
@@ -126,7 +132,7 @@ void sb_strappend(void **dst, const char *str) {
 	if (dst && *dst && str) {
 		size_t size = strlen(str);
 		sb_memcpy(*dst, (void*)str, size);
-		(uint8_t*)*dst += size;
+		*dst += size;
 	}
 }
 

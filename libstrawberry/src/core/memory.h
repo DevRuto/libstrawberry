@@ -3,6 +3,8 @@
 
 
 #include <stdint.h>
+#include <stddef.h>
+#include <string.h>
 
 #include "sbapi.h"
 #include "types/bool.h"

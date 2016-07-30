@@ -18,6 +18,12 @@
 	typedef SOCKET sockfd_t;
 
 #	define SB_GOOD_SOCKFD(x)				((x) != INVALID_SOCKET)
+#elif (SB_PLATFORM == SB_PLATFORM_ID_LINUX)
+#	include <sys/socket.h>
+
+	typedef int sockfd_t;
+
+#	define SB_GOOD_SOCKFD(x)				(x)
 #else
 #	error "No networking support available."
 #endif
@@ -43,7 +49,7 @@ extern "C" {
 
 	SBAPI sb_bool_t sb_socket_init(sb_socket_ctx_t *socket, const char *node, uint32_t flags);
 	SBAPI sb_bool_t sb_socket_clear(sb_socket_ctx_t *socket);
-	
+
 	SBAPI sb_bool_t sb_socket_start(sb_socket_ctx_t *socket, uint16_t port);
 	SBAPI sb_bool_t sb_socket_stop(sb_socket_ctx_t *socket);
 

@@ -2,10 +2,17 @@
 #define __SB_CORE_SBAPI_H
 
 
-#ifdef LIBSTRAWBERRY_EXPORTS
-#define SBAPI								__declspec(dllexport)
+#include "platform.h"
+
+
+#if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
+#	ifdef LIBSTRAWBERRY_EXPORTS
+#		define SBAPI						__declspec(dllexport)
+#	else
+#		define SBAPI						__declspec(dllimport)
+#	endif
 #else
-#define SBAPI								__declspec(dllimport)
+#	define SBAPI
 #endif
 
 
