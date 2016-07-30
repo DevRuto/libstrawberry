@@ -34,7 +34,7 @@
 #define SB_NAND(x, y)						(SB_NOT(SB_AND(x, y)))
 
 
-#define SB_FLAG(x, y)						(SB_AND(x, y)/* == (y)*/)
+#define SB_FLAG(x, y)						(SB_AND(x, y) == (y))
 
 
 #define SB_ROTL8(x, y)						(((x) << (y)) | ((x) >> (-(y) &  7)))

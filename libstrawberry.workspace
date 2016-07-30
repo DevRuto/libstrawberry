@@ -2,5 +2,6 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="libstrawberry">
 		<Project filename="libstrawberry/libstrawberry.cbp" />
+		<Project filename="test/test.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

@@ -31,9 +31,26 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="main.c">
+		<Unit filename="src/crypto/hashing/md5.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/crypto/hashing/ripemd160.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/crypto/prng/isaac.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/crypto/symmetric/rijndael.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/crypto/symmetric/salsa20.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/stdincl.h" />
+		<Unit filename="src/tests.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
