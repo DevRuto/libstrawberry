@@ -1,5 +1,5 @@
-#include "../../core/rcsid.h"
-RCSID("salsa20.c", "0.1", "1", "2016-07-29");
+#include "../../core/identid.h"
+IDENTID("salsa20.c", "0.1", "1", "2016-07-29");
 
 #include "salsa20.h"
 #include "../../core/error.h"

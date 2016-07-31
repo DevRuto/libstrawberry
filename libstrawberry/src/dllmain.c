@@ -1,5 +1,5 @@
-#include "core/rcsid.h"
-RCSID("dllmain.c", "0.1", "1", "2016-07-29");
+#include "core/identid.h"
+IDENTID("dllmain.c", "0.1", "1", "2016-07-29");
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>

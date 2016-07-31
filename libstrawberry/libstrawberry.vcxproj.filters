@@ -63,7 +63,7 @@
     <ClInclude Include="src\crypto\padding\pkcs7.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\rcsid.h">
+    <ClInclude Include="src\core\identid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

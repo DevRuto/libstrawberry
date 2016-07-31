@@ -1,5 +1,5 @@
-#include "../../core/rcsid.h"
-RCSID("ripemd160.c", "0.1", "1", "2016-07-29");
+#include "../../core/identid.h"
+IDENTID("ripemd160.c", "0.1", "1", "2016-07-29");
 
 #include <stdio.h>
 #include <stdint.h>

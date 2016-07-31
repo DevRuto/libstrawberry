@@ -1,5 +1,5 @@
-#include "../../core/rcsid.h"
-RCSID("md5.c", "0.1", "1", "2016-07-29");
+#include "../../core/identid.h"
+IDENTID("md5.c", "0.1", "1", "2016-07-29");
 
 #include "md5.h"
 
@@ -56,7 +56,7 @@ RCSID("md5.c", "0.1", "1", "2016-07-29");
 	(ctx->block[(n)])
 #endif
 
-static void *body(sb_crypto_md5_ctx_t *ctx, void *data, size_t size) {
+static void *sb_crypto_md5_internal_update(sb_crypto_md5_ctx_t *ctx, void *data, size_t size) {
 	uint8_t *ptr = data;
 
 	register uint32_t a, b, c, d;
@@ -206,11 +206,11 @@ void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, size_t size) {
 		sb_memcpy(&ctx->buffer[used], in, available);
 		in = (unsigned char *)in + available;
 		size -= available;
-		body(ctx, ctx->buffer, 64);
+		sb_crypto_md5_internal_update(ctx, ctx->buffer, 64);
 	}
 
 	if (size >= 64) {
-		in = body(ctx, in, size & ~(size_t)0x3F);
+		in = sb_crypto_md5_internal_update(ctx, in, size & ~(size_t)0x3F);
 		size &= 0x3F;
 	}
 
@@ -235,7 +235,7 @@ void sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 
 	if (available < 8) {
 		sb_memset(&ctx->buffer[used], 0, available);
-		body(ctx, ctx->buffer, 64);
+		sb_crypto_md5_internal_update(ctx, ctx->buffer, 64);
 		used = 0;
 		available = 64;
 	}
@@ -246,7 +246,7 @@ void sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 	*(uint32_t*)(&ctx->buffer[56]) = SB_LE32(ctx->lo);
 	*(uint32_t*)(&ctx->buffer[60]) = SB_LE32(ctx->hi);
 
-	body(ctx, ctx->buffer, 64);
+	sb_crypto_md5_internal_update(ctx, ctx->buffer, 64);
 
 	uint32_t *out32 = out;
 	out32[0] = SB_LE32(ctx->a);

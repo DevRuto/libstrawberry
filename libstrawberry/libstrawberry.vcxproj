@@ -174,7 +174,7 @@
     <ClInclude Include="src\core\math.h" />
     <ClInclude Include="src\core\memory.h" />
     <ClInclude Include="src\core\platform.h" />
-    <ClInclude Include="src\core\rcsid.h" />
+    <ClInclude Include="src\core\identid.h" />
     <ClInclude Include="src\core\time.h" />
     <ClInclude Include="src\core\types\bool.h" />
     <ClInclude Include="src\core\sbapi.h" />

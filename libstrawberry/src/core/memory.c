@@ -1,5 +1,5 @@
-#include "rcsid.h"
-RCSID("memory.c", "0.1", "1", "2016-07-29");
+#include "identid.h"
+IDENTID("memory.c", "0.1", "1", "2016-07-29");
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -94,14 +94,14 @@ sb_bool_t sb_memequ(void *cmp1, void *cmp2, size_t size) {
 
 void sb_strcpy(void *dst, const char *str) {
 	if (dst && str) {
-		sb_memcpy(dst, str, strlen(str));
+		sb_memcpy(dst, (void*)str, strlen(str));
 	}
 }
 
 void sb_strappend(void **dst, const char *str) {
 	if (dst && *dst && str) {
 		size_t size = strlen(str);
-		sb_memcpy(*dst, str, size);
+		sb_memcpy(*dst, (void*)str, size);
 		(uint8_t*)*dst += size;
 	}
 }

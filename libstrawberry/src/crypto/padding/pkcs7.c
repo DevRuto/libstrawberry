@@ -1,5 +1,5 @@
-#include "../../core/rcsid.h"
-RCSID("pkcs7.c", "0.1", "1", "2016-07-29");
+#include "../../core/identid.h"
+IDENTID("pkcs7.c", "0.1", "1", "2016-07-29");
 
 #include "pkcs7.h"
 #include "../../core/error.h"
