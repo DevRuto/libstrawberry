@@ -8,6 +8,9 @@
 #include "sbapi.h"
 
 
+#define SB_MATH_RANGE(min, max, value)		(value % (max - min) + min)
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif

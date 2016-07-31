@@ -6,6 +6,7 @@
 
 #include "../../core/sbapi.h"
 #include "../../core/types/bool.h"
+#include "../../core/math.h"
 
 
 #define SB_CRYPTO_PRNG_ISAAC_SHIFT			8
@@ -30,7 +31,8 @@ extern "C" {
 
 	SBAPI void sb_crypto_prng_isaac_init(sb_crypto_prng_isaac_ctx_t *ctx, sb_bool_t preseeded);
 	SBAPI void sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx);
-	SBAPI sb_crypto_prng_isaac_int_t sb_crypto_prng_isaac(sb_crypto_prng_isaac_ctx_t *ctx);
+	SBAPI uint32_t sb_crypto_prng_isaac(sb_crypto_prng_isaac_ctx_t *ctx);
+	SBAPI uint32_t sb_crypto_prng_isaac_range(sb_crypto_prng_isaac_ctx_t *ctx, uint32_t min, uint32_t max);
 
 #ifdef __cplusplus
 }

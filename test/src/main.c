@@ -14,6 +14,7 @@
 #include "../../libstrawberry/src/crypto/hashing/md5.h"
 #include "../../libstrawberry/src/networking/socket.h"
 #include "tests.h"
+#include "../../libstrawberry/src/core/base64.h"
 
 
 void test(const char *name, sb_bool_t(*func)()) {
@@ -137,7 +138,7 @@ int main(int argc, char **argv, char **env) {
 	test("isaac", test_isaac);
 #endif
 
-	char request[] = "GET / HTTP/1.1\r\nHost: example.com\r\nAccept: */*\r\n\r\n";
+	/*char request[] = "GET / HTTP/1.1\r\nHost: example.com\r\nAccept: * /*\r\n\r\n";
 #define BUFFSIZE 128
 	char buffer[BUFFSIZE + 1];
 
@@ -162,7 +163,7 @@ int main(int argc, char **argv, char **env) {
 	}
 
 	sb_socket_stop(&socket);
-	sb_socket_clear(&socket);
+	sb_socket_clear(&socket);*/
 
 	fgetc(stdin);
 

@@ -99,10 +99,19 @@ void sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx) {
 	ctx->b = b; ctx->a = a;
 }
 
-sb_crypto_prng_isaac_int_t sb_crypto_prng_isaac(sb_crypto_prng_isaac_ctx_t *ctx) {
+uint32_t sb_crypto_prng_isaac(sb_crypto_prng_isaac_ctx_t *ctx) {
+	if (!ctx) {
+		return 0;
+	}
+
 	if (!ctx->cnt--) {
 		sb_crypto_prng_isaac_update(ctx);
 		ctx->cnt = (SB_CRYPTO_PRNG_ISAAC_SIZE - 1);
 	}
-	return ctx->rsl[ctx->cnt];
+
+	return (uint32_t)(ctx->rsl[ctx->cnt] & 0xFFFFFFFF);
+}
+
+uint32_t sb_crypto_prng_isaac_range(sb_crypto_prng_isaac_ctx_t *ctx, uint32_t min, uint32_t max) {
+	return SB_MATH_RANGE(min, max, sb_crypto_prng_isaac(ctx));
 }

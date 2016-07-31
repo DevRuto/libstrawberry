@@ -60,7 +60,8 @@
 	// todo
 #elif (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 #	define WIN32_LEAN_AND_MEAN
-#	include <Windows.h>
+#	define NOMINMAX	// FIX the stupid LOWERCASEEEEEEEEEEE min/max
+#	include <windows.h>
 #elif (SB_PLATFORM == SB_PLATFORM_ID_ANDROID)
 	// todo
 #else
