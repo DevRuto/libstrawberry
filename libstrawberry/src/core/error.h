@@ -19,8 +19,8 @@ extern "C" {
 	void _sb_error_set_param(sb_error_t _errparam);
 	void _sb_error_set_ex(sb_error_t _errno, sb_error_t _errparam);
 	void _sb_error_reset();
-	void sb_error_fatal_ex(sb_error_t _errno, sb_error_t _errparam);
-	void sb_error_fatal(sb_error_t _errno);
+	void _sb_error_fatal_ex(const char *file, const char *func, const int line, sb_error_t _errno, sb_error_t _errparam);
+	void _sb_error_fatal(const char *file, const char *func, const int line, sb_error_t _errno);
 
 #ifdef __cplusplus
 }
@@ -43,6 +43,8 @@ extern "C" {
 #	define sb_error_reset()
 #endif
 
+#define sb_error_fatal_ex(x, y)				_sb_error_fatal_ex(SB_DIAG_FILE, SB_DIAG_FUNC, SB_DIAG_LINE, x, y)
+#define sb_error_fatal(x)					_sb_error_fatal(SB_DIAG_FILE, SB_DIAG_FUNC, SB_DIAG_LINE, x)
 
 #define SB_ERROR_SUCCESS					0
 #define SB_ERROR_NULL_PTR					1
@@ -52,6 +54,7 @@ extern "C" {
 #define SB_ERROR_FATAL_UNKNOWN				5
 #define SB_ERROR_FATAL_OUT_OF_MEMORY		6
 #define SB_ERROR_FATAL_PTR_INVALID			7
+#define SB_ERROR_INITIALIZATION				8
 
 
 #endif

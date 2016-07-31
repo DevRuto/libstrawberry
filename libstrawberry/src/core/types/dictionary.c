@@ -50,8 +50,10 @@ sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, 
 		sb_dictionary_entry_t *entry;
 		for (i = 0; i < dictionary->__size; ++i) {
 			entry = &dictionary->entries[i];
-			if (entry->key && sb_memequ((void*)key, entry->key, keylen)) {
-				*index = i;
+			if (entry->key && strlen(entry->key) == keylen && sb_memequ((void*)key, entry->key, keylen)) {
+				if (index) {
+					*index = i;
+				}
 				return sb_true;
 			}
 		}
@@ -59,7 +61,9 @@ sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, 
 		sb_size_t i;
 		for (i = 0; i < dictionary->__size; ++i) {
 			if (!dictionary->entries[i].key) {
-				*index = i;
+				if (index) {
+					*index = i;
+				}
 				return sb_true;
 			}
 		}
@@ -77,7 +81,7 @@ sb_dictionary_entry_t* sb_dictionary_get(sb_dictionary_t *dictionary, const char
 	sb_dictionary_entry_t *entry;
 	for (i = 0; i < dictionary->__size; ++i) {
 		entry = &dictionary->entries[i];
-		if (entry->key && sb_memequ((void*)key, entry->key, keylen)) {
+		if (entry->key && strlen(key) == keylen && sb_memequ((void*)key, entry->key, keylen)) {
 			return entry;
 		}
 	}
@@ -93,7 +97,7 @@ sb_bool_t sb_dictionary_set(sb_dictionary_t *dictionary, const char *key, void *
 	sb_size_t index;
 	if (dictionary->count == dictionary->__size) {
 		index = dictionary->__size++;
-		sb_realloc(dictionary->entries, sizeof(*dictionary->entries) * dictionary->__size);
+		dictionary->entries = sb_realloc(dictionary->entries, sizeof(*dictionary->entries) * dictionary->__size);
 	} else {
 		if (!sb_dictionary_get_index(dictionary, NULL, &index)) {
 			// error

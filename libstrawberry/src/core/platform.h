@@ -73,17 +73,6 @@
 #endif
 
 
-#include <stdint.h>
-
-#if (SB_ARCH == 64)
-	typedef uint64_t sb_size_t;
-	typedef int64_t sb_ssize_t;
-#else
-	typedef uint32_t sb_size_t;
-	typedef int32_t sb_ssize_t;
-#endif
-
-
 #ifndef SB_ENDIANNESS
 #	if defined(__BIG_ENDIAN__) || defined(__ARMEB__) || defined(__THUMBEB__) || defined(__AARCH64EB__) || defined(_MIPSEB) || defined(__MIPSEB) || defined(__MIPSEB__) || ((SB_PLATFORM == SB_PLATFORM_ID_WINDOWS && REG_DWORD == REG_DWORD_BIG_ENDIAN) || (SB_PLATFORM != SB_PLATFORM_ID_WINDOWS && ((__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)/* || (__FLOAT_WORD_ORDER__ == __ORDER_BIG_ENDIAN__)*/)))
 #		define SB_ENDIANNESS				SB_ENDIANNESS_BIG
@@ -104,9 +93,27 @@
 
 #define SB_FULL_PLATFORM_STRING				SB_PLATFORM_STRING" ("SB_ARCH_STRING", "SB_ENDIANNESS_STRING", dbg="SB_STRINGIFY_MACRO(SB_DEBUG)")"
 
+#ifndef SB_DIAG_FILE_START
+#	define SB_DIAG_FILE_START				85
+#endif
+#define SB_DIAG_FUNC						__func__
+#define SB_DIAG_LINE						__LINE__
+#define SB_DIAG_FILE						(__FILE__ + SB_DIAG_FILE_START)
+
 
 #ifndef DONT_REPORT_PLATFORM
 #pragma message("  platform.h: "SB_FULL_PLATFORM_STRING)
+#endif
+
+
+#include <stdint.h>
+
+#if (SB_ARCH == 64)
+	typedef uint64_t sb_size_t;
+	typedef int64_t sb_ssize_t;
+#else
+	typedef uint32_t sb_size_t;
+	typedef int32_t sb_ssize_t;
 #endif
 
 

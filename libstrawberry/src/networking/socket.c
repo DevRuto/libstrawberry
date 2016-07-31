@@ -2,6 +2,7 @@
 IDENTID("socket.c", "0.1", "1", "2016-07-30");
 
 #include "socket.h"
+#include "../core/error.h"
 
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
@@ -11,15 +12,20 @@ static WSADATA wsaData;
 
 
 sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags) {
+	sb_error_reset();
+
 	if (!sock || !node) {
+		sb_error_set(SB_ERROR_NULL_PTR);
 		return sb_false;
 	}
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 	if (!wsaStartup) {
-		if (!WSAStartup(MAKEWORD(2, 2), &wsaData)) {
+		int err;
+		if (!(err = WSAStartup(MAKEWORD(2, 2), &wsaData))) {
 			wsaStartup = sb_true;
 		} else {
+			sb_error_set_ex(SB_ERROR_INITIALIZATION, err);
 			return sb_false;
 		}
 	}

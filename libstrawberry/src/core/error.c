@@ -38,11 +38,23 @@ void _sb_error_reset() {
 	__sb_errparam = 0;
 }
 
-void sb_error_fatal_ex(sb_error_t _errno, sb_error_t _errparam) {
-	printf("STRAWBERRY FATAL: %08X %08X\n", _errno, _errparam);
+void _sb_error_fatal_ex(const char *file, const char *func, const int line, sb_error_t _errno, sb_error_t _errparam) {
+	printf(
+		" === STRAWBERRY - FATAL ERROR ===\n"
+		"  By: %s\n"
+		"  In: %s:%d\n"
+		"\n"
+		"      %08X\n"
+		"      %08X\n"
+		"\n",
+		func,
+		file, line,
+		_errno,
+		_errparam
+	);
 	raise(SIGABRT);
 }
 
-void sb_error_fatal(sb_error_t _errno) {
-	sb_error_fatal_ex(_errno, 0);
+void _sb_error_fatal(const char *file, const char *func, const int line, sb_error_t _errno) {
+	_sb_error_fatal_ex(file, func, line, _errno, 0);
 }
