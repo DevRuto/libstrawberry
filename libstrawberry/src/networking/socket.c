@@ -45,7 +45,7 @@ sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags
 }
 
 sb_bool_t sb_socket_clear(sb_socket_ctx_t *sock) {
-	if (sock) {
+	if (!sock) {
 		return sb_false;
 	}
 
