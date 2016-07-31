@@ -360,7 +360,7 @@ static const uint32_t rcon[] = {
 
 
 // inverse mix column transform
-#define sb_crypto_rijndael_imct(k) (								\
+#define SB_CRYPTO_RIJNDAEL_IMCT(k) (								\
 	table_decrypt_0[table_encrypt_4[((k) >> 24) & 0xFF] & 0xFF] ^	\
 	table_decrypt_1[table_encrypt_4[((k) >> 16) & 0xFF] & 0xFF] ^	\
 	table_decrypt_2[table_encrypt_4[((k) >>  8) & 0xFF] & 0xFF] ^	\
@@ -368,7 +368,7 @@ static const uint32_t rcon[] = {
 )
 
 // key expansion lookup
-#define sb_crypto_rijndael_lookup_kx(z, k, rc) (					\
+#define SB_CRYPTO_RIJNDAEL_LOOKUP_KX(z, k, rc) (					\
 	((z) ^ (table_encrypt_4[((k) >> 16) & 0xFF] & 0xFF000000) ^		\
 	(table_encrypt_4[((k) >>  8) & 0xFF] & 0x00FF0000)	^			\
 	(table_encrypt_4[((k)      ) & 0xFF] & 0x0000FF00)	^			\
@@ -376,7 +376,7 @@ static const uint32_t rcon[] = {
 )
 
 // key expansion lookup - 256-bits
-#define sb_crypto_rijndael_lookup_kxx(z, k) (						\
+#define SB_CRYPTO_RIJNDAEL_LOOKUP_KXX(z, k) (						\
 	(z) ^															\
 	(table_encrypt_4[((k) >> 24) & 0xFF] & 0xFF000000) ^			\
 	(table_encrypt_4[((k) >> 16) & 0xFF] & 0x00FF0000) ^			\
@@ -385,7 +385,7 @@ static const uint32_t rcon[] = {
 )
 
 // encrypt/decrypt final round
-#define sb_crypto_rijndael_round_finish(table, v0, v1, v2, v3, k) (	\
+#define SB_CRYPTO_RIJNDAEL_ROUND_FINISH(table, v0, v1, v2, v3, k) (	\
 	((table)[((v0) >> 24) & 0xFF] & 0xFF000000) ^					\
 	((table)[((v1) >> 16) & 0xFF] & 0x00FF0000) ^					\
 	((table)[((v2) >>  8) & 0xFF] & 0x0000FF00) ^					\
@@ -393,7 +393,7 @@ static const uint32_t rcon[] = {
 )
 
 // encrypt round
-#define sb_crypto_rijndael_round_encrypt(v0, v1, v2, v3, k) (		\
+#define SB_CRYPTO_RIJNDAEL_ROUND_ENCRYPT(v0, v1, v2, v3, k) (		\
 	table_encrypt_0[((v0) >> 24) & 0xFF] ^							\
 	table_encrypt_1[((v1) >> 16) & 0xFF] ^							\
 	table_encrypt_2[((v2) >>  8) & 0xFF] ^							\
@@ -401,7 +401,7 @@ static const uint32_t rcon[] = {
 )
 
 // decrypt round
-#define sb_crypto_rijndael_round_decrypt(v0, v1, v2, v3, k) (		\
+#define SB_CRYPTO_RIJNDAEL_ROUND_DECRYPT(v0, v1, v2, v3, k) (		\
 	table_decrypt_0[((v0) >> 24) & 0xFF] ^							\
 	table_decrypt_1[((v1) >> 16) & 0xFF] ^							\
 	table_decrypt_2[((v2) >>  8) & 0xFF] ^							\
@@ -451,7 +451,7 @@ void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *ctx, uint8_t bits, void *
 
 	if (bits == SB_CRYPTO_RIJNDAEL_128) {
 		for (i = 0;;) {
-			k[ 4] = sb_crypto_rijndael_lookup_kx(k[0], k[3], rcon[i]);
+			k[ 4] = SB_CRYPTO_RIJNDAEL_LOOKUP_KX(k[0], k[3], rcon[i]);
 			k[ 5] = k[ 1] ^ k[ 4];
 			k[ 6] = k[ 2] ^ k[ 5];
 			k[ 7] = k[ 3] ^ k[ 6];
@@ -469,7 +469,7 @@ void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *ctx, uint8_t bits, void *
 
 	if (bits == SB_CRYPTO_RIJNDAEL_192) {
 		for (i = 0;;) {
-			k[ 6] = sb_crypto_rijndael_lookup_kx(k[0], k[5], rcon[i]);
+			k[ 6] = SB_CRYPTO_RIJNDAEL_LOOKUP_KX(k[0], k[5], rcon[i]);
 			k[ 7] = k[ 1] ^ k[ 6];
 			k[ 8] = k[ 2] ^ k[ 7];
 			k[ 9] = k[ 3] ^ k[ 8];
@@ -490,7 +490,7 @@ void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *ctx, uint8_t bits, void *
 
 	if (bits == SB_CRYPTO_RIJNDAEL_256) {
 		for (i = 0;;) {
-			k[ 8] = sb_crypto_rijndael_lookup_kx(k[0], k[7], rcon[i]);
+			k[ 8] = SB_CRYPTO_RIJNDAEL_LOOKUP_KX(k[0], k[7], rcon[i]);
 			k[ 9] = k[ 1] ^ k[ 8];
 			k[10] = k[ 2] ^ k[ 9];
 			k[11] = k[ 3] ^ k[10];
@@ -499,7 +499,7 @@ void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *ctx, uint8_t bits, void *
 				goto __sb_crypto_rijndael_init_expand_decrypt;
 			}
 
-			k[12] = sb_crypto_rijndael_lookup_kxx(k[4], k[11]);
+			k[12] = SB_CRYPTO_RIJNDAEL_LOOKUP_KXX(k[4], k[11]);
 			k[13] = k[ 5] ^ k[12];
 			k[14] = k[ 6] ^ k[13];
 			k[15] = k[ 7] ^ k[14];
@@ -533,10 +533,10 @@ __sb_crypto_rijndael_init_expand_decrypt:
 
 	for (i = 1; i < ctx->rounds; ++i) {
 		k += 4;
-		k[0] = sb_crypto_rijndael_imct(k[0]);
-		k[1] = sb_crypto_rijndael_imct(k[1]);
-		k[2] = sb_crypto_rijndael_imct(k[2]);
-		k[3] = sb_crypto_rijndael_imct(k[3]);
+		k[0] = SB_CRYPTO_RIJNDAEL_IMCT(k[0]);
+		k[1] = SB_CRYPTO_RIJNDAEL_IMCT(k[1]);
+		k[2] = SB_CRYPTO_RIJNDAEL_IMCT(k[2]);
+		k[3] = SB_CRYPTO_RIJNDAEL_IMCT(k[3]);
 	}
 }
 
@@ -585,26 +585,26 @@ void sb_crypto_rijndael_encrypt(sb_crypto_rijndael_ctx_t *ctx, void *out, void *
 
 	r = (ctx->rounds >> 1);
 	for (;;) {
-		t0 = sb_crypto_rijndael_round_encrypt(s0, s1, s2, s3, k[4]);
-		t1 = sb_crypto_rijndael_round_encrypt(s1, s2, s3, s0, k[5]);
-		t2 = sb_crypto_rijndael_round_encrypt(s2, s3, s0, s1, k[6]);
-		t3 = sb_crypto_rijndael_round_encrypt(s3, s0, s1, s2, k[7]);
+		t0 = SB_CRYPTO_RIJNDAEL_ROUND_ENCRYPT(s0, s1, s2, s3, k[4]);
+		t1 = SB_CRYPTO_RIJNDAEL_ROUND_ENCRYPT(s1, s2, s3, s0, k[5]);
+		t2 = SB_CRYPTO_RIJNDAEL_ROUND_ENCRYPT(s2, s3, s0, s1, k[6]);
+		t3 = SB_CRYPTO_RIJNDAEL_ROUND_ENCRYPT(s3, s0, s1, s2, k[7]);
 
 		k += 8;
 		if (--r == 0) {
 			break;
 		}
 
-		s0 = sb_crypto_rijndael_round_encrypt(t0, t1, t2, t3, k[0]);
-		s1 = sb_crypto_rijndael_round_encrypt(t1, t2, t3, t0, k[1]);
-		s2 = sb_crypto_rijndael_round_encrypt(t2, t3, t0, t1, k[2]);
-		s3 = sb_crypto_rijndael_round_encrypt(t3, t0, t1, t2, k[3]);
+		s0 = SB_CRYPTO_RIJNDAEL_ROUND_ENCRYPT(t0, t1, t2, t3, k[0]);
+		s1 = SB_CRYPTO_RIJNDAEL_ROUND_ENCRYPT(t1, t2, t3, t0, k[1]);
+		s2 = SB_CRYPTO_RIJNDAEL_ROUND_ENCRYPT(t2, t3, t0, t1, k[2]);
+		s3 = SB_CRYPTO_RIJNDAEL_ROUND_ENCRYPT(t3, t0, t1, t2, k[3]);
 	}
 
-	s0 = sb_crypto_rijndael_round_finish(table_encrypt_4, t0, t1, t2, t3, k[0]);
-	s1 = sb_crypto_rijndael_round_finish(table_encrypt_4, t1, t2, t3, t0, k[1]);
-	s2 = sb_crypto_rijndael_round_finish(table_encrypt_4, t2, t3, t0, t1, k[2]);
-	s3 = sb_crypto_rijndael_round_finish(table_encrypt_4, t3, t0, t1, t2, k[3]);
+	s0 = SB_CRYPTO_RIJNDAEL_ROUND_FINISH(table_encrypt_4, t0, t1, t2, t3, k[0]);
+	s1 = SB_CRYPTO_RIJNDAEL_ROUND_FINISH(table_encrypt_4, t1, t2, t3, t0, k[1]);
+	s2 = SB_CRYPTO_RIJNDAEL_ROUND_FINISH(table_encrypt_4, t2, t3, t0, t1, k[2]);
+	s3 = SB_CRYPTO_RIJNDAEL_ROUND_FINISH(table_encrypt_4, t3, t0, t1, t2, k[3]);
 
 	out32[0] = SB_BE32(s0);
 	out32[1] = SB_BE32(s1);
@@ -633,26 +633,26 @@ void sb_crypto_rijndael_decrypt(sb_crypto_rijndael_ctx_t *ctx, void *out, void *
 
 	r = (ctx->rounds >> 1);
 	for (;;) {
-		t0 = sb_crypto_rijndael_round_decrypt(s0, s3, s2, s1, k[4]);
-		t1 = sb_crypto_rijndael_round_decrypt(s1, s0, s3, s2, k[5]);
-		t2 = sb_crypto_rijndael_round_decrypt(s2, s1, s0, s3, k[6]);
-		t3 = sb_crypto_rijndael_round_decrypt(s3, s2, s1, s0, k[7]);
+		t0 = SB_CRYPTO_RIJNDAEL_ROUND_DECRYPT(s0, s3, s2, s1, k[4]);
+		t1 = SB_CRYPTO_RIJNDAEL_ROUND_DECRYPT(s1, s0, s3, s2, k[5]);
+		t2 = SB_CRYPTO_RIJNDAEL_ROUND_DECRYPT(s2, s1, s0, s3, k[6]);
+		t3 = SB_CRYPTO_RIJNDAEL_ROUND_DECRYPT(s3, s2, s1, s0, k[7]);
 
 		k += 8;
 		if (--r == 0) {
 			break;
 		}
 
-		s0 = sb_crypto_rijndael_round_decrypt(t0, t3, t2, t1, k[0]);
-		s1 = sb_crypto_rijndael_round_decrypt(t1, t0, t3, t2, k[1]);
-		s2 = sb_crypto_rijndael_round_decrypt(t2, t1, t0, t3, k[2]);
-		s3 = sb_crypto_rijndael_round_decrypt(t3, t2, t1, t0, k[3]);
+		s0 = SB_CRYPTO_RIJNDAEL_ROUND_DECRYPT(t0, t3, t2, t1, k[0]);
+		s1 = SB_CRYPTO_RIJNDAEL_ROUND_DECRYPT(t1, t0, t3, t2, k[1]);
+		s2 = SB_CRYPTO_RIJNDAEL_ROUND_DECRYPT(t2, t1, t0, t3, k[2]);
+		s3 = SB_CRYPTO_RIJNDAEL_ROUND_DECRYPT(t3, t2, t1, t0, k[3]);
 	}
 
-	s0 = sb_crypto_rijndael_round_finish(table_decrypt_4, t0, t3, t2, t1, k[0]);
-	s1 = sb_crypto_rijndael_round_finish(table_decrypt_4, t1, t0, t3, t2, k[1]);
-	s2 = sb_crypto_rijndael_round_finish(table_decrypt_4, t2, t1, t0, t3, k[2]);
-	s3 = sb_crypto_rijndael_round_finish(table_decrypt_4, t3, t2, t1, t0, k[3]);
+	s0 = SB_CRYPTO_RIJNDAEL_ROUND_FINISH(table_decrypt_4, t0, t3, t2, t1, k[0]);
+	s1 = SB_CRYPTO_RIJNDAEL_ROUND_FINISH(table_decrypt_4, t1, t0, t3, t2, k[1]);
+	s2 = SB_CRYPTO_RIJNDAEL_ROUND_FINISH(table_decrypt_4, t2, t1, t0, t3, k[2]);
+	s3 = SB_CRYPTO_RIJNDAEL_ROUND_FINISH(table_decrypt_4, t3, t2, t1, t0, k[3]);
 
 	out32[0] = SB_BE32(s0);
 	out32[1] = SB_BE32(s1);
