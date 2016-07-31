@@ -20,7 +20,7 @@ typedef struct sb_crypto_salsa20_ctx_layout {
 
 typedef union sb_crypto_salsa20_ctx {
 	uint32_t data[16];
-	struct sb_crypto_salsa20_ctx_layout layout;
+	sb_crypto_salsa20_ctx_layout_t layout;
 } sb_crypto_salsa20_ctx_t;
 
 
