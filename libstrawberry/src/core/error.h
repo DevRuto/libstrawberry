@@ -15,12 +15,12 @@ extern "C" {
 
 	SBAPI sb_error_t _sb_error_get();
 	SBAPI sb_error_t _sb_error_get_param();
-	void _sb_error_set(sb_error_t _errno);
-	void _sb_error_set_param(sb_error_t _errparam);
-	void _sb_error_set_ex(sb_error_t _errno, sb_error_t _errparam);
-	void _sb_error_reset();
-	void _sb_error_fatal_ex(const char *file, const char *func, const int line, sb_error_t _errno, sb_error_t _errparam);
-	void _sb_error_fatal(const char *file, const char *func, const int line, sb_error_t _errno);
+	/*SBAPI*/ void _sb_error_set(sb_error_t _errno);
+	/*SBAPI*/ void _sb_error_set_param(sb_error_t _errparam);
+	/*SBAPI*/ void _sb_error_set_ex(sb_error_t _errno, sb_error_t _errparam);
+	/*SBAPI*/ void _sb_error_reset();
+	/*SBAPI*/ void _sb_error_fatal_ex(const char *file, const char *func, const int line, sb_error_t _errno, sb_error_t _errparam);
+	/*SBAPI*/ void _sb_error_fatal(const char *file, const char *func, const int line, sb_error_t _errno);
 
 #ifdef __cplusplus
 }

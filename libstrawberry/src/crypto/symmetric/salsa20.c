@@ -7,7 +7,7 @@ IDENTID("salsa20.c", "0.1", "1", "2016-07-29");
 #include "../../core/bits.h"
 
 
-static void sb_crypto_salsa20_wordtobyte(uint8_t out[64], uint32_t in[16]) {
+static void sb_crypto_salsa20_wordtobyte(void *out, uint32_t in[16]) {
 	uint32_t X[16];
 	sb_memcpy(X, in, sizeof(X));
 
