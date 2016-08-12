@@ -8,7 +8,16 @@
 #include "../../core/sbapi.h"
 
 
-// TODO
+typedef struct sb_crypto_rabbit_subctx {
+	uint32_t carry;
+	uint32_t x[8];
+	uint32_t c[8];
+} sb_crypto_rabbit_subctx_t;
+
+typedef struct sb_crypto_rabbit_ctx {
+	sb_crypto_rabbit_subctx_t subctx;
+	sb_crypto_rabbit_subctx_t wsubctx;
+} sb_crypto_rabbit_ctx_t;
 
 
 #endif

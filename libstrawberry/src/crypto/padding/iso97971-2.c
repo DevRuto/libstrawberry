@@ -13,21 +13,21 @@ sb_size_t sb_crypto_pad_iso979712_size(sb_size_t blocksize, sb_size_t havesize) 
 }
 
 sb_bool_t sb_crypto_pad_iso979712(void *out, void *in, sb_size_t blocksize, sb_size_t havesize) {
-    sb_error_reset();
+	sb_error_reset();
 
-    if (!out || !in) {
+	if (!out || !in) {
 		sb_error_set(SB_ERROR_NULL_PTR);
 		return sb_false;
-    }
+	}
 
-    if (!blocksize || !havesize) {
+	if (!blocksize || !havesize) {
 		sb_error_set(SB_ERROR_PARAM_RANGE);
 		return sb_false;
-    }
+	}
 
 	if (sb_crypto_pad_zero(out, in, blocksize, havesize)) {
-        ((uint8_t*)out)[havesize] = SB_BIT_8;
-        return sb_true;
+		((uint8_t*)out)[havesize] = SB_BIT_8;
+		return sb_true;
 	}
 
 	return sb_false;
@@ -46,10 +46,10 @@ sb_size_t sb_crypto_pad_iso979712_offset(void *in, sb_size_t havesize) {
 		return SB_MAX_SIZE;
 	}
 
-    uint8_t *pptr = in;
+	uint8_t *pptr = in;
 
-    sb_size_t i;
-    for (i = havesize; i--;) {
+	sb_size_t i;
+	for (i = havesize; i--;) {
 		if (pptr[i]) {
 			if (pptr[i] == SB_BIT_8) {
 				return i;
@@ -58,7 +58,7 @@ sb_size_t sb_crypto_pad_iso979712_offset(void *in, sb_size_t havesize) {
 				return SB_MAX_SIZE;
 			}
 		}
-    }
+	}
 
-    return SB_MAX_SIZE;
+	return SB_MAX_SIZE;
 }

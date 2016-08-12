@@ -7,49 +7,76 @@ IDENTID("salsa20.c", "0.1", "1", "2016-07-29");
 #include "../../core/bits.h"
 
 
-static void sb_crypto_salsa20_wordtobyte(void *out, uint32_t in[16]) {
-	uint32_t X[16];
-	sb_memcpy(X, in, sizeof(X));
+static void sb_crypto_salsa20_wordtobyte(uint32_t out[16], uint32_t in[16]) {
+	register uint32_t i,
+		x0  = in[ 0],
+		x1  = in[ 1],
+		x2  = in[ 2],
+		x3  = in[ 3],
+		x4  = in[ 4],
+		x5  = in[ 5],
+		x6  = in[ 6],
+		x7  = in[ 7],
+		x8  = in[ 8],
+		x9  = in[ 9],
+		x10 = in[10],
+		x11 = in[11],
+		x12 = in[12],
+		x13 = in[13],
+		x14 = in[14],
+		x15 = in[15];
 
-	register uint32_t i;
 	for (i = 20; i > 0; i -= 2) {
-		X[ 4] ^= SB_ROTL32((X[ 0] + X[12]),  7);
-		X[ 8] ^= SB_ROTL32((X[ 4] + X[ 0]),  9);
-		X[12] ^= SB_ROTL32((X[ 8] + X[ 4]), 13);
-		X[ 0] ^= SB_ROTL32((X[12] + X[ 8]), 18);
-		X[ 9] ^= SB_ROTL32((X[ 5] + X[ 1]),  7);
-		X[13] ^= SB_ROTL32((X[ 9] + X[ 5]),  9);
-		X[ 1] ^= SB_ROTL32((X[13] + X[ 9]), 13);
-		X[ 5] ^= SB_ROTL32((X[ 1] + X[13]), 18);
-		X[14] ^= SB_ROTL32((X[10] + X[ 6]),  7);
-		X[ 2] ^= SB_ROTL32((X[14] + X[10]),  9);
-		X[ 6] ^= SB_ROTL32((X[ 2] + X[14]), 13);
-		X[10] ^= SB_ROTL32((X[ 6] + X[ 2]), 18);
-		X[ 3] ^= SB_ROTL32((X[15] + X[11]),  7);
-		X[ 7] ^= SB_ROTL32((X[ 3] + X[15]),  9);
-		X[11] ^= SB_ROTL32((X[ 7] + X[ 3]), 13);
-		X[15] ^= SB_ROTL32((X[11] + X[ 7]), 18);
-		X[ 1] ^= SB_ROTL32((X[ 0] + X[ 3]),  7);
-		X[ 2] ^= SB_ROTL32((X[ 1] + X[ 0]),  9);
-		X[ 3] ^= SB_ROTL32((X[ 2] + X[ 1]), 13);
-		X[ 0] ^= SB_ROTL32((X[ 3] + X[ 2]), 18);
-		X[ 6] ^= SB_ROTL32((X[ 5] + X[ 4]),  7);
-		X[ 7] ^= SB_ROTL32((X[ 6] + X[ 5]),  9);
-		X[ 4] ^= SB_ROTL32((X[ 7] + X[ 6]), 13);
-		X[ 5] ^= SB_ROTL32((X[ 4] + X[ 7]), 18);
-		X[11] ^= SB_ROTL32((X[10] + X[ 9]),  7);
-		X[ 8] ^= SB_ROTL32((X[11] + X[10]),  9);
-		X[ 9] ^= SB_ROTL32((X[ 8] + X[11]), 13);
-		X[10] ^= SB_ROTL32((X[ 9] + X[ 8]), 18);
-		X[12] ^= SB_ROTL32((X[15] + X[14]),  7);
-		X[13] ^= SB_ROTL32((X[12] + X[15]),  9);
-		X[14] ^= SB_ROTL32((X[13] + X[12]), 13);
-		X[15] ^= SB_ROTL32((X[14] + X[13]), 18);
+		x4  ^= SB_ROTL32((x0  + x12),  7);
+		x8  ^= SB_ROTL32((x4  + x0 ),  9);
+		x12 ^= SB_ROTL32((x8  + x4 ), 13);
+		x0  ^= SB_ROTL32((x12 + x8 ), 18);
+		x9  ^= SB_ROTL32((x5  + x1 ),  7);
+		x13 ^= SB_ROTL32((x9  + x5 ),  9);
+		x1  ^= SB_ROTL32((x13 + x9 ), 13);
+		x5  ^= SB_ROTL32((x1  + x13), 18);
+		x14 ^= SB_ROTL32((x10 + x6 ),  7);
+		x2  ^= SB_ROTL32((x14 + x10),  9);
+		x6  ^= SB_ROTL32((x2  + x14), 13);
+		x10 ^= SB_ROTL32((x6  + x2 ), 18);
+		x3  ^= SB_ROTL32((x15 + x11),  7);
+		x7  ^= SB_ROTL32((x3  + x15),  9);
+		x11 ^= SB_ROTL32((x7  + x3 ), 13);
+		x15 ^= SB_ROTL32((x11 + x7 ), 18);
+		x1  ^= SB_ROTL32((x0  + x3 ),  7);
+		x2  ^= SB_ROTL32((x1  + x0 ),  9);
+		x3  ^= SB_ROTL32((x2  + x1 ), 13);
+		x0  ^= SB_ROTL32((x3  + x2 ), 18);
+		x6  ^= SB_ROTL32((x5  + x4 ),  7);
+		x7  ^= SB_ROTL32((x6  + x5 ),  9);
+		x4  ^= SB_ROTL32((x7  + x6 ), 13);
+		x5  ^= SB_ROTL32((x4  + x7 ), 18);
+		x11 ^= SB_ROTL32((x10 + x9 ),  7);
+		x8  ^= SB_ROTL32((x11 + x10),  9);
+		x9  ^= SB_ROTL32((x8  + x11), 13);
+		x10 ^= SB_ROTL32((x9  + x8 ), 18);
+		x12 ^= SB_ROTL32((x15 + x14),  7);
+		x13 ^= SB_ROTL32((x12 + x15),  9);
+		x14 ^= SB_ROTL32((x13 + x12), 13);
+		x15 ^= SB_ROTL32((x14 + x13), 18);
 	}
 
-	for (i = 16; i--;) X[i] += in[i];
-
-	sb_memcpy(out, X, sizeof(X));
+	out[ 0] = x0  + in[ 0];
+	out[ 1] = x1  + in[ 1];
+	out[ 2] = x2  + in[ 2];
+	out[ 3] = x3  + in[ 3];
+	out[ 4] = x4  + in[ 4];
+	out[ 5] = x5  + in[ 5];
+	out[ 6] = x6  + in[ 6];
+	out[ 7] = x7  + in[ 7];
+	out[ 8] = x8  + in[ 8];
+	out[ 9] = x9  + in[ 9];
+	out[10] = x10 + in[10];
+	out[11] = x11 + in[11];
+	out[12] = x12 + in[12];
+	out[13] = x13 + in[13];
+	out[14] = x14 + in[14];
+	out[15] = x15 + in[15];
 }
 
 
@@ -131,7 +158,7 @@ void sb_crypto_salsa20_encrypt(sb_crypto_salsa20_ctx_t *ctx, uint8_t *plain, uin
 
 	register uint32_t i;
 	for (;;) {
-		sb_crypto_salsa20_wordtobyte(buffer, ctx->data);
+		sb_crypto_salsa20_wordtobyte((uint32_t*)buffer, ctx->data);
 
 		if (!++ctx->data[8]) {
 			++ctx->data[9];
