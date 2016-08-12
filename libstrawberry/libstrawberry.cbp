@@ -80,14 +80,33 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/crypto/hashing/ripemd160.h" />
+		<Unit filename="src/crypto/hashing/sha256.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/crypto/hashing/sha256.h" />
+		<Unit filename="src/crypto/hashing/sha512.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/crypto/hashing/sha512.h" />
+		<Unit filename="src/crypto/padding/iso97971-2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/crypto/padding/iso97971-2.h" />
 		<Unit filename="src/crypto/padding/pkcs7.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/crypto/padding/pkcs7.h" />
+		<Unit filename="src/crypto/padding/zero.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/crypto/padding/zero.h" />
 		<Unit filename="src/crypto/prng/isaac.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/crypto/prng/isaac.h" />
+		<Unit filename="src/crypto/symmetric/rabbit.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/crypto/symmetric/rijndael.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -35,8 +35,8 @@ extern "C" {
 #	define sb_error_set_ex(x, y)			_sb_error_set_ex(x, y)
 #	define sb_error_reset()					_sb_error_reset()
 #else
-#	define sb_error_get()
-#	define sb_error_get_param()
+#	define sb_error_get()					SB_ERROR_SUCCESS
+#	define sb_error_get_param()				SB_ERROR_SUCCESS
 #	define sb_error_set(x)
 #	define sb_error_set_param(x)
 #	define sb_error_set_ex(x, y)

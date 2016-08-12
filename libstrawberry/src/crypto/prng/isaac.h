@@ -1,5 +1,5 @@
-#ifndef _SB_CRYPTO_PRNG_ISAAC_H
-#define _SB_CRYPTO_PRNG_ISAAC_H
+#ifndef __SB_CRYPTO_PRNG_ISAAC_H
+#define __SB_CRYPTO_PRNG_ISAAC_H
 
 
 #include <stdint.h>

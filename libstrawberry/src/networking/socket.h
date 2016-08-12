@@ -1,5 +1,5 @@
-#ifndef _SB_NETWORKING_SOCKET_H
-#define _SB_NETWORKING_SOCKET_H
+#ifndef __SB_NETWORKING_SOCKET_H
+#define __SB_NETWORKING_SOCKET_H
 
 
 #include <stdint.h>

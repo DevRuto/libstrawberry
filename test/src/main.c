@@ -14,25 +14,25 @@
 #include "../../libstrawberry/src/crypto/hashing/md5.h"
 #include "../../libstrawberry/src/networking/socket.h"
 #include "tests.h"
-#include "../../libstrawberry/src/core/base64.h"
+//#include "../../libstrawberry/src/core/base64.h"
 
 
 void test(const char *name, sb_bool_t(*func)()) {
 	sb_bool_t valid = sb_true;
-	register uint64_t ns_start = sb_time_nsec(), ns_stop, i;
+	register uint64_t /*ns_start = sb_time_nsec(), ns_stop, */i;
 	for (i = 0; i < 500; ++i) {
 		if (!func()) {
 			valid = sb_false;
 		}
 	}
 	if (valid) {
-		ns_stop = sb_time_nsec();
-		printf(status_passed" %10s: %llu\n", name, (ns_stop - ns_start));
+		//ns_stop = sb_time_nsec();
+		//printf(status_passed" %10s: %llu\n", name, (ns_stop - ns_start));
+		printf(status_passed" %s\n", name);
 	} else {
 		printf(status_failed" %s\n", name);
 	}
 }
-
 
 int main(int argc, char **argv, char **env) {
 	/*uint8_t digest[20], digest_str[41];
@@ -128,7 +128,7 @@ int main(int argc, char **argv, char **env) {
 
 	sb_memdump(hash, 16);*/
 
-//#define TESTS
+#define TESTS
 
 #ifdef TESTS
 	test("rijndael", test_rijndael);
@@ -137,6 +137,17 @@ int main(int argc, char **argv, char **env) {
 	test("md5", test_md5);
 	test("isaac", test_isaac);
 #endif
+
+	/*int i = 100;
+	while (i-- \
+			  //\
+			 //  \
+		____//____\
+		\_________/
+				  \
+				   > 0) {
+		puts("test");
+	}*/
 
 	/*char request[] = "GET / HTTP/1.1\r\nHost: example.com\r\nAccept: * /*\r\n\r\n";
 #define BUFFSIZE 128

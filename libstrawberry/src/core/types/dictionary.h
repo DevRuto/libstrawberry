@@ -1,5 +1,5 @@
-#ifndef _SB_CORE_TYPE_DICTIONARY_H
-#define _SB_CORE_TYPE_DICTIONARY_H
+#ifndef __SB_CORE_TYPE_DICTIONARY_H
+#define __SB_CORE_TYPE_DICTIONARY_H
 
 
 #include <stdint.h>

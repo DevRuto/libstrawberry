@@ -1,5 +1,5 @@
-#ifndef __SB_CRYPTO_HASHING_RIPEMD_H
-#define __SB_CRYPTO_HASHING_RIPEMD_H
+#ifndef __SB_CRYPTO_HASHING_RIPEMD160_H
+#define __SB_CRYPTO_HASHING_RIPEMD160_H
 
 
 #include <stdint.h>

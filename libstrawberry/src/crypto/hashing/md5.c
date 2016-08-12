@@ -77,73 +77,73 @@ static void *sb_crypto_md5_internal_update(sb_crypto_md5_ctx_t *ctx, void *data,
 		saved_c = c;
 		saved_d = d;
 
-		MD5R1 (a, b, c, d, MD5RSET( 0), 0xD76AA478,  7);
-		MD5R1 (d, a, b, c, MD5RSET( 1), 0xE8C7B756, 12);
-		MD5R1 (c, d, a, b, MD5RSET( 2), 0x242070DB, 17);
-		MD5R1 (b, c, d, a, MD5RSET( 3), 0xC1BDCEEE, 22);
-		MD5R1 (a, b, c, d, MD5RSET( 4), 0xF57C0FAF,  7);
-		MD5R1 (d, a, b, c, MD5RSET( 5), 0x4787C62A, 12);
-		MD5R1 (c, d, a, b, MD5RSET( 6), 0xA8304613, 17);
-		MD5R1 (b, c, d, a, MD5RSET( 7), 0xFD469501, 22);
-		MD5R1 (a, b, c, d, MD5RSET( 8), 0x698098D8,  7);
-		MD5R1 (d, a, b, c, MD5RSET( 9), 0x8B44F7AF, 12);
-		MD5R1 (c, d, a, b, MD5RSET(10), 0xFFFF5BB1, 17);
-		MD5R1 (b, c, d, a, MD5RSET(11), 0x895CD7BE, 22);
-		MD5R1 (a, b, c, d, MD5RSET(12), 0x6B901122,  7);
-		MD5R1 (d, a, b, c, MD5RSET(13), 0xFD987193, 12);
-		MD5R1 (c, d, a, b, MD5RSET(14), 0xA679438E, 17);
-		MD5R1 (b, c, d, a, MD5RSET(15), 0x49B40821, 22);
+		MD5R1 (a, b, c, d, MD5RSET( 0), 0xD76AA478U,  7);
+		MD5R1 (d, a, b, c, MD5RSET( 1), 0xE8C7B756U, 12);
+		MD5R1 (c, d, a, b, MD5RSET( 2), 0x242070DBU, 17);
+		MD5R1 (b, c, d, a, MD5RSET( 3), 0xC1BDCEEEU, 22);
+		MD5R1 (a, b, c, d, MD5RSET( 4), 0xF57C0FAFU,  7);
+		MD5R1 (d, a, b, c, MD5RSET( 5), 0x4787C62AU, 12);
+		MD5R1 (c, d, a, b, MD5RSET( 6), 0xA8304613U, 17);
+		MD5R1 (b, c, d, a, MD5RSET( 7), 0xFD469501U, 22);
+		MD5R1 (a, b, c, d, MD5RSET( 8), 0x698098D8U,  7);
+		MD5R1 (d, a, b, c, MD5RSET( 9), 0x8B44F7AFU, 12);
+		MD5R1 (c, d, a, b, MD5RSET(10), 0xFFFF5BB1U, 17);
+		MD5R1 (b, c, d, a, MD5RSET(11), 0x895CD7BEU, 22);
+		MD5R1 (a, b, c, d, MD5RSET(12), 0x6B901122U,  7);
+		MD5R1 (d, a, b, c, MD5RSET(13), 0xFD987193U, 12);
+		MD5R1 (c, d, a, b, MD5RSET(14), 0xA679438EU, 17);
+		MD5R1 (b, c, d, a, MD5RSET(15), 0x49B40821U, 22);
 
-		MD5R2 (a, b, c, d, MD5RGET( 1), 0xF61E2562,  5);
-		MD5R2 (d, a, b, c, MD5RGET( 6), 0xC040B340,  9);
-		MD5R2 (c, d, a, b, MD5RGET(11), 0x265E5A51, 14);
-		MD5R2 (b, c, d, a, MD5RGET( 0), 0xE9B6C7AA, 20);
-		MD5R2 (a, b, c, d, MD5RGET( 5), 0xD62F105D,  5);
-		MD5R2 (d, a, b, c, MD5RGET(10), 0x02441453,  9);
-		MD5R2 (c, d, a, b, MD5RGET(15), 0xD8A1E681, 14);
-		MD5R2 (b, c, d, a, MD5RGET( 4), 0xE7D3FBC8, 20);
-		MD5R2 (a, b, c, d, MD5RGET( 9), 0x21E1CDE6,  5);
-		MD5R2 (d, a, b, c, MD5RGET(14), 0xC33707D6,  9);
-		MD5R2 (c, d, a, b, MD5RGET( 3), 0xF4D50D87, 14);
-		MD5R2 (b, c, d, a, MD5RGET( 8), 0x455A14ED, 20);
-		MD5R2 (a, b, c, d, MD5RGET(13), 0xA9E3E905,  5);
-		MD5R2 (d, a, b, c, MD5RGET( 2), 0xFCEFA3F8,  9);
-		MD5R2 (c, d, a, b, MD5RGET( 7), 0x676F02D9, 14);
-		MD5R2 (b, c, d, a, MD5RGET(12), 0x8D2A4C8A, 20);
+		MD5R2 (a, b, c, d, MD5RGET( 1), 0xF61E2562U,  5);
+		MD5R2 (d, a, b, c, MD5RGET( 6), 0xC040B340U,  9);
+		MD5R2 (c, d, a, b, MD5RGET(11), 0x265E5A51U, 14);
+		MD5R2 (b, c, d, a, MD5RGET( 0), 0xE9B6C7AAU, 20);
+		MD5R2 (a, b, c, d, MD5RGET( 5), 0xD62F105DU,  5);
+		MD5R2 (d, a, b, c, MD5RGET(10), 0x02441453U,  9);
+		MD5R2 (c, d, a, b, MD5RGET(15), 0xD8A1E681U, 14);
+		MD5R2 (b, c, d, a, MD5RGET( 4), 0xE7D3FBC8U, 20);
+		MD5R2 (a, b, c, d, MD5RGET( 9), 0x21E1CDE6U,  5);
+		MD5R2 (d, a, b, c, MD5RGET(14), 0xC33707D6U,  9);
+		MD5R2 (c, d, a, b, MD5RGET( 3), 0xF4D50D87U, 14);
+		MD5R2 (b, c, d, a, MD5RGET( 8), 0x455A14EDU, 20);
+		MD5R2 (a, b, c, d, MD5RGET(13), 0xA9E3E905U,  5);
+		MD5R2 (d, a, b, c, MD5RGET( 2), 0xFCEFA3F8U,  9);
+		MD5R2 (c, d, a, b, MD5RGET( 7), 0x676F02D9U, 14);
+		MD5R2 (b, c, d, a, MD5RGET(12), 0x8D2A4C8AU, 20);
 
-		MD5R3A(a, b, c, d, MD5RGET( 5), 0xFFFA3942,  4);
-		MD5R3B(d, a, b, c, MD5RGET( 8), 0x8771F681, 11);
-		MD5R3A(c, d, a, b, MD5RGET(11), 0x6D9D6122, 16);
-		MD5R3B(b, c, d, a, MD5RGET(14), 0xFDE5380C, 23);
-		MD5R3A(a, b, c, d, MD5RGET( 1), 0xA4BEEA44,  4);
-		MD5R3B(d, a, b, c, MD5RGET( 4), 0x4BDECFA9, 11);
-		MD5R3A(c, d, a, b, MD5RGET( 7), 0xF6BB4B60, 16);
-		MD5R3B(b, c, d, a, MD5RGET(10), 0xBEBFBC70, 23);
-		MD5R3A(a, b, c, d, MD5RGET(13), 0x289B7EC6,  4);
-		MD5R3B(d, a, b, c, MD5RGET( 0), 0xEAA127FA, 11);
-		MD5R3A(c, d, a, b, MD5RGET( 3), 0xD4EF3085, 16);
-		MD5R3B(b, c, d, a, MD5RGET( 6), 0x04881D05, 23);
-		MD5R3A(a, b, c, d, MD5RGET( 9), 0xD9D4D039,  4);
-		MD5R3B(d, a, b, c, MD5RGET(12), 0xE6DB99E5, 11);
-		MD5R3A(c, d, a, b, MD5RGET(15), 0x1FA27CF8, 16);
-		MD5R3B(b, c, d, a, MD5RGET( 2), 0xC4AC5665, 23);
+		MD5R3A(a, b, c, d, MD5RGET( 5), 0xFFFA3942U,  4);
+		MD5R3B(d, a, b, c, MD5RGET( 8), 0x8771F681U, 11);
+		MD5R3A(c, d, a, b, MD5RGET(11), 0x6D9D6122U, 16);
+		MD5R3B(b, c, d, a, MD5RGET(14), 0xFDE5380CU, 23);
+		MD5R3A(a, b, c, d, MD5RGET( 1), 0xA4BEEA44U,  4);
+		MD5R3B(d, a, b, c, MD5RGET( 4), 0x4BDECFA9U, 11);
+		MD5R3A(c, d, a, b, MD5RGET( 7), 0xF6BB4B60U, 16);
+		MD5R3B(b, c, d, a, MD5RGET(10), 0xBEBFBC70U, 23);
+		MD5R3A(a, b, c, d, MD5RGET(13), 0x289B7EC6U,  4);
+		MD5R3B(d, a, b, c, MD5RGET( 0), 0xEAA127FAU, 11);
+		MD5R3A(c, d, a, b, MD5RGET( 3), 0xD4EF3085U, 16);
+		MD5R3B(b, c, d, a, MD5RGET( 6), 0x04881D05U, 23);
+		MD5R3A(a, b, c, d, MD5RGET( 9), 0xD9D4D039U,  4);
+		MD5R3B(d, a, b, c, MD5RGET(12), 0xE6DB99E5U, 11);
+		MD5R3A(c, d, a, b, MD5RGET(15), 0x1FA27CF8U, 16);
+		MD5R3B(b, c, d, a, MD5RGET( 2), 0xC4AC5665U, 23);
 
-		MD5R4 (a, b, c, d, MD5RGET( 0), 0xF4292244,  6);
-		MD5R4 (d, a, b, c, MD5RGET( 7), 0x432AFF97, 10);
-		MD5R4 (c, d, a, b, MD5RGET(14), 0xAB9423A7, 15);
-		MD5R4 (b, c, d, a, MD5RGET( 5), 0xFC93A039, 21);
-		MD5R4 (a, b, c, d, MD5RGET(12), 0x655B59C3,  6);
-		MD5R4 (d, a, b, c, MD5RGET( 3), 0x8F0CCC92, 10);
-		MD5R4 (c, d, a, b, MD5RGET(10), 0xFFEFF47D, 15);
-		MD5R4 (b, c, d, a, MD5RGET( 1), 0x85845DD1, 21);
-		MD5R4 (a, b, c, d, MD5RGET( 8), 0x6FA87E4F,  6);
-		MD5R4 (d, a, b, c, MD5RGET(15), 0xFE2CE6E0, 10);
-		MD5R4 (c, d, a, b, MD5RGET( 6), 0xA3014314, 15);
-		MD5R4 (b, c, d, a, MD5RGET(13), 0x4E0811A1, 21);
-		MD5R4 (a, b, c, d, MD5RGET( 4), 0xF7537E82,  6);
-		MD5R4 (d, a, b, c, MD5RGET(11), 0xBD3AF235, 10);
-		MD5R4 (c, d, a, b, MD5RGET( 2), 0x2AD7D2BB, 15);
-		MD5R4 (b, c, d, a, MD5RGET( 9), 0xEB86D391, 21);
+		MD5R4 (a, b, c, d, MD5RGET( 0), 0xF4292244U,  6);
+		MD5R4 (d, a, b, c, MD5RGET( 7), 0x432AFF97U, 10);
+		MD5R4 (c, d, a, b, MD5RGET(14), 0xAB9423A7U, 15);
+		MD5R4 (b, c, d, a, MD5RGET( 5), 0xFC93A039U, 21);
+		MD5R4 (a, b, c, d, MD5RGET(12), 0x655B59C3U,  6);
+		MD5R4 (d, a, b, c, MD5RGET( 3), 0x8F0CCC92U, 10);
+		MD5R4 (c, d, a, b, MD5RGET(10), 0xFFEFF47DU, 15);
+		MD5R4 (b, c, d, a, MD5RGET( 1), 0x85845DD1U, 21);
+		MD5R4 (a, b, c, d, MD5RGET( 8), 0x6FA87E4FU,  6);
+		MD5R4 (d, a, b, c, MD5RGET(15), 0xFE2CE6E0U, 10);
+		MD5R4 (c, d, a, b, MD5RGET( 6), 0xA3014314U, 15);
+		MD5R4 (b, c, d, a, MD5RGET(13), 0x4E0811A1U, 21);
+		MD5R4 (a, b, c, d, MD5RGET( 4), 0xF7537E82U,  6);
+		MD5R4 (d, a, b, c, MD5RGET(11), 0xBD3AF235U, 10);
+		MD5R4 (c, d, a, b, MD5RGET( 2), 0x2AD7D2BBU, 15);
+		MD5R4 (b, c, d, a, MD5RGET( 9), 0xEB86D391U, 21);
 
 		a += saved_a;
 		b += saved_b;
@@ -163,7 +163,7 @@ static void *sb_crypto_md5_internal_update(sb_crypto_md5_ctx_t *ctx, void *data,
 
 void sb_crypto_md5_init(sb_crypto_md5_ctx_t *ctx) {
 	sb_error_reset();
-	
+
 	if (!ctx) {
 		sb_error_set(SB_ERROR_NULL_PTR);
 		return;
@@ -171,10 +171,10 @@ void sb_crypto_md5_init(sb_crypto_md5_ctx_t *ctx) {
 
 	sb_crypto_md5_clear(ctx);
 
-	ctx->a = 0x67452301;
-	ctx->b = 0xEFCDAB89;
-	ctx->c = 0x98BADCFE;
-	ctx->d = 0x10325476;
+	ctx->a = 0x67452301U;
+	ctx->b = 0xEFCDAB89U;
+	ctx->c = 0x98BADCFEU;
+	ctx->d = 0x10325476U;
 }
 
 void sb_crypto_md5_clear(sb_crypto_md5_ctx_t *ctx) {
@@ -223,7 +223,7 @@ void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t size) {
 
 void sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 	sb_error_reset();
-	
+
 	if (!ctx || !out) {
 		sb_error_set(SB_ERROR_NULL_PTR);
 		return;

@@ -15,40 +15,46 @@ sb_size_t sb_crypto_pad_pkcs7_size(sb_size_t blocksize, sb_size_t havesize) {
 	return size;
 }
 
-void sb_crypto_pad_pkcs7(sb_size_t blocksize, uint8_t *out, uint8_t *in, sb_size_t havesize) {
+sb_bool_t sb_crypto_pad_pkcs7(void *out, void *in, sb_size_t blocksize, sb_size_t havesize) {
 	sb_error_reset();
 
 	if (!out || !in) {
 		sb_error_set(SB_ERROR_NULL_PTR);
-		return;
+		return sb_false;
+	}
+
+	if (!blocksize || !havesize) {
+		sb_error_set(SB_ERROR_PARAM_RANGE);
+		return sb_false;
 	}
 
 	sb_size_t size = sb_crypto_pad_pkcs7_size(blocksize, havesize);
 	if (size <= havesize) {
 		sb_error_set(SB_ERROR_FAILSAFE);
-		return;
+		return sb_false;
 	}
 
-	uint8_t pad = (uint8_t)(size - havesize), pidx = pad, *psptr = ((out + havesize) - 1);
+	uint8_t pad = (uint8_t)(size - havesize), pidx = pad, *pptr = ((out + havesize) - 1);
 	sb_memcpy(out, in, havesize);
 	for (; pidx--;) {
-		*(++psptr) = pad;
+		*(++pptr) = pad;
 	}
+
+	return sb_true;
 }
 
-sb_size_t sb_crypto_pad_pkcs7_offset(sb_size_t blocksize, uint8_t *in, sb_size_t size) {
+sb_size_t sb_crypto_pad_pkcs7_offset(void *in, sb_size_t havesize) {
 	sb_error_reset();
 
-	if (size == 0) {
-		sb_error_set(SB_ERROR_PARAM_RANGE);
-		return 0;
+	if (!in) {
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return SB_MAX_SIZE;
 	}
 
-	uint8_t pad = in[size - 1];
-	if (pad > blocksize) {
-		sb_error_set(SB_ERROR_FAILSAFE);
-		return 0;
-	} else {
-		return (size - pad);
+	if (!havesize) {
+		sb_error_set(SB_ERROR_PARAM_RANGE);
+		return SB_MAX_SIZE;
 	}
+
+	return (havesize - ((uint8_t*)in)[havesize - 1]);
 }

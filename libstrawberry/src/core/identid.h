@@ -1,5 +1,5 @@
-#ifndef _SB_CORE_RCSID_H
-#define _SB_CORE_RCSID_H
+#ifndef __SB_CORE_RCSID_H
+#define __SB_CORE_RCSID_H
 
 
 #include "platform.h"

@@ -1,5 +1,5 @@
-#ifndef _SB_CRYPTO_HASHING_MD5_H
-#define _SB_CRYPTO_HASHING_MD5_H
+#ifndef __SB_CRYPTO_HASHING_MD5_H
+#define __SB_CRYPTO_HASHING_MD5_H
 
 
 #include <stdint.h>

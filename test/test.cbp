@@ -30,7 +30,12 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-DCONCLUSIONS_ONLY" />
 		</Compiler>
+		<Linker>
+			<Add option="-lstrawberry" />
+			<Add directory="../bin" />
+		</Linker>
 		<Unit filename="src/crypto/hashing/md5.c">
 			<Option compilerVar="CC" />
 		</Unit>

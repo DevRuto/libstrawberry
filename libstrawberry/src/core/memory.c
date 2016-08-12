@@ -92,6 +92,9 @@ void sb_memcpy(void *dst, void *src, sb_size_t size) {
 	if (!dst || !src) {
 		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
 	}
+	if (dst == src) {
+		return;
+	}
 	if (__sb_memcpy) {
 		__sb_memcpy(dst, src, size);
 	} else {

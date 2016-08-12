@@ -249,5 +249,8 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
 /libstrawberry/src/core/base64.c
 /libstrawberry/src/core/base64.h
+
+*.cscope_file_list
