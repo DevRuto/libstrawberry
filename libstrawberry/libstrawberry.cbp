@@ -107,6 +107,7 @@
 		<Unit filename="src/crypto/symmetric/rabbit.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/crypto/symmetric/rabbit.h" />
 		<Unit filename="src/crypto/symmetric/rijndael.c">
 			<Option compilerVar="CC" />
 		</Unit>
