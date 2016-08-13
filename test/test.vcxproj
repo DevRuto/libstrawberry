@@ -168,6 +168,7 @@
     <ClCompile Include="src\crypto\hashing\md5.c" />
     <ClCompile Include="src\crypto\hashing\ripemd160.c" />
     <ClCompile Include="src\crypto\prng\isaac.c" />
+    <ClCompile Include="src\crypto\symmetric\rabbit.c" />
     <ClCompile Include="src\crypto\symmetric\rijndael.c" />
     <ClCompile Include="src\crypto\symmetric\salsa20.c" />
     <ClCompile Include="src\main.c" />

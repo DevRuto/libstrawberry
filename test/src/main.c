@@ -177,7 +177,9 @@ int main(int argc, char **argv, char **env) {
 	sb_socket_stop(&socket);
 	sb_socket_clear(&socket);*/
 
-	//fgetc(stdin);
+#if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
+	fgetc(stdin);
+#endif
 
 	return 0;
 }

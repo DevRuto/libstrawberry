@@ -55,7 +55,11 @@ sb_bool_t sb_crypto_pad_zero(void *out, void *in, sb_size_t blocksize, sb_size_t
 	}
 
 	sb_memcpy(out, in, havesize);
+#if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS) // apparently vs doesn't know how big a pointer is, but it does know how big a pointer is. thanks.
+	sb_memset((uint32_t*)out + havesize, 0, size - havesize);
+#else
 	sb_memset(out + havesize, 0, size - havesize);
+#endif
 
 	return sb_true;
 }

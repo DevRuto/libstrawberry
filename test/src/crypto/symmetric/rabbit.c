@@ -14,21 +14,21 @@ static uint8_t results[][48] = {
 };
 
 sb_bool_t test_rabbit() {
-    sb_bool_t valid = sb_true;
+	sb_bool_t valid = sb_true;
 
-    sb_crypto_rabbit_ctx_t ctx;
+	sb_crypto_rabbit_ctx_t ctx;
 
-    uint32_t i, ct[12], pt[12], tb[12];
-    sb_memset(ct, 0xF8, sizeof(ct));
-    sb_memset(pt, 0, sizeof(pt));
+	uint32_t i, ct[12], pt[12], tb[12];
+	sb_memset(ct, 0xF8, sizeof(ct));
+	sb_memset(pt, 0, sizeof(pt));
 
-    //status("rabbit", "hardcoded test vectors", status_info);
-    for (i = 0; i < 3; ++i) {
+	//status("rabbit", "hardcoded test vectors", status_info);
+	for (i = 0; i < 3; ++i) {
 		sb_crypto_rabbit_init(&ctx, keys[i], 0);
 
 		sb_crypto_rabbit_encrypt(&ctx, ct, pt, sizeof(pt));
 		if (!sb_memequ(ct, results[i], sizeof(ct))) {
-            valid = sb_false;
+			valid = sb_false;
 			status("rabbit e", "https://tools.ietf.org/html/rfc4503#appendix-A.1", status_failed);
 		} else {
 			status("rabbit e", "https://tools.ietf.org/html/rfc4503#appendix-A.1", status_passed);
@@ -42,10 +42,10 @@ sb_bool_t test_rabbit() {
 		} else {
 			status("rabbit d", "https://tools.ietf.org/html/rfc4503#appendix-A.1", status_passed);
 		}
-    }
+	}
 
-    //status("rabbit", "soft [255 / (i + 1)]", status_info);
-    for (i = 0; i < 10; ++i) {
+	//status("rabbit", "soft [255 / (i + 1)]", status_info);
+	for (i = 0; i < 10; ++i) {
 		sb_memset(pt, 255 / (i + 1), sizeof(pt));
 
 		sb_crypto_rabbit_init(&ctx, keys[1], 0);
@@ -59,7 +59,7 @@ sb_bool_t test_rabbit() {
 		} else {
 			status("rabbit", "255 / (i + 1)", status_passed);
 		}
-    }
+	}
 
-    return valid;
+	return valid;
 }

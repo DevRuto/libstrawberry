@@ -33,6 +33,7 @@
 
 
 typedef struct sb_crypto_sha256_ctx {
+	void *vscantignorethisshit;
 	// TODO
 } sb_crypto_sha256_ctx_t;
 
