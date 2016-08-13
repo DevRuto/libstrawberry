@@ -1,6 +1,6 @@
 /**********************************************************************************
-**
-**  Copyright 2016 "strawberryentrypoint"
+**                                                                               **
+**  Copyright 2016 strawberryentrypoint                                          **
 **                                                                               **
 **  This file is part of libstrawberry.                                          **
 **                                                                               **
