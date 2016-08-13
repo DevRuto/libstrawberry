@@ -10,14 +10,11 @@
 
 
 typedef struct sb_crypto_rijndael_ctx {
-	uint32_t *key_encrypt; // rijndael
-	uint32_t *key_decrypt; // rijndael
-	void *iv;
-	uint8_t size; // rijndael
-	uint8_t rounds; // rijndael
-	uint16_t flags; // rijndael
-	uint16_t modes;
-	uint16_t mode_flags;
+	uint32_t *key_encrypt;
+	uint32_t *key_decrypt;
+	uint8_t size;
+	uint8_t rounds;
+	uint16_t flags;
 } sb_crypto_rijndael_ctx_t;
 
 
@@ -32,10 +29,10 @@ typedef struct sb_crypto_rijndael_ctx {
 extern "C" {
 #endif
 
-	SBAPI void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, void *key, uint16_t modes, uint16_t mode_flags, void *iv);
+	SBAPI void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, void *key);
 	SBAPI void sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *rijndael);
-	SBAPI void sb_crypto_rijndael_encrypt(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in);
-	SBAPI void sb_crypto_rijndael_decrypt(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in);
+	SBAPI void sb_crypto_rijndael_encrypt_block(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in);
+	SBAPI void sb_crypto_rijndael_decrypt_block(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in);
 
 #ifdef __cplusplus
 }

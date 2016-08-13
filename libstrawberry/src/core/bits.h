@@ -73,6 +73,17 @@
 #define SB_IBO_SWAP64(x)					((SB_ROTL64((x), 8) & 0x00FF00FF00FF00FF) | (SB_ROTR64((x), 8) & 0xFF00FF00FF00FF00))
 
 
+#define SB_HI4(x8)							(((x8) >> 4) & 7)
+#define SB_LO4(x8)							((x8) & 7)
+#define SB_HI5(x)							(x)
+#define SB_HI8(x16)							(((x16) >> 8) & 0xFF)
+#define SB_LO8(x16)							((x16) & 0xFF)
+#define SB_HI16(x32)						(((x32) >> 16) & 0xFFFF)
+#define SB_LO16(x32)						((x32) & 0xFFFF)
+#define SB_HI32(x64)						(((x64) >> 32) & 0xFFFFFFFF)
+#define SB_LO32(x64)						((x64) & 0xFFFFFFFF)
+
+
 #if (SB_ENDIANNESS == SB_ENDIANNESS_BIG)
 #	define SB_LE16(x)						SB_IBO_SWAP16(x)
 #	define SB_BE16(x)						(x)

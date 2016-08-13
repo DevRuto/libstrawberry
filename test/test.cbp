@@ -30,7 +30,8 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-DCONCLUSIONS_ONLY" />
+			<Add option="-D_CONCLUSIONS_ONLY" />
+			<Add option="-DDONT_REPORT_PLATFORM" />
 		</Compiler>
 		<Linker>
 			<Add option="-lstrawberry" />
@@ -43,6 +44,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/crypto/prng/isaac.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/crypto/symmetric/rabbit.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/crypto/symmetric/rijndael.c">

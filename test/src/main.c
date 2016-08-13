@@ -19,12 +19,12 @@
 
 void test(const char *name, sb_bool_t(*func)()) {
 	sb_bool_t valid = sb_true;
-	register uint64_t /*ns_start = sb_time_nsec(), ns_stop, */i;
-	for (i = 0; i < 500; ++i) {
+	/*register uint64_t ns_start = sb_time_nsec(), ns_stop, i;
+	for (i = 0; i < 500; ++i) {*/
 		if (!func()) {
 			valid = sb_false;
 		}
-	}
+	/*}*/
 	if (valid) {
 		//ns_stop = sb_time_nsec();
 		//printf(status_passed" %10s: %llu\n", name, (ns_stop - ns_start));
@@ -131,11 +131,12 @@ int main(int argc, char **argv, char **env) {
 #define TESTS
 
 #ifdef TESTS
-	test("rijndael", test_rijndael);
+	/*test("rijndael", test_rijndael);
 	test("salsa20", test_salsa20);
 	test("ripemd160", test_ripemd160);
 	test("md5", test_md5);
-	test("isaac", test_isaac);
+	test("isaac", test_isaac);*/
+	test("rabbit", test_rabbit);
 #endif
 
 	/*int i = 100;
@@ -149,7 +150,7 @@ int main(int argc, char **argv, char **env) {
 		puts("test");
 	}*/
 
-	/*char request[] = "GET / HTTP/1.1\r\nHost: example.com\r\nAccept: * /*\r\n\r\n";
+	/*char request[] = "GET / HTTP/1.1\r\nHost: example.com\r\nAccept: * / *\r\n\r\n";
 #define BUFFSIZE 128
 	char buffer[BUFFSIZE + 1];
 
@@ -176,7 +177,7 @@ int main(int argc, char **argv, char **env) {
 	sb_socket_stop(&socket);
 	sb_socket_clear(&socket);*/
 
-	fgetc(stdin);
+	//fgetc(stdin);
 
 	return 0;
 }

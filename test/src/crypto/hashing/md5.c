@@ -21,7 +21,7 @@ sb_bool_t test_md5() {
 
 	uint32_t i;
 	for (i = 0; i < 3; ++i) {
-		sb_crypto_md5(buffer, vectors_input[i], strlen(vectors_input[i]));
+		sb_crypto_md5(buffer, vectors_input[i], strlen((char*)vectors_input[i]));
 		if (!sb_memequ(buffer, vectors[i], 16)) {
 			valid = sb_false;
 			status("md5", "https://en.wikipedia.org/wiki/MD5", status_failed);
