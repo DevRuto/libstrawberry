@@ -54,7 +54,7 @@ sb_bool_t test_salsa20() {
 	uint32_t i;
 	for (i = 0; i < 10; ++i) {
 		sb_crypto_salsa20_init(&ctx, SB_CRYPTO_SALSA20_128, vector_keys[i], vector_ivs[i]);
-		sb_crypto_salsa20_encrypt(&ctx, plain, buffer, SIZE);
+		sb_crypto_salsa20_encrypt(&ctx, buffer, plain, SIZE);
 		sb_crypto_salsa20_clear(&ctx);
 		if (!sb_memequ(buffer, vectors[i], 64) || !sb_memequ(buffer + 192, vectors[i] + 64, 64) || !sb_memequ(buffer + 256, vectors[i] + 128, 64) || !sb_memequ(buffer + 448, vectors[i] + 192, 64)) {
 			valid = sb_false;

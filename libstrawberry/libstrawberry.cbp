@@ -37,8 +37,11 @@
 			<Add option="-Wall" />
 			<Add option="-fPIC" />
 			<Add option="-Wno-unused-const-variable" />
-			<Add option="-D_DONT_REPORT_PLATFORM" />
+			<Add option="-DDONT_REPORT_PLATFORM" />
 		</Compiler>
+		<Unit filename="../FILE_LICENSE_TEMPLATE">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="src/core/bits.h" />
 		<Unit filename="src/core/error.c">
 			<Option compilerVar="CC" />

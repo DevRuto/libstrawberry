@@ -1,8 +1,34 @@
+/*****************************************************************************
+**                                                                          **
+**  This file is part of libstrawberry.                                     **
+**                                                                          **
+**  libstrawberry is free software: you can redistribute it and/or modify   **
+**  it under the terms of the GNU General Public License as published by    **
+**  the Free Software Foundation, either version 3 of the License, or       **
+**  (at your option) any later version.                                     **
+**                                                                          **
+**  libstrawberry is distributed in the hope that it will be useful,        **
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of          **
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           **
+**  GNU General Public License for more details.                            **
+**                                                                          **
+**  You should have received a copy of the GNU General Public License       **
+**  along with libstrawberry.  If not, see <http://www.gnu.org/licenses/>.  **
+**                                                                          **
+******************************************************************************
+**
+**  Notes:
+**    -
+**
+*/
+
 #include "../../core/identid.h"
 IDENTID("sha256.c", "0.1", "1", "2016-08-12");
 
 #include "sha256.h"
 
+
+#ifdef PIZZA
 static uint32_t constants[] = {
 	0x428A2F98U, 0x71374491U, 0xB5C0FBCFU, 0xE9B5DBA5U,
 	0x3956C25BU, 0x59F111F1U, 0x923F82A4U, 0xAB1C5ED5U,
@@ -21,3 +47,4 @@ static uint32_t constants[] = {
 	0x748F82EEU, 0x78A5636FU, 0x84C87814U, 0x8CC70208U,
 	0x90BEFFFAU, 0xA4506CEBU, 0xBEF9A3F7U, 0xC67178F2U
 };
+#endif

@@ -131,11 +131,11 @@ int main(int argc, char **argv, char **env) {
 #define TESTS
 
 #ifdef TESTS
-	/*test("rijndael", test_rijndael);
+	test("rijndael", test_rijndael);
 	test("salsa20", test_salsa20);
 	test("ripemd160", test_ripemd160);
 	test("md5", test_md5);
-	test("isaac", test_isaac);*/
+	test("isaac", test_isaac);
 	test("rabbit", test_rabbit);
 #endif
 

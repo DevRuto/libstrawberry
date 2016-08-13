@@ -3,7 +3,7 @@
 
 static uint8_t keys[][16] = {
 	{ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
-	{ 0x91, 0x28, 0x13, 0x29, 0x2E, 0xED, 0x36, 0xFE, 0x3B, 0xFC, 0x62, 0xF1, 0xDC, 0x51, 0xC3, 0xAC },
+	{ 0x91, 0x28, 0x13, 0x29, 0x2E, 0x3D, 0x36, 0xFE, 0x3B, 0xFC, 0x62, 0xF1, 0xDC, 0x51, 0xC3, 0xAC },
 	{ 0x83, 0x95, 0x74, 0x15, 0x87, 0xE0, 0xC7, 0x33, 0xE9, 0xE9, 0xAB, 0x01, 0xC0, 0x9B, 0x00, 0x43 }
 };
 
@@ -18,19 +18,46 @@ sb_bool_t test_rabbit() {
 
     sb_crypto_rabbit_ctx_t ctx;
 
-    uint32_t i, ct[12], pt[12];
+    uint32_t i, ct[12], pt[12], tb[12];
     sb_memset(ct, 0xF8, sizeof(ct));
     sb_memset(pt, 0, sizeof(pt));
+
+    //status("rabbit", "hardcoded test vectors", status_info);
     for (i = 0; i < 3; ++i) {
-		sb_crypto_rabbit_clear(&ctx);
 		sb_crypto_rabbit_init(&ctx, keys[i], 0);
+
 		sb_crypto_rabbit_encrypt(&ctx, ct, pt, sizeof(pt));
-		sb_memdump(ct, sizeof(ct));
 		if (!sb_memequ(ct, results[i], sizeof(ct))) {
             valid = sb_false;
-			status("rabbit", "https://tools.ietf.org/html/rfc4503#appendix-A.1", status_failed);
+			status("rabbit e", "https://tools.ietf.org/html/rfc4503#appendix-A.1", status_failed);
 		} else {
-			status("rabbit", "https://tools.ietf.org/html/rfc4503#appendix-A.1", status_passed);
+			status("rabbit e", "https://tools.ietf.org/html/rfc4503#appendix-A.1", status_passed);
+		}
+
+		sb_crypto_rabbit_reset(&ctx);
+		sb_crypto_rabbit_decrypt(&ctx, tb, ct, sizeof(ct));
+		if (!sb_memequ(pt, tb, sizeof(pt))) {
+			valid = sb_false;
+			status("rabbit d", "https://tools.ietf.org/html/rfc4503#appendix-A.1", status_failed);
+		} else {
+			status("rabbit d", "https://tools.ietf.org/html/rfc4503#appendix-A.1", status_passed);
+		}
+    }
+
+    //status("rabbit", "soft [255 / (i + 1)]", status_info);
+    for (i = 0; i < 10; ++i) {
+		sb_memset(pt, 255 / (i + 1), sizeof(pt));
+
+		sb_crypto_rabbit_init(&ctx, keys[1], 0);
+		sb_crypto_rabbit_encrypt(&ctx, ct, pt, sizeof(pt));
+		sb_crypto_rabbit_reset(&ctx);
+		sb_crypto_rabbit_decrypt(&ctx, tb, ct, sizeof(ct));
+
+		if (!sb_memequ(pt, tb, sizeof(pt))) {
+			valid = sb_false;
+			status("rabbit", "255 / (i + 1)", status_failed);
+		} else {
+			status("rabbit", "255 / (i + 1)", status_passed);
 		}
     }
 

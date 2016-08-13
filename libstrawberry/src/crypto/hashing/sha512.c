@@ -1,8 +1,33 @@
+/*****************************************************************************
+**                                                                          **
+**  This file is part of libstrawberry.                                     **
+**                                                                          **
+**  libstrawberry is free software: you can redistribute it and/or modify   **
+**  it under the terms of the GNU General Public License as published by    **
+**  the Free Software Foundation, either version 3 of the License, or       **
+**  (at your option) any later version.                                     **
+**                                                                          **
+**  libstrawberry is distributed in the hope that it will be useful,        **
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of          **
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           **
+**  GNU General Public License for more details.                            **
+**                                                                          **
+**  You should have received a copy of the GNU General Public License       **
+**  along with libstrawberry.  If not, see <http://www.gnu.org/licenses/>.  **
+**                                                                          **
+******************************************************************************
+**
+**  Notes:
+**    -
+**
+*/
+
 #include "../../core/identid.h"
 IDENTID("sha512.c", "0.1", "1", "2016-08-12");
 
 #include "sha512.h"
 
+#ifdef PIZZA
 static uint64_t constants[] = {
 	0x428A2F98D728AE22U, 0x7137449123EF65CDU, 0xB5C0FBCFEC4D3B2FU, 0xE9B5DBA58189DBBCU,
 	0x3956C25BF348B538U, 0x59F111F1B605D019U, 0x923F82A4AF194F9BU, 0xAB1C5ED5DA6D8118U,
@@ -25,3 +50,4 @@ static uint64_t constants[] = {
 	0x28DB77F523047D84U, 0x32CAAB7B40C72493U, 0x3C9EBE0A15C9BEBCU, 0x431D67C49C100D4CU,
 	0x4CC5D4BECB3E42B6U, 0x597F299CFC657E2AU, 0x5FCB6FAB3AD6FAECU, 0x6C44198C4A475817U
 };
+#endif

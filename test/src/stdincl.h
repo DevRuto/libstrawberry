@@ -17,6 +17,7 @@
 #endif
 #define status_passed						"PASSED  "
 #define status_failed						"FAILED !"
+#define status_info							" INFO   "
 
 
 #endif

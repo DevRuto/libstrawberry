@@ -1,3 +1,27 @@
+/*****************************************************************************
+**                                                                          **
+**  This file is part of libstrawberry.                                     **
+**                                                                          **
+**  libstrawberry is free software: you can redistribute it and/or modify   **
+**  it under the terms of the GNU General Public License as published by    **
+**  the Free Software Foundation, either version 3 of the License, or       **
+**  (at your option) any later version.                                     **
+**                                                                          **
+**  libstrawberry is distributed in the hope that it will be useful,        **
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of          **
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           **
+**  GNU General Public License for more details.                            **
+**                                                                          **
+**  You should have received a copy of the GNU General Public License       **
+**  along with libstrawberry.  If not, see <http://www.gnu.org/licenses/>.  **
+**                                                                          **
+******************************************************************************
+**
+**  Notes:
+**    It works, but I feel like it really could use some polishing. // TODO
+**
+*/
+
 #include "../../core/identid.h"
 IDENTID("rabbit.c", "0.1", "1", "2016-08-12");
 
@@ -49,66 +73,38 @@ static void sb_crypto_rabbit_next_state(sb_crypto_rabbit_subctx_t *subctx) {
 }
 
 static void sb_crypto_rabbit_set_key(sb_crypto_rabbit_ctx_t *ctx, uint32_t key[4]) {
-	uint32_t i,
-			 k0 = SB_LE32(key[0]),
-			 k1 = SB_LE32(key[1]),
-			 k2 = SB_LE32(key[2]),
-			 k3 = SB_LE32(key[3]);
-
-	ctx->initctx.x[0] = k0;
-	ctx->initctx.x[2] = k1;
-	ctx->initctx.x[4] = k2;
-	ctx->initctx.x[6] = k3;
-	ctx->initctx.x[1] = ((k3 << 16) | (k2 >> 16));
-	ctx->initctx.x[3] = ((k0 << 16) | (k3 >> 16));
-	ctx->initctx.x[5] = ((k1 << 16) | (k0 >> 16));
-	ctx->initctx.x[7] = ((k2 << 16) | (k1 >> 16));
-
-	ctx->initctx.c[0] = SB_ROTL32(k2, 16);
-	ctx->initctx.c[2] = SB_ROTL32(k3, 16);
-	ctx->initctx.c[4] = SB_ROTL32(k0, 16);
-	ctx->initctx.c[6] = SB_ROTL32(k1, 16);
-	ctx->initctx.c[1] = ((k0 & 0xFFFF0000) | (k1 & 0x0000FFFF));
-	ctx->initctx.c[3] = ((k1 & 0xFFFF0000) | (k2 & 0x0000FFFF));
-	ctx->initctx.c[5] = ((k2 & 0xFFFF0000) | (k3 & 0x0000FFFF));
-	ctx->initctx.c[7] = ((k3 & 0xFFFF0000) | (k0 & 0x0000FFFF));
-
 	ctx->initctx.carry = 0;
 
-	// key expansion
-	sb_memdump(ctx->initctx.x, sizeof(ctx->initctx.x));
-	//sb_memdump(ctx->initctx.c, sizeof(ctx->initctx.c));
-	puts("");
+	uint8_t *bkey = (uint8_t*)key;
+	uint16_t kparts[8];
+	uint32_t i;
+	for (i = 0; i < 8; ++i) {
+		kparts[7 - i] = SB_LE16(bkey[(2 * i)] << 8 | bkey[(2 * i) + 1]);
+	}
 
-	// 1
-	sb_crypto_rabbit_next_state(&ctx->initctx);
-	/*sb_memdump(ctx->initctx.x, sizeof(ctx->initctx.x));
-	sb_memdump(ctx->initctx.c, sizeof(ctx->initctx.c));
-	puts("");*/
+	for (i = 0; i < 8; ++i) {
+		if ((i % 2) == 0) {
+			ctx->initctx.x[i] = SB_16M32(kparts[(i + 1) % 8], kparts[i]);
+			ctx->initctx.c[i] = SB_16M32(kparts[(i + 4) % 8], kparts[(i + 5) % 8]);
+		} else {
+			ctx->initctx.x[i] = SB_16M32(kparts[(i + 5) % 8], kparts[(i + 4) % 8]);
+			ctx->initctx.c[i] = SB_16M32(kparts[i], kparts[(i + 1) % 8]);
+		}
+	}
 
-	// 2
 	sb_crypto_rabbit_next_state(&ctx->initctx);
-
-	// 3
 	sb_crypto_rabbit_next_state(&ctx->initctx);
-
-	// 4
 	sb_crypto_rabbit_next_state(&ctx->initctx);
-	/*sb_memdump(ctx->initctx.x, sizeof(ctx->initctx.x));
-	sb_memdump(ctx->initctx.c, sizeof(ctx->initctx.c));
-	puts("");*/
+	sb_crypto_rabbit_next_state(&ctx->initctx);
 
 	for (i = 8; i--;) {
 		ctx->initctx.c[i] ^= ctx->initctx.x[(i + 4) & 7];
 	}
-	/*sb_memdump(ctx->initctx.x, sizeof(ctx->initctx.x));
-	sb_memdump(ctx->initctx.c, sizeof(ctx->initctx.c));
-	puts("");*/
 
 	sb_crypto_rabbit_reset(ctx);
 }
 
-static void sb_crypto_rabbit_set_iv(sb_crypto_rabbit_ctx_t *ctx, uint64_t iv) {
+void sb_crypto_rabbit_set_iv(sb_crypto_rabbit_ctx_t *ctx, uint64_t iv) {
 	uint32_t _iv[2],
 			 i0, i1, i2, i3;
 
@@ -142,11 +138,10 @@ sb_bool_t sb_crypto_rabbit_init(sb_crypto_rabbit_ctx_t *ctx, void *key, uint64_t
 		return sb_false;
 	}
 
-	sb_memdump(key, sizeof(uint32_t) * 4);
-	puts("");
-
 	sb_crypto_rabbit_set_key(ctx, key);
-	//sb_crypto_rabbit_set_iv(ctx, iv);
+	if (iv) {
+		sb_crypto_rabbit_set_iv(ctx, iv);
+	}
 
 	return sb_true;
 }
@@ -171,37 +166,46 @@ sb_bool_t sb_crypto_rabbit_clear(sb_crypto_rabbit_ctx_t *ctx) {
 	return sb_true;
 }
 
+static void get_s(sb_crypto_rabbit_ctx_t *ctx, uint32_t *s_out) {
+	uint32_t i;
+	uint16_t *s16 = (uint16_t*)s_out, buffer;
+	for (i = 0; i < 8; ++i) {
+		if ((i % 2) == 0) {
+			buffer = (((ctx->workctx.x[6 - i] >> 16) & 0xFFFF) ^ (ctx->workctx.x[(9 - i) % 8] & 0xFFFF));
+		} else {
+			buffer = ((ctx->workctx.x[7 - i] & 0xFFFF) ^ ((ctx->workctx.x[(12 - i) % 8] >> 16) & 0xFFFF));
+		}
+		s16[i] = SB_BE16(buffer);
+	}
+}
+
 sb_bool_t sb_crypto_rabbit_process(sb_crypto_rabbit_ctx_t *ctx, void *out, void *in, sb_size_t size) {
 	if (!ctx || !out || !in) {
 		return sb_false;
 	}
 
-	uint32_t *optr = out, *iptr = in;
-
-	for (; size >= 16; size -= 16, optr += 16, iptr += 16) {
+	uint32_t *optr = out, *iptr = in, s[4];
+	for (; size >= 16; size -= 16, optr += 4, iptr += 4) {
 		sb_crypto_rabbit_next_state(&ctx->workctx);
 
-		optr[0] = iptr[0] ^ SB_LE32(ctx->workctx.x[0] ^ (ctx->workctx.x[5] >> 16) ^ (ctx->workctx.x[3] << 16));
-		optr[1] = iptr[1] ^ SB_LE32(ctx->workctx.x[2] ^ (ctx->workctx.x[7] >> 16) ^ (ctx->workctx.x[5] << 16));
-		optr[2] = iptr[2] ^ SB_LE32(ctx->workctx.x[4] ^ (ctx->workctx.x[1] >> 16) ^ (ctx->workctx.x[7] << 16));
-		optr[3] = iptr[3] ^ SB_LE32(ctx->workctx.x[6] ^ (ctx->workctx.x[3] >> 16) ^ (ctx->workctx.x[1] << 16));
+		get_s(ctx, s);
+
+		optr[0] = SB_XOR(iptr[0], s[0]);
+		optr[1] = SB_XOR(iptr[1], s[1]);
+		optr[2] = SB_XOR(iptr[2], s[2]);
+		optr[3] = SB_XOR(iptr[3], s[3]);
 	}
 
 	if (size) {
-		uint32_t b[4];
-		uint8_t *bptr = (uint8_t*)b, *obptr = (uint8_t*)optr, *ibptr = (uint8_t*)iptr;
-		sb_memset(b, 0, sizeof(b));
+		uint8_t *obptr = (uint8_t*)optr, *ibptr = (uint8_t*)iptr, *sb = (uint8_t*)s;
 
 		sb_crypto_rabbit_next_state(&ctx->workctx);
 
-		b[0] = SB_LE32(ctx->workctx.x[0] ^ (ctx->workctx.x[5] >> 16) ^ (ctx->workctx.x[3] << 16));
-		b[1] = SB_LE32(ctx->workctx.x[2] ^ (ctx->workctx.x[7] >> 16) ^ (ctx->workctx.x[5] << 16));
-		b[2] = SB_LE32(ctx->workctx.x[4] ^ (ctx->workctx.x[1] >> 16) ^ (ctx->workctx.x[7] << 16));
-		b[3] = SB_LE32(ctx->workctx.x[6] ^ (ctx->workctx.x[3] >> 16) ^ (ctx->workctx.x[1] << 16));
+		get_s(ctx, s);
 
 		uint32_t i;
 		for (i = size; i--;) {
-			obptr[i] = SB_XOR(ibptr[i], bptr[i]);
+			obptr[i] = SB_XOR(ibptr[i], sb[i]);
 		}
 	}
 

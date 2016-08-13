@@ -30,7 +30,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-D_CONCLUSIONS_ONLY" />
+			<Add option="-DCONCLUSIONS_ONLY" />
 			<Add option="-DDONT_REPORT_PLATFORM" />
 		</Compiler>
 		<Linker>
