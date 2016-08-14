@@ -50,10 +50,10 @@ static void sb_crypto_rabbit_next_state(sb_crypto_rabbit_subctx_t *subctx) {
 
 static void sb_crypto_rabbit_set_key(sb_crypto_rabbit_ctx_t *ctx, uint32_t key[4]) {
 	uint32_t i,
-			 k0 = SB_LE32(key[0]),
-			 k1 = SB_LE32(key[1]),
-			 k2 = SB_LE32(key[2]),
-			 k3 = SB_LE32(key[3]);
+		k0 = SB_LE32(key[0]),
+		k1 = SB_LE32(key[1]),
+		k2 = SB_LE32(key[2]),
+		k3 = SB_LE32(key[3]);
 
 	ctx->initctx.x[0] = k0;
 	ctx->initctx.x[2] = k1;
@@ -63,6 +63,11 @@ static void sb_crypto_rabbit_set_key(sb_crypto_rabbit_ctx_t *ctx, uint32_t key[4
 	ctx->initctx.x[3] = ((k0 << 16) | (k3 >> 16));
 	ctx->initctx.x[5] = ((k1 << 16) | (k0 >> 16));
 	ctx->initctx.x[7] = ((k2 << 16) | (k1 >> 16));
+
+	// key expansion
+	sb_memdump(ctx->initctx.x, sizeof(ctx->initctx.x));
+	//sb_memdump(ctx->initctx.c, sizeof(ctx->initctx.c));
+	puts("");
 
 	ctx->initctx.c[0] = SB_ROTL32(k2, 16);
 	ctx->initctx.c[2] = SB_ROTL32(k3, 16);
@@ -76,9 +81,9 @@ static void sb_crypto_rabbit_set_key(sb_crypto_rabbit_ctx_t *ctx, uint32_t key[4
 	ctx->initctx.carry = 0;
 
 	// key expansion
-	sb_memdump(ctx->initctx.x, sizeof(ctx->initctx.x));
+	//sb_memdump(ctx->initctx.x, sizeof(ctx->initctx.x));
 	//sb_memdump(ctx->initctx.c, sizeof(ctx->initctx.c));
-	puts("");
+	//puts("");
 
 	// 1
 	sb_crypto_rabbit_next_state(&ctx->initctx);

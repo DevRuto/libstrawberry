@@ -195,8 +195,13 @@
     <ClInclude Include="src\crypto\blockmode.h" />
     <ClInclude Include="src\crypto\hashing\md5.h" />
     <ClInclude Include="src\crypto\hashing\ripemd160.h" />
+    <ClInclude Include="src\crypto\hashing\sha256.h" />
+    <ClInclude Include="src\crypto\hashing\sha512.h" />
+    <ClInclude Include="src\crypto\padding\iso97971-2.h" />
     <ClInclude Include="src\crypto\padding\pkcs7.h" />
+    <ClInclude Include="src\crypto\padding\zero.h" />
     <ClInclude Include="src\crypto\prng\isaac.h" />
+    <ClInclude Include="src\crypto\symmetric\rabbit.h" />
     <ClInclude Include="src\crypto\symmetric\rijndael.h" />
     <ClInclude Include="src\crypto\symmetric\salsa20.h" />
     <ClInclude Include="src\networking\socket.h" />
@@ -209,8 +214,13 @@
     <ClCompile Include="src\crypto\blockmode.c" />
     <ClCompile Include="src\crypto\hashing\md5.c" />
     <ClCompile Include="src\crypto\hashing\ripemd160.c" />
+    <ClCompile Include="src\crypto\hashing\sha256.c" />
+    <ClCompile Include="src\crypto\hashing\sha512.c" />
+    <ClCompile Include="src\crypto\padding\iso97971-2.c" />
     <ClCompile Include="src\crypto\padding\pkcs7.c" />
+    <ClCompile Include="src\crypto\padding\zero.c" />
     <ClCompile Include="src\crypto\prng\isaac.c" />
+    <ClCompile Include="src\crypto\symmetric\rabbit.c" />
     <ClCompile Include="src\crypto\symmetric\salsa20.c" />
     <ClCompile Include="src\dllmain.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>

@@ -9,6 +9,7 @@
 
 
 typedef struct sb_crypto_sha512_ctx {
+	void *vscantignorethisshit;
 	// TODO
 } sb_crypto_sha512_ctx_t;
 

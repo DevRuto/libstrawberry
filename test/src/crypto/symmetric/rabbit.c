@@ -25,7 +25,7 @@ sb_bool_t test_rabbit() {
 		sb_crypto_rabbit_clear(&ctx);
 		sb_crypto_rabbit_init(&ctx, keys[i], 0);
 		sb_crypto_rabbit_encrypt(&ctx, ct, pt, sizeof(pt));
-		sb_memdump(ct, sizeof(ct));
+		//sb_memdump(ct, sizeof(ct));
 		if (!sb_memequ(ct, results[i], sizeof(ct))) {
             valid = sb_false;
 			status("rabbit", "https://tools.ietf.org/html/rfc4503#appendix-A.1", status_failed);

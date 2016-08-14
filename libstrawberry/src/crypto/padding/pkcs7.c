@@ -34,7 +34,12 @@ sb_bool_t sb_crypto_pad_pkcs7(void *out, void *in, sb_size_t blocksize, sb_size_
 		return sb_false;
 	}
 
-	uint8_t pad = (uint8_t)(size - havesize), pidx = pad, *pptr = ((out + havesize) - 1);
+	uint8_t pad = (uint8_t)(size - havesize), pidx = pad,
+#if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS) // see zero.c:34
+		*pptr = (((uint8_t*)out + havesize) - 1);
+#else
+		*pptr = ((out + havesize) - 1);
+#endif
 	sb_memcpy(out, in, havesize);
 	for (; pidx--;) {
 		*(++pptr) = pad;

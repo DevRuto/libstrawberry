@@ -72,6 +72,21 @@
     <ClInclude Include="src\core\types\dictionary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\crypto\symmetric\rabbit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crypto\padding\zero.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crypto\padding\iso97971-2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crypto\hashing\sha256.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crypto\hashing\sha512.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\memory.c">
@@ -120,6 +135,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\networking\pssocket.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\symmetric\rabbit.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\padding\zero.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\padding\iso97971-2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\hashing\sha256.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\hashing\sha512.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
