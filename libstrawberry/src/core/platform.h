@@ -89,7 +89,7 @@
 
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_LINUX)
-	// todo
+#	define SB_OPT_MLOCK
 #elif (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 #	define WIN32_LEAN_AND_MEAN
 #	define NOMINMAX	// FIX the stupid LOWERCASEEEEEEEEEEE min/max

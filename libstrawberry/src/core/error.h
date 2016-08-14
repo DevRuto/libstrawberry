@@ -87,6 +87,7 @@ extern "C" {
 #define SB_ERROR_FATAL_OUT_OF_MEMORY		6
 #define SB_ERROR_FATAL_PTR_INVALID			7
 #define SB_ERROR_INITIALIZATION				8
+#define SB_ERROR_FATAL_LOCK_FAILURE			9
 
 
 #endif

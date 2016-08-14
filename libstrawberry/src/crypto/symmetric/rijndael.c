@@ -465,8 +465,8 @@ void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *ctx, uint8_t bits, void *
 	}
 	ctx->size *= sizeof(uint32_t);
 
-	ctx->key_encrypt = sb_malloc(ctx->size);
-	ctx->key_decrypt = sb_malloc(ctx->size);
+	ctx->key_encrypt = sb_malloc_s(ctx->size);
+	ctx->key_decrypt = sb_malloc_s(ctx->size);
 
 	uint32_t *k, i, *k32 = key;
 

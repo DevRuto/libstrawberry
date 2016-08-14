@@ -26,7 +26,7 @@
 ********************************************************************************
 **
 **  Notes:
-**    It works, but I feel like it really could use some polishing. // TODO
+**    // TODO It works, but I feel like it really could use some polishing.
 **
 */
 

@@ -48,7 +48,7 @@ void sb_dictionary_init(sb_dictionary_t *dictionary, sb_size_t size) {
 	dictionary->__size = size;
 
 	sb_size_t msize = (sizeof(*dictionary->entries) * dictionary->__size);
-	dictionary->entries = sb_calloc(msize);
+	dictionary->entries = sb_calloc_u(msize);
 }
 
 void sb_dictionary_clear(sb_dictionary_t *dictionary) {
@@ -129,7 +129,7 @@ sb_bool_t sb_dictionary_set(sb_dictionary_t *dictionary, const char *key, void *
 	sb_size_t index;
 	if (dictionary->count == dictionary->__size) {
 		index = dictionary->__size++;
-		dictionary->entries = sb_realloc(dictionary->entries, sizeof(*dictionary->entries) * dictionary->__size);
+		dictionary->entries = sb_realloc_u(dictionary->entries, sizeof(*dictionary->entries) * dictionary->__size);
 	} else {
 		if (!sb_dictionary_get_index(dictionary, NULL, &index)) {
 			// error
@@ -137,7 +137,7 @@ sb_bool_t sb_dictionary_set(sb_dictionary_t *dictionary, const char *key, void *
 		}
 	}
 
-	dictionary->entries[index].key = sb_ntcpyalloc((void*)key, strlen(key));
+	dictionary->entries[index].key = sb_ntcpyalloc_u((void*)key, strlen(key));
 	dictionary->entries[index].value = value;
 
 	++(dictionary->count);

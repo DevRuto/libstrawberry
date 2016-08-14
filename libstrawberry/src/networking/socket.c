@@ -76,6 +76,7 @@ sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags
 
 	int err; // TODO: remove or output/register
 	if ((err = getaddrinfo(node, NULL, &hints, &sock->addrinfo)) != 0) {
+		sb_error_set_ex(SB_ERROR_INITIALIZATION, err);
 		return sb_false;
 	}
 

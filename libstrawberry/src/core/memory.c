@@ -26,99 +26,150 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
+**    // TODO Add compiler flag option to enforce memory alignment.
 **
 */
 
 #include "identid.h"
-IDENTID("memory.c", "0.1", "1", "2016-07-30");
+IDENTID("memory.c", "0.1", "2", "2016-08-14");
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "memory.h"
 #include "error.h"
 
-static void*(*__sb_malloc)(sb_size_t) = NULL;
-static void(*__sb_free)(void*) = NULL;
-static void*(*__sb_realloc)(void*, sb_size_t) = NULL;
-static void*(*__sb_memcpy)(void*, void*, sb_size_t) = NULL;
-static void*(*__sb_memset)(void*, int, sb_size_t) = NULL;
-static int(*__sb_memcmp)(void*, void*, sb_size_t) = NULL;
-
-void sb_memory_set_malloc(void*(*func)(sb_size_t size)) {
-	__sb_malloc = func;
-}
-
-void sb_memory_set_free(void(*func)(void *ptr)) {
-	__sb_free = func;
-}
-
-void sb_memory_set_realloc(void*(*func)(void *ptr, sb_size_t size)) {
-	__sb_realloc = func;
-}
-
-void sb_memory_set_memcpy(void*(*func)(void *dst, void *src, sb_size_t size)) {
-	__sb_memcpy = func;
-}
-
-void sb_memory_set_memset(void*(*func)(void *dst, int value, sb_size_t size)) {
-	__sb_memset = func;
-}
-
-void sb_memory_set_memcmp(int(*func)(void *cmp1, void *cmp2, sb_size_t size)) {
-	__sb_memcmp = func;
-}
+#ifdef SB_OPT_MLOCK
+#	include <sys/mman.h>
+#endif
 
 
-void* sb_malloc(sb_size_t size) {
-	void *ptr = (__sb_malloc ? __sb_malloc : malloc)(size);
+void* sb_malloc_u(sb_size_t size) {
+	void *ptr = malloc(size);
 	if (!ptr) {
 		sb_error_fatal(SB_ERROR_FATAL_OUT_OF_MEMORY);
 	}
 	return ptr;
 }
 
-void* sb_calloc(sb_size_t size) {
-	void *ptr = sb_malloc(size);
+void* sb_malloc_s(sb_size_t size) {
+	void *ptr = sb_malloc_u(size);
+
+	int err;
+	if ((err = mlock(ptr, size))) {
+		sb_free(ptr);
+		sb_error_fatal_ex(SB_ERROR_FATAL_LOCK_FAILURE, err);
+	} else {
+		return ptr;
+	}
+
+	return NULL;
+}
+
+
+void* sb_calloc_u(sb_size_t size) {
+	void *ptr = sb_malloc_u(size);
 	sb_memset(ptr, 0, size);
 	return ptr;
 }
 
-void* sb_realloc(void *ptr, sb_size_t size) {
+
+void* sb_calloc_s(sb_size_t size) {
+	void *ptr = sb_malloc_s(size);
+	sb_memset(ptr, 0, size);
+	return ptr;
+}
+
+
+void* sb_realloc_u(void *ptr, sb_size_t size) {
 	if (!ptr) {
 		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
 	}
-	void *nptr = (__sb_realloc ? __sb_realloc : realloc)(ptr, size);
+	void *nptr = realloc(ptr, size);
 	if (!nptr) {
 		sb_error_fatal(SB_ERROR_FATAL_OUT_OF_MEMORY);
 	}
 	return nptr;
 }
 
-void* sb_cpyalloc(void *ptr, sb_size_t size) {
-	if (ptr && size) {
-		void *p = sb_malloc(size);
-		sb_memcpy(p, ptr, size);
+
+void* sb_realloc_s(void *ptr, sb_size_t size) {
+	void *p = sb_realloc_u(ptr, size);
+
+	int err;
+	if ((err = mlock(p, size))) {
+		sb_free(p);
+		sb_error_fatal_ex(SB_ERROR_FATAL_LOCK_FAILURE, err);
+	} else {
 		return p;
+	}
+
+	return NULL;
+}
+
+
+void* sb_cpyalloc_u(void *ptr, sb_size_t size) {
+	if (ptr) {
+		if (size) {
+			void *p = sb_malloc_u(size);
+			sb_memcpy(p, ptr, size);
+			return p;
+		}
+	} else {
+		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
 	}
 	return NULL;
 }
 
-void* sb_ntcpyalloc(void *ptr, sb_size_t size) {
-	if (ptr && size) {
-		void *p = sb_cpyalloc(ptr, size + 1);
-		((uint8_t*)p)[size] = 0;
-		return p;
+
+void* sb_cpyalloc_s(void *ptr, sb_size_t size) {
+	if (ptr) {
+		if (size) {
+			void *p = sb_malloc_s(size);
+			sb_memcpy(p, ptr, size);
+			return p;
+		}
+	} else {
+		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
 	}
 	return NULL;
 }
+
+
+void* sb_ntcpyalloc_u(void *ptr, sb_size_t size) {
+	if (ptr) {
+		if (size) {
+			void *p = sb_cpyalloc_u(ptr, size + 1);
+			((uint8_t*)p)[size] = 0;
+			return p;
+		}
+	} else {
+		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
+	}
+	return NULL;
+}
+
+
+void* sb_ntcpyalloc_s(void *ptr, sb_size_t size) {
+	if (ptr) {
+		if (size) {
+			void *p = sb_cpyalloc_s(ptr, size + 1);
+			((uint8_t*)p)[size] = 0;
+			return p;
+		}
+	} else {
+		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
+	}
+	return NULL;
+}
+
 
 void sb_free(void *ptr) {
 	if (!ptr) {
 		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
 	}
-	(__sb_free ? __sb_free : free)(ptr);
+	free(ptr);
 }
+
 
 void sb_memcpy(void *dst, void *src, sb_size_t size) {
 	if (!dst || !src) {
@@ -127,41 +178,38 @@ void sb_memcpy(void *dst, void *src, sb_size_t size) {
 	if (dst == src) {
 		return;
 	}
-	if (__sb_memcpy) {
-		__sb_memcpy(dst, src, size);
-	} else {
-		memcpy(dst, src, size);
-	}
+	memcpy(dst, src, size);
 }
+
 
 void sb_memset(void *dst, int value, sb_size_t size) {
 	if (!dst) {
 		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
 	}
-	(__sb_memset ? __sb_memset : memset)(dst, value, size);
+	memset(dst, value, size);
 }
+
 
 int sb_memcmp(void *cmp1, void *cmp2, sb_size_t size) {
 	int cmp = 2147483647;
 	if (cmp1 && cmp2) {
-		if (__sb_memcmp) {
-			cmp = __sb_memcmp(cmp1, cmp2, size);
-		} else {
-			cmp = memcmp(cmp1, cmp2, size);
-		}
+		cmp = memcmp(cmp1, cmp2, size);
 	}
 	return cmp;
 }
 
+
 sb_bool_t sb_memequ(void *cmp1, void *cmp2, sb_size_t size) {
 	return (sb_memcmp(cmp1, cmp2, size) == 0);
 }
+
 
 void sb_strcpy(void *dst, const char *str) {
 	if (dst && str) {
 		sb_memcpy(dst, (void*)str, strlen(str));
 	}
 }
+
 
 void sb_strappend(void **dst, const char *str) {
 	if (dst && *dst && str) {
@@ -171,9 +219,10 @@ void sb_strappend(void **dst, const char *str) {
 	}
 }
 
+
 void sb_memdump_ex(void *src, sb_size_t size, sb_size_t columns) {
 	if (!src) {
-		printf("%s: invalid pointer (%p)\n", __func__, src);
+		puts("memdump: invalid pointer");
 		return;
 	}
 	if (src && size && columns) {
@@ -188,6 +237,7 @@ void sb_memdump_ex(void *src, sb_size_t size, sb_size_t columns) {
 		}
 	}
 }
+
 
 void sb_memdump(void *src, sb_size_t size) {
 	sb_memdump_ex(src, size, 16);
