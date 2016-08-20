@@ -37,7 +37,6 @@ IDENTID("rabbit.c", "0.1", "1", "2016-08-12");
 #include "../../core/error.h"
 #include "../../core/memory.h"
 #include "../../core/bits.h"
-#include <stdio.h>
 
 
 static void sb_crypto_rabbit_next_state(sb_crypto_rabbit_subctx_t *subctx) {
@@ -112,7 +111,11 @@ static void sb_crypto_rabbit_set_key(sb_crypto_rabbit_ctx_t *ctx, uint32_t key[4
 	sb_crypto_rabbit_reset(ctx);
 }
 
-void sb_crypto_rabbit_set_iv(sb_crypto_rabbit_ctx_t *ctx, uint64_t iv) {
+sb_bool_t sb_crypto_rabbit_set_iv(sb_crypto_rabbit_ctx_t *ctx, uint64_t iv) {
+	if (!ctx) {
+		return sb_false;
+	}
+
 	uint32_t _iv[2],
 			 i0, i1, i2, i3;
 
@@ -139,6 +142,8 @@ void sb_crypto_rabbit_set_iv(sb_crypto_rabbit_ctx_t *ctx, uint64_t iv) {
 	sb_crypto_rabbit_next_state(&ctx->workctx);
 	sb_crypto_rabbit_next_state(&ctx->workctx);
 	sb_crypto_rabbit_next_state(&ctx->workctx);
+
+	return sb_true;
 }
 
 sb_bool_t sb_crypto_rabbit_init(sb_crypto_rabbit_ctx_t *ctx, void *key, uint64_t iv) {
@@ -179,9 +184,9 @@ static void get_s(sb_crypto_rabbit_ctx_t *ctx, uint32_t *s_out) {
 	uint16_t *s16 = (uint16_t*)s_out, buffer;
 	for (i = 0; i < 8; ++i) {
 		if ((i % 2) == 0) {
-			buffer = (((ctx->workctx.x[6 - i] >> 16) & 0xFFFF) ^ (ctx->workctx.x[(9 - i) % 8] & 0xFFFF));
+			buffer = SB_XOR(((ctx->workctx.x[6 - i] >> 16) & 0xFFFF), (ctx->workctx.x[(9 - i) % 8] & 0xFFFF));
 		} else {
-			buffer = ((ctx->workctx.x[7 - i] & 0xFFFF) ^ ((ctx->workctx.x[(12 - i) % 8] >> 16) & 0xFFFF));
+			buffer = SB_XOR((ctx->workctx.x[7 - i] & 0xFFFF), ((ctx->workctx.x[(12 - i) % 8] >> 16) & 0xFFFF));
 		}
 		s16[i] = SB_BE16(buffer);
 	}

@@ -58,6 +58,7 @@ extern "C" {
 #endif
 
 	SBAPI sb_bool_t sb_crypto_rabbit_init(sb_crypto_rabbit_ctx_t *ctx, void *key, uint64_t iv);
+	SBAPI sb_bool_t sb_crypto_rabbit_set_iv(sb_crypto_rabbit_ctx_t *ctx, uint64_t iv);
 	SBAPI sb_bool_t sb_crypto_rabbit_clear(sb_crypto_rabbit_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_rabbit_reset(sb_crypto_rabbit_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_rabbit_process(sb_crypto_rabbit_ctx_t *ctx, void *out, void *in, sb_size_t size);

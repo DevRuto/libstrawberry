@@ -30,27 +30,3 @@
 **
 */
 
-#ifndef __SB_CRYPTO_BLOCKMODE_H
-#define __SB_CRYPTO_BLOCKMODE_H
-
-
-#include <stdint.h>
-#include <stddef.h>
-
-#include "../core/sbapi.h"
-
-
-#define SB_CRYPTO_BLOCKMODE_CBC				1
-
-#define SB_CRYPTO_BLOCKFLAG_EXPLICIT_IV		SB_BIT_16
-
-
-typedef struct sb_crypto_blockmode_ctx {
-	sb_size_t iv_size;
-	uint16_t mode;
-	uint16_t flags;
-	uint8_t iv[];
-} sb_crypto_blockmode_ctx_t;
-
-
-#endif

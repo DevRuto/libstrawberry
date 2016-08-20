@@ -26,7 +26,7 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
+**    // TODO Accept functionality /might/ come in handy for server-mode sockets.
 **
 */
 
@@ -36,18 +36,23 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#if LIBSTRAWBERRY_EXPORTS // quick dirty fix
-#define HAVE_STRUCT_TIMESPEC
-#include <pthread.h>
-#else
-typedef uintptr_t pthread_t;
-#endif
 
 #include "../core/sbapi.h"
 #include "../core/platform.h"
 #include "../core/types/bool.h"
 #include "../core/bits.h"
 #include "../core/memory.h"
+
+#if LIBSTRAWBERRY_EXPORTS
+#	ifdef INCLUDE_PROTOCOL
+#		define HAVE_STRUCT_TIMESPEC
+#		include <pthread.h>
+#	else
+		typedef uintptr_t pthread_t;
+#	endif
+#else
+	typedef uintptr_t pthread_t;
+#endif
 
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
