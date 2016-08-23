@@ -568,7 +568,7 @@ __sb_crypto_rijndael_init_expand_decrypt:
 	}
 }
 
-void sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *ctx) {
+sb_bool_t sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *ctx) {
 	sb_error_reset();
 
 	if (ctx) {
@@ -583,8 +583,11 @@ void sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *ctx) {
 		ctx->flags = 0;
 		ctx->rounds = 0;
 		ctx->size = 0;
+
+		return sb_true;
 	} else {
 		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
 	}
 }
 

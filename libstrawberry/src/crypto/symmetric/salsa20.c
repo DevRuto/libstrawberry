@@ -88,12 +88,14 @@ void sb_crypto_salsa20_init(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *ke
 	sb_crypto_salsa20_init_ex(ctx, bits, key, nonce, NULL);
 }
 
-void sb_crypto_salsa20_clear(sb_crypto_salsa20_ctx_t *ctx) {
+sb_bool_t sb_crypto_salsa20_clear(sb_crypto_salsa20_ctx_t *ctx) {
 	sb_error_reset();
 	if (ctx) {
 		sb_memset(ctx, 0, sizeof(*ctx));
+		return sb_true;
 	} else {
 		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
 	}
 }
 

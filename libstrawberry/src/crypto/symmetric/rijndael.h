@@ -38,6 +38,7 @@
 #include <stddef.h>
 
 #include "../../core/sbapi.h"
+#include "../../core/types/bool.h"
 
 
 #define SB_CRYPTO_BLOCKSIZE_RIJNDAEL		16
@@ -61,7 +62,7 @@ extern "C" {
 #endif
 
 	SBAPI void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, void *key);
-	SBAPI void sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *rijndael);
+	SBAPI sb_bool_t sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *rijndael);
 	SBAPI void sb_crypto_rijndael_encrypt_block(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in);
 	SBAPI void sb_crypto_rijndael_decrypt_block(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in);
 
