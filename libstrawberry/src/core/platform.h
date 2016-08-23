@@ -138,14 +138,14 @@
 #endif
 
 
-#define SB_MIN_UINT8                0
-#define SB_MAX_UINT8                255U
-#define SB_MIN_UINT16               0
-#define SB_MAX_UINT16               65535U
-#define SB_MIN_UINT32               0
-#define SB_MAX_UINT32               4294967295U
-#define SB_MIN_UINT64               0
-#define SB_MAX_UINT64               18446744073709551615U
+#define SB_MIN_UINT8						0
+#define SB_MAX_UINT8						255U
+#define SB_MIN_UINT16						0
+#define SB_MAX_UINT16						65535U
+#define SB_MIN_UINT32						0
+#define SB_MAX_UINT32						4294967295U
+#define SB_MIN_UINT64						0
+#define SB_MAX_UINT64						18446744073709551615U
 
 
 #include <stdint.h>
