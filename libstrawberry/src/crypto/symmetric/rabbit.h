@@ -41,6 +41,9 @@
 #include "../../core/types/bool.h"
 
 
+#define SB_CRYPTO_BLOCKSIZE_RABBIT			16
+
+
 typedef struct sb_crypto_rabbit_subctx {
 	uint32_t x[8];
 	uint32_t c[8];

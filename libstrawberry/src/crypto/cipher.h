@@ -38,6 +38,14 @@
 #include <stddef.h>
 
 #include "../core/sbapi.h"
+#include "../core/types/bool.h"
+
+#include "blockmode.h"
+
+
+#define SB_CRYPTO_CIPHER_RIJNDAEL			1
+#define SB_CRYPTO_CIPHER_SALSA20			2
+#define SB_CRYPTO_CIPHER_RABBIT				3
 
 
 typedef struct sb_crypto_cipher_ctx {
@@ -52,11 +60,15 @@ typedef struct sb_crypto_cipher_ctx {
 extern "C" {
 #endif
 
-	SBAPI sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, uint16_t flags);
+	SBAPI sb_size_t sb_crypto_cipher_get_blocksize(uint16_t cipher);
+
+	// ------------------------------------------------------------------------
+
+	SBAPI sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, uint16_t flags, uint8_t bits, void *key);
 	SBAPI sb_bool_t sb_crypto_cipher_reset(sb_crypto_cipher_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_cipher_clear(sb_crypto_cipher_ctx_t *ctx);
 
-	SBAPI sb_bool_t sb_crypto_cipher_blockmode_init(sb_crypto_cipher_ctx_t *ctx, uint16_t mode, uint16_t flags);
+	SBAPI sb_bool_t sb_crypto_cipher_blockmode_init(sb_crypto_cipher_ctx_t *ctx, uint16_t mode, uint16_t flags, void *iv, sb_size_t ivsize);
 	SBAPI sb_bool_t sb_crypto_cipher_blockmode_clear(sb_crypto_cipher_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_cipher_blockmode_set(sb_crypto_cipher_ctx_t *ctx, sb_crypto_blockmode_ctx_t *blockmodectxptr);
 	SBAPI sb_bool_t sb_crypto_cipher_blockmode_set_enabled(sb_crypto_cipher_ctx_t *ctx, sb_bool_t enabled);

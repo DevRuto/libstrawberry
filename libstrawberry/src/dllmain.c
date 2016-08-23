@@ -50,6 +50,4 @@ int APIENTRY DllMain(HMODULE hModule, DWORD ulCallReason, LPVOID lpReserved) {
 }
 
 
-#else
-IDENTID("dllmain.c", "-", "-", "excluded");
 #endif

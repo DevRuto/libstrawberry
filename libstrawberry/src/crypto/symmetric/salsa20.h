@@ -40,6 +40,12 @@
 #include "../../core/sbapi.h"
 
 
+#define SB_CRYPTO_BLOCKSIZE_SALSA20			64
+
+#define SB_CRYPTO_SALSA20_128				128
+#define SB_CRYPTO_SALSA20_256				256
+
+
 typedef struct sb_crypto_salsa20_ctx_layout {
 	uint32_t c1;
 	uint32_t k1[4];
@@ -55,10 +61,6 @@ typedef union sb_crypto_salsa20_ctx {
 	uint32_t data[16];
 	sb_crypto_salsa20_ctx_layout_t layout;
 } sb_crypto_salsa20_ctx_t;
-
-
-#define SB_CRYPTO_SALSA20_128				1
-#define SB_CRYPTO_SALSA20_256				2
 
 
 #ifdef __cplusplus

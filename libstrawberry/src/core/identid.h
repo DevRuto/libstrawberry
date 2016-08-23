@@ -37,11 +37,11 @@
 #include "platform.h"
 
 
-#define IDENTID_COMPILED_BY					"dev"
+#define IDENTID_CODENAME					"Cupcake"
 
 
 #define _IDENTID(x)							static const char identid[] = x
-#define IDENTID(file, version, rev, date)	_IDENTID("$Id: "file", "version":"rev" "date" "IDENTID_COMPILED_BY" "SB_FULL_PLATFORM_STRING" $")
+#define IDENTID(file, version, rev, date)	_IDENTID("$Id: "file", "version":"rev" "IDENTID_CODENAME" "date" "SB_FULL_PLATFORM_STRING" $")
 
 /* template
 #include "identid.h"
