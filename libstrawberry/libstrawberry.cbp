@@ -69,10 +69,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/core/types/dictionary.h" />
-		<Unit filename="src/crypto/asymmetric/diffiehellman.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/crypto/asymmetric/diffiehellman.h" />
 		<Unit filename="src/crypto/blockmode.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -97,6 +93,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/crypto/hashing/sha512.h" />
+		<Unit filename="src/crypto/key_exchange/diffiehellman.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/crypto/key_exchange/diffiehellman.h" />
 		<Unit filename="src/crypto/padding/iso97971-2.c">
 			<Option compilerVar="CC" />
 		</Unit>

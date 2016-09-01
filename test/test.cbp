@@ -34,9 +34,12 @@
 			<Add option="-DDONT_REPORT_PLATFORM" />
 		</Compiler>
 		<Linker>
-			<Add option="-lstrawberry" />
+			<Add option="-lstrawberry -lgmp" />
 			<Add directory="../bin" />
 		</Linker>
+		<Unit filename="src/crypto/asymmetric/diffiehellman.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/crypto/hashing/md5.c">
 			<Option compilerVar="CC" />
 		</Unit>
