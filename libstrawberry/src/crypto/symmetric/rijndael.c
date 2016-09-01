@@ -416,7 +416,6 @@ static const uint32_t rcon[] = {
 	(table_encrypt_4[((k)      ) & 0xFF] & 0x000000FF)				\
 )
 
-// encrypt/decrypt final round
 #define SB_CRYPTO_RIJNDAEL_ROUND_FINISH(table, v0, v1, v2, v3, k) (	\
 	((table)[((v0) >> 24) & 0xFF] & 0xFF000000) ^					\
 	((table)[((v1) >> 16) & 0xFF] & 0x00FF0000) ^					\
@@ -424,7 +423,6 @@ static const uint32_t rcon[] = {
 	((table)[((v3)      ) & 0xFF] & 0x000000FF) ^ (k)				\
 )
 
-// encrypt round
 #define SB_CRYPTO_RIJNDAEL_ROUND_ENCRYPT(v0, v1, v2, v3, k) (		\
 	table_encrypt_0[((v0) >> 24) & 0xFF] ^							\
 	table_encrypt_1[((v1) >> 16) & 0xFF] ^							\
@@ -432,7 +430,6 @@ static const uint32_t rcon[] = {
 	table_encrypt_3[((v3)      ) & 0xFF] ^ (k)						\
 )
 
-// decrypt round
 #define SB_CRYPTO_RIJNDAEL_ROUND_DECRYPT(v0, v1, v2, v3, k) (		\
 	table_decrypt_0[((v0) >> 24) & 0xFF] ^							\
 	table_decrypt_1[((v1) >> 16) & 0xFF] ^							\
@@ -443,7 +440,7 @@ static const uint32_t rcon[] = {
 void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *ctx, uint8_t bits, void *key) {
 	sb_error_reset();
 
-	if (!key || !ctx) {
+	if (!ctx || !key) {
 		sb_error_set(SB_ERROR_NULL_PTR);
 		return;
 	}
@@ -571,24 +568,24 @@ __sb_crypto_rijndael_init_expand_decrypt:
 sb_bool_t sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *ctx) {
 	sb_error_reset();
 
-	if (ctx) {
-		if (ctx->key_encrypt) {
-			sb_memset(ctx->key_encrypt, 0, ctx->size);
-			sb_free(ctx->key_encrypt);
-		}
-		if (ctx->key_decrypt) {
-			sb_memset(ctx->key_decrypt, 0, ctx->size);
-			sb_free(ctx->key_decrypt);
-		}
-		ctx->flags = 0;
-		ctx->rounds = 0;
-		ctx->size = 0;
-
-		return sb_true;
-	} else {
+	if (!ctx) {
 		sb_error_set(SB_ERROR_NULL_PTR);
 		return sb_false;
 	}
+
+	if (ctx->key_encrypt) {
+		sb_memset(ctx->key_encrypt, 0, ctx->size);
+		sb_free(ctx->key_encrypt);
+	}
+	if (ctx->key_decrypt) {
+		sb_memset(ctx->key_decrypt, 0, ctx->size);
+		sb_free(ctx->key_decrypt);
+	}
+	ctx->flags = 0;
+	ctx->rounds = 0;
+	ctx->size = 0;
+
+	return sb_true;
 }
 
 void sb_crypto_rijndael_encrypt_block(sb_crypto_rijndael_ctx_t *ctx, void *out, void *in) {

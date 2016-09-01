@@ -19,16 +19,16 @@
 
 void test(const char *name, sb_bool_t(*func)()) {
 	sb_bool_t valid = sb_true;
-	/*register uint64_t ns_start = sb_time_nsec(), ns_stop, i;
-	for (i = 0; i < 500; ++i) {*/
+	register uint64_t ns_start = sb_time_nsec(), ns_stop;//, i;
+	//for (i = 0; i < 500; ++i) {
 		if (!func()) {
 			valid = sb_false;
 		}
-	/*}*/
+	//}
 	if (valid) {
-		//ns_stop = sb_time_nsec();
-		//printf(status_passed" %10s: %llu\n", name, (ns_stop - ns_start));
-		printf(status_passed" %s\n", name);
+		ns_stop = sb_time_nsec();
+		printf(status_passed" %9s: %lu\n", name, (ns_stop - ns_start));
+		//printf(status_passed" %s\n", name);
 	} else {
 		printf(status_failed" %s\n", name);
 	}

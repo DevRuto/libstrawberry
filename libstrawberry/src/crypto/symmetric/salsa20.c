@@ -90,13 +90,15 @@ void sb_crypto_salsa20_init(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *ke
 
 sb_bool_t sb_crypto_salsa20_clear(sb_crypto_salsa20_ctx_t *ctx) {
 	sb_error_reset();
-	if (ctx) {
-		sb_memset(ctx, 0, sizeof(*ctx));
-		return sb_true;
-	} else {
+
+	if (!ctx) {
 		sb_error_set(SB_ERROR_NULL_PTR);
 		return sb_false;
 	}
+
+	sb_memset(ctx, 0, sizeof(*ctx));
+
+	return sb_true;
 }
 
 void sb_crypto_salsa20_nonce_increment(sb_crypto_salsa20_ctx_t *ctx) {
@@ -110,11 +112,12 @@ void sb_crypto_salsa20_nonce_increment(sb_crypto_salsa20_ctx_t *ctx) {
 
 SBAPI void sb_crypto_salsa20_nonce_decrement(sb_crypto_salsa20_ctx_t *ctx) {
 	sb_error_reset();
-	if (ctx) {
-		--ctx->layout.nonce;
-	} else {
+
+	if (!ctx) {
 		sb_error_set(SB_ERROR_NULL_PTR);
 	}
+
+	--ctx->layout.nonce;
 }
 
 SBAPI void sb_crypto_salsa20_nonce_set(sb_crypto_salsa20_ctx_t *ctx, uint64_t nonce) {
