@@ -34,6 +34,7 @@
 IDENTID("isaac.c", "0.1", "4", "2016-07-29");
 
 #include "isaac.h"
+#include "../../core/memory.h"
 
 
 #define SB_CRYPTO_PRNG_ISAAC_MIX(a, b, c, d, e, f, g, h) {								\
@@ -107,6 +108,10 @@ void sb_crypto_prng_isaac_init(sb_crypto_prng_isaac_ctx_t *ctx, sb_bool_t presee
 
 	sb_crypto_prng_isaac_update(ctx);
 	ctx->cnt = SB_CRYPTO_PRNG_ISAAC_SIZE;
+}
+
+void sb_crypto_prng_isaac_clear(sb_crypto_prng_isaac_ctx_t *ctx) {
+	sb_memset(ctx, 0, sizeof(*ctx));
 }
 
 void sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx) {

@@ -44,6 +44,7 @@ int main(int argc, char **argv, char **env) {
 	test("md5", test_md5);
 	test("isaac", test_isaac);
 	test("rabbit", test_rabbit);
+	test("asym/dh", test_diffiehellman);
 #endif
 
 	/*int i = 100;

@@ -38,7 +38,11 @@
 			<Add option="-fPIC" />
 			<Add option="-Wno-unused-const-variable" />
 			<Add option="-DDONT_REPORT_PLATFORM" />
+			<Add option="-DHAVE_GMP" />
 		</Compiler>
+		<Linker>
+			<Add option="-lgmp" />
+		</Linker>
 		<Unit filename="FILE_LICENSE_TEMPLATE" />
 		<Unit filename="src/core/bits.h" />
 		<Unit filename="src/core/error.c">
