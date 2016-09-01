@@ -1,5 +1,5 @@
 #include "../../stdincl.h"
-#include "../../../../libstrawberry/src/crypto/asymmetric/diffiehellman.h"
+#include "../../../../libstrawberry/src/crypto/key_exchange/diffiehellman.h"
 #include "../../../../libstrawberry/src/crypto/prng/isaac.h"
 
 static void do_seed(sb_crypto_prng_isaac_ctx_t *ctx, uint64_t *seed) {
