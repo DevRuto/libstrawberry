@@ -87,12 +87,18 @@
     <ClInclude Include="src\crypto\hashing\sha512.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\crypto\cipher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crypto\key_exchange\diffiehellman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\misc\gmp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\memory.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\crypto\asymmetric\diffiehellman.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\crypto\symmetric\rijndael.c">
@@ -134,9 +140,6 @@
     <ClCompile Include="src\core\types\dictionary.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\networking\pssocket.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\crypto\symmetric\rabbit.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -150,6 +153,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\crypto\hashing\sha512.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\cipher.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\key_exchange\diffiehellman.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\misc\gmp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

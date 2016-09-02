@@ -48,7 +48,7 @@
 #	include <winsock2.h>
 #	include <ws2tcpip.h>
 
-	typedef SOCKET sockfd_t;
+	typedef SOCKET sb_sockfd_t;
 #	define SB_INVALID_SOCKET				INVALID_SOCKET
 #	define SB_GOOD_SOCKFD(x)				((x) != SB_INVALID_SOCKET)
 #elif (SB_PLATFORM == SB_PLATFORM_ID_LINUX)
@@ -61,7 +61,7 @@
 #	include <sys/ioctl.h>
 #	include <netdb.h>
 
-	typedef int sockfd_t;
+	typedef int sb_sockfd_t;
 
 #	define SB_INVALID_SOCKET				-1
 #	define SB_GOOD_SOCKFD(x)				((x) > 0)
@@ -75,9 +75,11 @@ typedef struct addrinfo sb_addrinfo_t;
 typedef struct sb_socket_ctx {
 	sb_addrinfo_t *addrinfo;
 	sb_addrinfo_t *selected;
-	sockfd_t fd;
+	sb_sockfd_t fd;
 	uint32_t flags;
 } sb_socket_ctx_t;
+
+typedef uint8_t sb_addr6_storage[16];
 
 
 #define SB_SOCKET_SERVER					SB_BIT_1
@@ -91,6 +93,8 @@ extern "C" {
 
 	SBAPI sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags);
 	SBAPI sb_bool_t sb_socket_clear(sb_socket_ctx_t *sock);
+
+	SBAPI sb_sockfd_t sb_socket_accept(sb_socket_ctx_t *sock, struct sockaddr *saddr, socklen_t *saddrlen);
 
 	SBAPI sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port);
 	SBAPI sb_bool_t sb_socket_stop(sb_socket_ctx_t *sock);

@@ -51,3 +51,7 @@ uint64_t sb_time_nsec() {
 	return ((((uint64_t)ft.dwHighDateTime << 32 | ft.dwLowDateTime) / 10) - 0x295E9648864000);
 #endif
 }
+
+void sb_time_sleep_nsec(uint64_t nsec) {
+	// TODO
+}

@@ -30,8 +30,8 @@
 **
 */
 
-#ifndef SB_EXCLUDE_CRYPTO_ASYMMETRIC_DIFFIEHELLMAN
-#	ifdef HAVE_GMP
+#if !defined(SB_EXCLUDE_CRYPTO_KEY_EXCHANGE_DIFFIEHELLMAN) && defined(HAVE_GMP)
+
 
 #include "../../core/identid.h"
 IDENTID("diffiehellman.c", "0.1", "1", "2016-09-01");
@@ -223,7 +223,6 @@ sb_bool_t sb_crypto_diffiehellman_copy_keys(sb_crypto_diffiehellman_ctx_t *dst, 
 }
 
 
-#	else
-#		error crypto/asymmetric/diffiehellman.c requires libgmp
-#	endif
+#else
+#	error crypto/key_exchange/diffiehellman.c requires libgmp
 #endif

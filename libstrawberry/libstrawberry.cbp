@@ -37,7 +37,7 @@
 				</Linker>
 			</Target>
 			<Target title="Debug - MinGW">
-				<Option output="../bin/strawberry" prefix_auto="1" extension_auto="1" />
+				<Option output="../bin/libstrawberry" prefix_auto="0" extension_auto="1" />
 				<Option object_output="../obj/libstrawberry/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
@@ -51,11 +51,12 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
+					<Add option="-lws2_32" />
 					<Add directory="../dep/windows/x86" />
 				</Linker>
 			</Target>
 			<Target title="Release - MinGW">
-				<Option output="../bin/strawberry" prefix_auto="1" extension_auto="1" />
+				<Option output="../bin/libstrawberry" prefix_auto="0" extension_auto="1" />
 				<Option object_output="../obj/libstrawberry/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
@@ -69,6 +70,7 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="-m32" />
+					<Add option="-lws2_32" />
 					<Add directory="../dep/windows/x86" />
 				</Linker>
 			</Target>
