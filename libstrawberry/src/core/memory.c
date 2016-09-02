@@ -39,7 +39,12 @@ IDENTID("memory.c", "0.1", "2", "2016-08-14");
 #include "error.h"
 
 #ifdef SB_OPT_MLOCK
-#	include <sys/mman.h>
+#	if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
+#		define mlock						VirtualLock
+#		define munlock						VirtualUnlock
+#	else
+#		include <sys/mman.h>
+#	endif
 #endif
 
 
