@@ -34,10 +34,7 @@
 #define __SB_CORE_SBAPI_H
 
 
-#include "platform.h"
-
-
-#if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
+#ifdef _MSC_VER
 #	ifdef LIBSTRAWBERRY_EXPORTS
 #		define SBAPI						__declspec(dllexport)
 #	else

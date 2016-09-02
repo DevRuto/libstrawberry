@@ -6,7 +6,7 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug">
+			<Target title="Debug - GCC">
 				<Option output="../bin/strawberry" prefix_auto="1" extension_auto="1" />
 				<Option object_output="../obj/libstrawberry/" />
 				<Option type="3" />
@@ -15,10 +15,12 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-fPIC" />
+					<Add option="-Wno-unused-const-variable" />
 					<Add option="-DDEBUG" />
 				</Compiler>
 			</Target>
-			<Target title="Release">
+			<Target title="Release - GCC">
 				<Option output="../bin/strawberry" prefix_auto="1" extension_auto="1" />
 				<Option object_output="../obj/libstrawberry/" />
 				<Option type="3" />
@@ -27,18 +29,55 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-fPIC" />
+					<Add option="-Wno-unused-const-variable" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
 				</Linker>
 			</Target>
+			<Target title="Debug - MinGW">
+				<Option output="../bin/strawberry" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../obj/libstrawberry/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-m32" />
+					<Add option="-g" />
+					<Add option="-DDEBUG" />
+					<Add directory="../dep/windows/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-m32" />
+					<Add directory="../dep/windows/x86" />
+				</Linker>
+			</Target>
+			<Target title="Release - MinGW">
+				<Option output="../bin/strawberry" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../obj/libstrawberry/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-m32" />
+					<Add directory="../dep/windows/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-m32" />
+					<Add directory="../dep/windows/x86" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-fPIC" />
-			<Add option="-Wno-unused-const-variable" />
 			<Add option="-DDONT_REPORT_PLATFORM" />
 			<Add option="-DHAVE_GMP" />
+			<Add option="-DSB_OPT_MLOCK" />
 		</Compiler>
 		<Linker>
 			<Add option="-lgmp" />
@@ -126,9 +165,6 @@
 		</Unit>
 		<Unit filename="src/crypto/symmetric/salsa20.h" />
 		<Unit filename="src/dllmain.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/networking/pssocket.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/networking/socket.c">

@@ -90,13 +90,11 @@
 
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_LINUX)
-#	define SB_OPT_MLOCK
 #elif (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 #	define WIN32_LEAN_AND_MEAN
-#	define NOMINMAX	// FIX the stupid LOWERCASEEEEEEEEEEE min/max
+#	define NOMINMAX
 #	include <windows.h>
-#elif (SB_PLATFORM == SB_PLATFORM_ID_ANDROID)
-	// todo
+//#elif (SB_PLATFORM == SB_PLATFORM_ID_ANDROID)
 #else
 #	ifndef IGNORE_UNSUPPORTED_PLATFORM
 #		pragma message("  Platform: "SB_PLATFORM_STRING)
