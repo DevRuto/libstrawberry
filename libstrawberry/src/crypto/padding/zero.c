@@ -43,6 +43,7 @@ sb_size_t sb_crypto_pad_zero_size(sb_size_t blocksize, sb_size_t havesize) {
 	return sb_math_round_block(blocksize, havesize);
 }
 
+
 sb_bool_t sb_crypto_pad_zero(void *out, void *in, sb_size_t blocksize, sb_size_t havesize) {
 	sb_error_reset();
 
@@ -71,6 +72,7 @@ sb_bool_t sb_crypto_pad_zero(void *out, void *in, sb_size_t blocksize, sb_size_t
 
 	return sb_true;
 }
+
 
 sb_size_t sb_crypto_pad_zero_offset(void *in, sb_size_t havesize) {
 	sb_error_reset();

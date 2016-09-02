@@ -51,6 +51,7 @@ void sb_dictionary_init(sb_dictionary_t *dictionary, sb_size_t size) {
 	dictionary->entries = sb_calloc_u(msize);
 }
 
+
 void sb_dictionary_clear(sb_dictionary_t *dictionary) {
 	if (!dictionary) {
 		return;
@@ -71,6 +72,7 @@ void sb_dictionary_clear(sb_dictionary_t *dictionary) {
 
 	sb_memset(dictionary, 0, sizeof(*dictionary));
 }
+
 
 sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, sb_size_t *index) {
 	if (!dictionary || !dictionary->entries) {
@@ -104,6 +106,7 @@ sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, 
 	return sb_false;
 }
 
+
 sb_dictionary_entry_t* sb_dictionary_get(sb_dictionary_t *dictionary, const char *key) {
 	if (!dictionary || !dictionary->entries || !key) {
 		return NULL;
@@ -120,6 +123,7 @@ sb_dictionary_entry_t* sb_dictionary_get(sb_dictionary_t *dictionary, const char
 
 	return NULL;
 }
+
 
 sb_bool_t sb_dictionary_set(sb_dictionary_t *dictionary, const char *key, void *value) {
 	if (!dictionary || !dictionary->entries || !key) {

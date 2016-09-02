@@ -56,6 +56,7 @@ IDENTID("isaac.c", "0.1", "4", "2016-07-29");
 	SB_CRYPTO_PRNG_ISAAC_ROUND_STEP(((a & 0xFFFFFFFF) >> 16), a, b, mm, m, m2, r, x);	\
 }
 
+
 void sb_crypto_prng_isaac_init(sb_crypto_prng_isaac_ctx_t *ctx, sb_bool_t preseeded) {
 	register uint_fast32_t i;
 
@@ -110,9 +111,11 @@ void sb_crypto_prng_isaac_init(sb_crypto_prng_isaac_ctx_t *ctx, sb_bool_t presee
 	ctx->cnt = SB_CRYPTO_PRNG_ISAAC_SIZE;
 }
 
+
 void sb_crypto_prng_isaac_clear(sb_crypto_prng_isaac_ctx_t *ctx) {
 	sb_memset(ctx, 0, sizeof(*ctx));
 }
+
 
 void sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx) {
 	sb_crypto_prng_isaac_int_t
@@ -136,6 +139,7 @@ void sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx) {
 	ctx->b = b; ctx->a = a;
 }
 
+
 uint32_t sb_crypto_prng_isaac(sb_crypto_prng_isaac_ctx_t *ctx) {
 	if (!ctx) {
 		return 0;
@@ -148,6 +152,7 @@ uint32_t sb_crypto_prng_isaac(sb_crypto_prng_isaac_ctx_t *ctx) {
 
 	return (uint32_t)(ctx->rsl[ctx->cnt] & 0xFFFFFFFF);
 }
+
 
 uint32_t sb_crypto_prng_isaac_range(sb_crypto_prng_isaac_ctx_t *ctx, uint32_t min, uint32_t max) {
 	return SB_MATH_RANGE(min, max, sb_crypto_prng_isaac(ctx));

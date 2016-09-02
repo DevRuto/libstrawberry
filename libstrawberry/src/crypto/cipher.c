@@ -56,6 +56,7 @@ sb_size_t sb_crypto_cipher_get_blocksize(uint16_t cipher) {
 	}
 }
 
+
 sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, uint16_t flags, uint8_t bits, void *key) {
 	if (!ctx || !cipher) {
 		return sb_false;
@@ -86,6 +87,7 @@ sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, ui
 	return sb_true;
 }
 
+
 sb_bool_t sb_crypto_cipher_reset(sb_crypto_cipher_ctx_t *ctx) {
 	if (!ctx || !ctx->cipher || !ctx->data) {
 		return sb_false;
@@ -101,6 +103,7 @@ sb_bool_t sb_crypto_cipher_reset(sb_crypto_cipher_ctx_t *ctx) {
 
 	return sb_true;
 }
+
 
 sb_bool_t sb_crypto_cipher_clear(sb_crypto_cipher_ctx_t *ctx) {
 	if (!ctx || !ctx->cipher) {
@@ -134,25 +137,31 @@ sb_bool_t sb_crypto_cipher_clear(sb_crypto_cipher_ctx_t *ctx) {
 	return sb_true;
 }
 
+
 sb_bool_t sb_crypto_cipher_blockmode_init(sb_crypto_cipher_ctx_t *ctx, uint16_t mode, uint16_t flags, void *iv, sb_size_t ivsize) {
 	return sb_false;
 }
+
 
 sb_bool_t sb_crypto_cipher_blockmode_clear(sb_crypto_cipher_ctx_t *ctx) {
 	return sb_false;
 }
 
+
 sb_bool_t sb_crypto_cipher_blockmode_set(sb_crypto_cipher_ctx_t *ctx, sb_crypto_blockmode_ctx_t *blockmodectxptr) {
 	return sb_false;
 }
+
 
 sb_bool_t sb_crypto_cipher_blockmode_set_enabled(sb_crypto_cipher_ctx_t *ctx, sb_bool_t enabled) {
 	return sb_false;
 }
 
+
 sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void *in, sb_size_t size) {
 	return sb_false;
 }
+
 
 sb_bool_t sb_crypto_cipher_decrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void *in, sb_size_t size) {
 	return sb_false;

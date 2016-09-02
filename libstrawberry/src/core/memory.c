@@ -56,6 +56,7 @@ void* sb_malloc_u(sb_size_t size) {
 	return ptr;
 }
 
+
 void* sb_malloc_s(sb_size_t size) {
 	void *ptr = sb_malloc_u(size);
 

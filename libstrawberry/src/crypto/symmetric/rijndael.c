@@ -437,6 +437,7 @@ static const uint32_t rcon[] = {
 	table_decrypt_3[((v3)      ) & 0xFF] ^ (k)						\
 )
 
+
 void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *ctx, uint8_t bits, void *key) {
 	sb_error_reset();
 
@@ -565,6 +566,7 @@ __sb_crypto_rijndael_init_expand_decrypt:
 	}
 }
 
+
 sb_bool_t sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *ctx) {
 	sb_error_reset();
 
@@ -587,6 +589,7 @@ sb_bool_t sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *ctx) {
 
 	return sb_true;
 }
+
 
 void sb_crypto_rijndael_encrypt_block(sb_crypto_rijndael_ctx_t *ctx, void *out, void *in) {
 	sb_error_reset();
@@ -635,6 +638,7 @@ void sb_crypto_rijndael_encrypt_block(sb_crypto_rijndael_ctx_t *ctx, void *out, 
 	out32[2] = SB_BE32(s2);
 	out32[3] = SB_BE32(s3);
 }
+
 
 void sb_crypto_rijndael_decrypt_block(sb_crypto_rijndael_ctx_t *ctx, void *out, void *in) {
 	sb_error_reset();

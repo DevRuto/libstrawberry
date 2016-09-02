@@ -70,6 +70,7 @@ static void sb_crypto_diffiehellman_perform(mpz_t out, mpz_t x, mpz_t y, mpz_t m
 	mpz_clear(d);
 }
 
+
 sb_bool_t sb_crypto_diffiehellman_init(sb_crypto_diffiehellman_ctx_t *ctx, uint16_t bits, uint64_t seed) {
 	sb_error_reset();
 
@@ -94,6 +95,7 @@ sb_bool_t sb_crypto_diffiehellman_init(sb_crypto_diffiehellman_ctx_t *ctx, uint1
 	return sb_true;
 }
 
+
 sb_bool_t sb_crypto_diffiehellman_clear(sb_crypto_diffiehellman_ctx_t *ctx) {
 	sb_error_reset();
 
@@ -114,6 +116,7 @@ sb_bool_t sb_crypto_diffiehellman_clear(sb_crypto_diffiehellman_ctx_t *ctx) {
 
 	return sb_true;
 }
+
 
 sb_bool_t sb_crypto_diffiehellman_generate_base(sb_crypto_diffiehellman_ctx_t *ctx) {
 	sb_error_reset();
@@ -136,6 +139,7 @@ sb_bool_t sb_crypto_diffiehellman_generate_base(sb_crypto_diffiehellman_ctx_t *c
 	return sb_true;
 }
 
+
 sb_bool_t sb_crypto_diffiehellman_generate_keys(sb_crypto_diffiehellman_ctx_t *ctx) {
 	sb_error_reset();
 
@@ -151,6 +155,7 @@ sb_bool_t sb_crypto_diffiehellman_generate_keys(sb_crypto_diffiehellman_ctx_t *c
 	return sb_true;
 }
 
+
 sb_bool_t sb_crypto_diffiehellman_generate(sb_crypto_diffiehellman_ctx_t *ctx) {
 	sb_error_reset();
 
@@ -165,6 +170,7 @@ sb_bool_t sb_crypto_diffiehellman_generate(sb_crypto_diffiehellman_ctx_t *ctx) {
 	return sb_true;
 }
 
+
 sb_bool_t sb_crypto_diffiehellman_generate_secret(sb_crypto_diffiehellman_ctx_t *ctx, mpz_t public) {
 	sb_error_reset();
 
@@ -177,6 +183,7 @@ sb_bool_t sb_crypto_diffiehellman_generate_secret(sb_crypto_diffiehellman_ctx_t 
 
 	return sb_true;
 }
+
 
 sb_bool_t sb_crypto_diffiehellman_copy_base(sb_crypto_diffiehellman_ctx_t *dst, sb_crypto_diffiehellman_ctx_t *src) {
 	sb_error_reset();
@@ -195,6 +202,7 @@ sb_bool_t sb_crypto_diffiehellman_copy_base(sb_crypto_diffiehellman_ctx_t *dst, 
 
 	return sb_true;
 }
+
 
 sb_bool_t sb_crypto_diffiehellman_copy_keys(sb_crypto_diffiehellman_ctx_t *dst, sb_crypto_diffiehellman_ctx_t *src) {
 	sb_error_reset();

@@ -42,6 +42,7 @@ IDENTID("salsa20.c", "0.1", "1", "2016-07-29");
 static const uint8_t sigma[16] = "expand 32-byte k";
 static const uint8_t theta[16] = "expand 16-byte k";
 
+
 void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *key, void *nonce, void *constant) {
 	sb_error_reset();
 
@@ -84,9 +85,11 @@ void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void 
 	}
 }
 
+
 void sb_crypto_salsa20_init(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *key, void *nonce) {
 	sb_crypto_salsa20_init_ex(ctx, bits, key, nonce, NULL);
 }
+
 
 sb_bool_t sb_crypto_salsa20_clear(sb_crypto_salsa20_ctx_t *ctx) {
 	sb_error_reset();
@@ -101,6 +104,7 @@ sb_bool_t sb_crypto_salsa20_clear(sb_crypto_salsa20_ctx_t *ctx) {
 	return sb_true;
 }
 
+
 void sb_crypto_salsa20_nonce_increment(sb_crypto_salsa20_ctx_t *ctx) {
 	sb_error_reset();
 	if (ctx) {
@@ -110,7 +114,8 @@ void sb_crypto_salsa20_nonce_increment(sb_crypto_salsa20_ctx_t *ctx) {
 	}
 }
 
-SBAPI void sb_crypto_salsa20_nonce_decrement(sb_crypto_salsa20_ctx_t *ctx) {
+
+void sb_crypto_salsa20_nonce_decrement(sb_crypto_salsa20_ctx_t *ctx) {
 	sb_error_reset();
 
 	if (!ctx) {
@@ -120,7 +125,8 @@ SBAPI void sb_crypto_salsa20_nonce_decrement(sb_crypto_salsa20_ctx_t *ctx) {
 	--ctx->layout.nonce;
 }
 
-SBAPI void sb_crypto_salsa20_nonce_set(sb_crypto_salsa20_ctx_t *ctx, uint64_t nonce) {
+
+void sb_crypto_salsa20_nonce_set(sb_crypto_salsa20_ctx_t *ctx, uint64_t nonce) {
 	sb_error_reset();
 	if (ctx) {
 		ctx->layout.nonce = nonce;
@@ -128,6 +134,7 @@ SBAPI void sb_crypto_salsa20_nonce_set(sb_crypto_salsa20_ctx_t *ctx, uint64_t no
 		sb_error_set(SB_ERROR_NULL_PTR);
 	}
 }
+
 
 void sb_crypto_salsa20_process(sb_crypto_salsa20_ctx_t *ctx, void *out, void *in, sb_size_t size) {
 	sb_error_reset();

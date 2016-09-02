@@ -48,27 +48,33 @@ sb_error_t _sb_error_get() {
 	return __sb_errno;
 }
 
+
 sb_error_t _sb_error_get_param() {
 	return __sb_errparam;
 }
+
 
 void _sb_error_set(sb_error_t _errno) {
 	__sb_errno = _errno;
 }
 
+
 void _sb_error_set_param(sb_error_t _errparam) {
 	__sb_errparam = _errparam;
 }
+
 
 void _sb_error_set_ex(sb_error_t _errno, sb_error_t _errparam) {
 	__sb_errno = _errno;
 	__sb_errparam = _errparam;
 }
 
+
 void _sb_error_reset() {
 	__sb_errno = 0;
 	__sb_errparam = 0;
 }
+
 
 void _sb_error_fatal_ex(const char *file, const char *func, const int line, sb_error_t _errno, sb_error_t _errparam) {
 	printf(
@@ -86,6 +92,7 @@ void _sb_error_fatal_ex(const char *file, const char *func, const int line, sb_e
 	);
 	raise(SIGABRT);
 }
+
 
 void _sb_error_fatal(const char *file, const char *func, const int line, sb_error_t _errno) {
 	_sb_error_fatal_ex(file, func, line, _errno, 0);

@@ -40,9 +40,11 @@ IDENTID("iso97971-2.c", "0.1", "1", "2016-08-12");
 #include "../../core/math.h"
 #include "../../core/bits.h"
 
+
 sb_size_t sb_crypto_pad_iso979712_size(sb_size_t blocksize, sb_size_t havesize) {
 	return sb_math_round_block(blocksize, havesize);
 }
+
 
 sb_bool_t sb_crypto_pad_iso979712(void *out, void *in, sb_size_t blocksize, sb_size_t havesize) {
 	sb_error_reset();
@@ -64,6 +66,7 @@ sb_bool_t sb_crypto_pad_iso979712(void *out, void *in, sb_size_t blocksize, sb_s
 
 	return sb_false;
 }
+
 
 sb_size_t sb_crypto_pad_iso979712_offset(void *in, sb_size_t havesize) {
 	sb_error_reset();

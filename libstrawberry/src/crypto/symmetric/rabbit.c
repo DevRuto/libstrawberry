@@ -79,6 +79,7 @@ static void sb_crypto_rabbit_next_state(sb_crypto_rabbit_subctx_t *subctx) {
 	subctx->x[7] = (g[7] + SB_ROTL32(g[6],  8) +           g[5]     );
 }
 
+
 static void sb_crypto_rabbit_set_key(sb_crypto_rabbit_ctx_t *ctx, uint32_t key[4]) {
 	ctx->initctx.carry = 0;
 
@@ -110,6 +111,7 @@ static void sb_crypto_rabbit_set_key(sb_crypto_rabbit_ctx_t *ctx, uint32_t key[4
 
 	sb_crypto_rabbit_reset(ctx);
 }
+
 
 sb_bool_t sb_crypto_rabbit_set_iv(sb_crypto_rabbit_ctx_t *ctx, uint64_t iv) {
 	if (!ctx) {
@@ -146,6 +148,7 @@ sb_bool_t sb_crypto_rabbit_set_iv(sb_crypto_rabbit_ctx_t *ctx, uint64_t iv) {
 	return sb_true;
 }
 
+
 sb_bool_t sb_crypto_rabbit_init(sb_crypto_rabbit_ctx_t *ctx, void *key, uint64_t iv) {
 	if (!ctx || !key) {
 		return sb_false;
@@ -159,6 +162,7 @@ sb_bool_t sb_crypto_rabbit_init(sb_crypto_rabbit_ctx_t *ctx, void *key, uint64_t
 	return sb_true;
 }
 
+
 sb_bool_t sb_crypto_rabbit_reset(sb_crypto_rabbit_ctx_t *ctx) {
 	if (!ctx) {
 		return sb_false;
@@ -169,6 +173,7 @@ sb_bool_t sb_crypto_rabbit_reset(sb_crypto_rabbit_ctx_t *ctx) {
 	return sb_true;
 }
 
+
 sb_bool_t sb_crypto_rabbit_clear(sb_crypto_rabbit_ctx_t *ctx) {
 	if (!ctx) {
 		return sb_false;
@@ -178,6 +183,7 @@ sb_bool_t sb_crypto_rabbit_clear(sb_crypto_rabbit_ctx_t *ctx) {
 
 	return sb_true;
 }
+
 
 static void get_s(sb_crypto_rabbit_ctx_t *ctx, uint32_t *s_out) {
 	uint32_t i;
@@ -191,6 +197,7 @@ static void get_s(sb_crypto_rabbit_ctx_t *ctx, uint32_t *s_out) {
 		s16[i] = SB_BE16(buffer);
 	}
 }
+
 
 sb_bool_t sb_crypto_rabbit_process(sb_crypto_rabbit_ctx_t *ctx, void *out, void *in, sb_size_t size) {
 	if (!ctx || !out || !in) {

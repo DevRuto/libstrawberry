@@ -83,6 +83,7 @@ sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags
 	return sb_true;
 }
 
+
 sb_bool_t sb_socket_clear(sb_socket_ctx_t *sock) {
 	if (!sock) {
 		return sb_false;
@@ -96,6 +97,7 @@ sb_bool_t sb_socket_clear(sb_socket_ctx_t *sock) {
 
 	return sb_true;
 }
+
 
 sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port) {
 	if (!sock || !port) {
@@ -142,6 +144,7 @@ sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port) {
 	return sb_true;
 }
 
+
 sb_bool_t sb_socket_stop(sb_socket_ctx_t *sock) {
 	if (!sock) {
 		return sb_false;
@@ -164,6 +167,7 @@ sb_bool_t sb_socket_stop(sb_socket_ctx_t *sock) {
 	return sb_true;
 }
 
+
 sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_ssize_t size) {
 	if (!sock || !in || size < 1) {
 		return -2;
@@ -175,6 +179,7 @@ sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_ssize_t size) {
 
 	return send(sock->fd, in, size, 0);
 }
+
 
 sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_ssize_t size) {
 	if (!sock || !out || size < 1) {

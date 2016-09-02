@@ -193,6 +193,7 @@ static void *sb_crypto_md5_internal_update(sb_crypto_md5_ctx_t *ctx, void *data,
 	return ptr;
 }
 
+
 void sb_crypto_md5_init(sb_crypto_md5_ctx_t *ctx) {
 	sb_error_reset();
 
@@ -209,9 +210,11 @@ void sb_crypto_md5_init(sb_crypto_md5_ctx_t *ctx) {
 	ctx->d = 0x10325476U;
 }
 
+
 void sb_crypto_md5_clear(sb_crypto_md5_ctx_t *ctx) {
 	sb_memset(ctx, 0, sizeof(*ctx));
 }
+
 
 void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t size) {
 	sb_error_reset();
@@ -253,6 +256,7 @@ void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t size) {
 	sb_memcpy(ctx->buffer, in, size);
 }
 
+
 void sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 	sb_error_reset();
 
@@ -292,6 +296,7 @@ void sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 
 	sb_memset(ctx, 0, sizeof(*ctx));
 }
+
 
 void sb_crypto_md5(void *out, void *in, sb_size_t size) {
 	sb_crypto_md5_ctx_t ctx;
