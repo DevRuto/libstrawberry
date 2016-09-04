@@ -169,6 +169,10 @@
 		<Unit filename="src/dllmain.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/misc/gmp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/misc/gmp.h" />
 		<Unit filename="src/networking/socket.c">
 			<Option compilerVar="CC" />
 		</Unit>
