@@ -34,10 +34,8 @@
 #define __SB_CRYPTO_PRNG_ISAAC_H
 
 
-#include <stdint.h>
+#include "../../core/stdincl.h"
 
-#include "../../core/sbapi.h"
-#include "../../core/types/bool.h"
 #include "../../core/math.h"
 
 

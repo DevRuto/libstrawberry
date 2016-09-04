@@ -30,14 +30,14 @@
 **
 */
 
-#include "../../core/identid.h"
-IDENTID("md5.c", "0.1", "1", "2016-07-29");
-
 #include "md5.h"
 
 #include "../../core/error.h"
 #include "../../core/memory.h"
 #include "../../core/bits.h"
+
+
+IDENTID("md5.c", "0.1", "1", "2016-07-29");
 
 
 #define F(x, y, z)							((z) ^ ((x) & ((y) ^ (z))))

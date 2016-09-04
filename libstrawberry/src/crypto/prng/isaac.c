@@ -30,11 +30,12 @@
 **
 */
 
-#include "../../core/identid.h"
-IDENTID("isaac.c", "0.1", "4", "2016-07-29");
-
 #include "isaac.h"
+
 #include "../../core/memory.h"
+
+
+IDENTID("isaac.c", "0.1", "4", "2016-07-29");
 
 
 #define SB_CRYPTO_PRNG_ISAAC_MIX(a, b, c, d, e, f, g, h) {								\

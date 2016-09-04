@@ -30,6 +30,8 @@
 **
 */
 
-#include "../core/identid.h"
+#include "blockmode.h"
+
+
 IDENTID("blockmode.c", "0.1", "1", "2016-07-29");
 

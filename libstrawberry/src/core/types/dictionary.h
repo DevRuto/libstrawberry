@@ -34,11 +34,7 @@
 #define __SB_CORE_TYPE_DICTIONARY_H
 
 
-#include <stdint.h>
-#include <stddef.h>
-
-#include "bool.h"
-#include "../sbapi.h"
+#include "../stdincl.h"
 
 
 typedef struct sb_dictionary_entry {

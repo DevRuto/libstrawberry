@@ -26,17 +26,14 @@
 ********************************************************************************
 **
 **  Notes:
-**    // TODO Add compiler flag option to enforce memory alignment.
+**    // TODO Memory alignment?
 **
 */
 
-#include "identid.h"
-IDENTID("memory.c", "0.1", "2", "2016-08-14");
-
-#include <stdio.h>
-#include <stdlib.h>
 #include "memory.h"
-#include "error.h"
+
+#include <stdlib.h>
+#include <stdio.h>
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 #	define mlock						VirtualLock
@@ -44,6 +41,11 @@ IDENTID("memory.c", "0.1", "2", "2016-08-14");
 #else
 #	include <sys/mman.h>
 #endif
+
+#include "error.h"
+
+
+IDENTID("memory.c", "0.1", "2", "2016-08-14");
 
 
 void* sb_malloc_u(sb_size_t size) {

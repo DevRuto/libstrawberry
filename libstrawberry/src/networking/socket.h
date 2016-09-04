@@ -34,12 +34,8 @@
 #define __SB_NETWORKING_SOCKET_H
 
 
-#include <stdint.h>
-#include <stddef.h>
+#include "../core/stdincl.h"
 
-#include "../core/sbapi.h"
-#include "../core/platform.h"
-#include "../core/types/bool.h"
 #include "../core/bits.h"
 #include "../core/memory.h"
 

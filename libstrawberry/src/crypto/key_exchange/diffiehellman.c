@@ -30,14 +30,28 @@
 **
 */
 
-#if !defined(SB_EXCLUDE_CRYPTO_KEY_EXCHANGE_DIFFIEHELLMAN) && defined(HAVE_GMP)
+#if !defined(SB_EXCLUDE_CRYPTO_KEX_EXCHANGE) && !defined(SB_EXCLUDE_CRYPTO_KEY_EXCHANGE_DIFFIEHELLMAN) && defined(HAVE_GMP)
 
-
-#include "../../core/identid.h"
-IDENTID("diffiehellman.c", "0.1", "1", "2016-09-01");
 
 #include "diffiehellman.h"
+
+#include <gmp.h>
+
 #include "../../core/error.h"
+#include "../../misc/gmp.h"
+
+
+IDENTID("diffiehellman.c", "0.1", "1", "2016-09-01");
+
+
+struct __sb_crypto_diffiehellman_ctx {
+	mpz_t g;	// generator
+	mpz_t m;	// modulo
+	mpz_t pr;	// private
+	mpz_t pu;	// public
+	mpz_t s;	// secret
+	gmp_randstate_t rand;
+};
 
 
 static void sb_crypto_diffiehellman_perform(mpz_t out, mpz_t x, mpz_t y, mpz_t m) {
@@ -75,19 +89,26 @@ sb_bool_t sb_crypto_diffiehellman_init(sb_crypto_diffiehellman_ctx_t *ctx, uint1
 	sb_error_reset();
 
 	if (!ctx) {
-		sb_error_set(SB_ERROR_NULL_PTR);
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
 		return sb_false;
 	}
 
-	mpz_init(ctx->g);
-	mpz_init(ctx->m);
-	mpz_init(ctx->pr);
-	mpz_init(ctx->pu);
-	mpz_init(ctx->s);
+	if (!ctx->data) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
 
-	gmp_randinit_mt(ctx->rand);
+	__sb_crypto_diffiehellman_ctx_t *ictx = ctx->data;
+
+	mpz_init(ictx->g);
+	mpz_init(ictx->m);
+	mpz_init(ictx->pr);
+	mpz_init(ictx->pu);
+	mpz_init(ictx->s);
+
+	gmp_randinit_mt(ictx->rand);
 	if (seed != 0) {
-		gmp_randseed_ui(ctx->rand, seed);
+		gmp_randseed_ui(ictx->rand, seed);
 	}
 
 	ctx->bits = (bits ? bits : SB_CRYPTO_DIFFIEHELLMAN_DEFAULT_BITCOUNT);
@@ -100,17 +121,24 @@ sb_bool_t sb_crypto_diffiehellman_clear(sb_crypto_diffiehellman_ctx_t *ctx) {
 	sb_error_reset();
 
 	if (!ctx) {
-		sb_error_set(SB_ERROR_NULL_PTR);
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
 		return sb_false;
 	}
 
-	mpz_clear(ctx->g);
-	mpz_clear(ctx->m);
-	mpz_clear(ctx->pr);
-	mpz_clear(ctx->pu);
-	mpz_clear(ctx->s);
+	if (!ctx->data) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
 
-	gmp_randclear(ctx->rand);
+	__sb_crypto_diffiehellman_ctx_t *ictx = ctx->data;
+
+	mpz_clear(ictx->g);
+	mpz_clear(ictx->m);
+	mpz_clear(ictx->pr);
+	mpz_clear(ictx->pu);
+	mpz_clear(ictx->s);
+
+	gmp_randclear(ictx->rand);
 
 	ctx->bits = 0;
 
@@ -122,18 +150,25 @@ sb_bool_t sb_crypto_diffiehellman_generate_base(sb_crypto_diffiehellman_ctx_t *c
 	sb_error_reset();
 
 	if (!ctx) {
-		sb_error_set(SB_ERROR_NULL_PTR);
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
 		return sb_false;
 	}
 
-	mpz_urandomb(ctx->g, ctx->rand, ctx->bits);
-	mpz_nextprime(ctx->g, ctx->g);
+	if (!ctx->data) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
 
-	mpz_urandomb(ctx->m, ctx->rand, ctx->bits);
-	mpz_nextprime(ctx->m, ctx->m);
+	__sb_crypto_diffiehellman_ctx_t *ictx = ctx->data;
 
-	if (mpz_cmp(ctx->g, ctx->m) > 0) {
-		mpz_swap(ctx->g, ctx->m);
+	mpz_urandomb(ictx->g, ictx->rand, ctx->bits);
+	mpz_nextprime(ictx->g, ictx->g);
+
+	mpz_urandomb(ictx->m, ictx->rand, ctx->bits);
+	mpz_nextprime(ictx->m, ictx->m);
+
+	if (mpz_cmp(ictx->g, ictx->m) > 0) {
+		mpz_swap(ictx->g, ictx->m);
 	}
 
 	return sb_true;
@@ -144,13 +179,20 @@ sb_bool_t sb_crypto_diffiehellman_generate_keys(sb_crypto_diffiehellman_ctx_t *c
 	sb_error_reset();
 
 	if (!ctx) {
-		sb_error_set(SB_ERROR_NULL_PTR);
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
 		return sb_false;
 	}
 
-	mpz_urandomb(ctx->pr, ctx->rand, ctx->bits);
+	if (!ctx->data) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
 
-	sb_crypto_diffiehellman_perform(ctx->pu, ctx->g, ctx->pr, ctx->m);
+	__sb_crypto_diffiehellman_ctx_t *ictx = ctx->data;
+
+	mpz_urandomb(ictx->pr, ictx->rand, ctx->bits);
+
+	sb_crypto_diffiehellman_perform(ictx->pu, ictx->g, ictx->pr, ictx->m);
 
 	return sb_true;
 }
@@ -171,15 +213,33 @@ sb_bool_t sb_crypto_diffiehellman_generate(sb_crypto_diffiehellman_ctx_t *ctx) {
 }
 
 
-sb_bool_t sb_crypto_diffiehellman_generate_secret(sb_crypto_diffiehellman_ctx_t *ctx, mpz_t public) {
+sb_bool_t sb_crypto_diffiehellman_generate_secret(sb_crypto_diffiehellman_ctx_t *ctx, void *pk_bob, sb_size_t size) {
 	sb_error_reset();
 
 	if (!ctx) {
-		sb_error_set(SB_ERROR_NULL_PTR);
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
 		return sb_false;
 	}
 
-	sb_crypto_diffiehellman_perform(ctx->s, public, ctx->pr, ctx->m);
+	if (!ctx->data) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
+	if (size != (ctx->bits / 8)) {
+		sb_error_set(SB_ERROR_PARAM_INVALID);
+		return sb_false;
+	}
+
+	__sb_crypto_diffiehellman_ctx_t *ictx = ctx->data;
+
+	mpz_t pk;
+	mpz_init(pk);
+	sb_mpz_import_ex(pk, pk_bob, size, 1, 1, 1, 0);
+
+	sb_crypto_diffiehellman_perform(ictx->s, pk, ictx->pr, ictx->m);
+
+	mpz_clear(pk);
 
 	return sb_true;
 }
@@ -192,13 +252,28 @@ sb_bool_t sb_crypto_diffiehellman_copy_base(sb_crypto_diffiehellman_ctx_t *dst, 
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
 		return sb_false;
 	}
-	if (!src) {
+
+	if (!dst->data) {
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
 		return sb_false;
 	}
 
-	mpz_set(dst->g, src->g);
-	mpz_set(dst->m, src->m);
+	if (!src) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);
+		return sb_false;
+	}
+
+	if (!src->data) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 4);
+		return sb_false;
+	}
+
+	__sb_crypto_diffiehellman_ctx_t
+		*idst = dst->data,
+		*isrc = src->data;
+
+	mpz_set(idst->g, isrc->g);
+	mpz_set(idst->m, isrc->m);
 
 	return sb_true;
 }
@@ -211,13 +286,28 @@ sb_bool_t sb_crypto_diffiehellman_copy_keys(sb_crypto_diffiehellman_ctx_t *dst, 
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
 		return sb_false;
 	}
-	if (!src) {
+
+	if (!dst->data) {
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
 		return sb_false;
 	}
 
-	mpz_set(dst->pu, src->pu);
-	mpz_set(dst->pr, src->pr);
+	if (!src) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);
+		return sb_false;
+	}
+
+	if (!src->data) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 4);
+		return sb_false;
+	}
+
+	__sb_crypto_diffiehellman_ctx_t
+		*idst = dst->data,
+		*isrc = src->data;
+
+	mpz_set(idst->pu, isrc->pu);
+	mpz_set(idst->pr, isrc->pr);
 
 	return sb_true;
 }

@@ -33,9 +33,8 @@
 #ifndef __SB_CORE_ERROR_H
 #define __SB_CORE_ERROR_H
 
-#include <stdint.h>
 
-#include "../core/sbapi.h"
+#include "stdincl.h"
 
 
 typedef uint32_t sb_error_t;

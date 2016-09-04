@@ -30,9 +30,6 @@
 **
 */
 
-#include "../core/identid.h"
-IDENTID("cipher.c", "0.1", "1", "2016-08-23");
-
 #include "cipher.h"
 
 #include "../core/error.h"
@@ -41,6 +38,9 @@ IDENTID("cipher.c", "0.1", "1", "2016-08-23");
 #include "symmetric/rijndael.h"
 #include "symmetric/salsa20.h"
 #include "symmetric/rabbit.h"
+
+
+IDENTID("cipher.c", "0.1", "1", "2016-08-23");
 
 
 sb_size_t sb_crypto_cipher_get_blocksize(uint16_t cipher) {

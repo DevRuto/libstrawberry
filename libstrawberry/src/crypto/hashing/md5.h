@@ -34,10 +34,7 @@
 #define __SB_CRYPTO_HASHING_MD5_H
 
 
-#include <stdint.h>
-#include <stddef.h>
-
-#include "../../core/sbapi.h"
+#include "../../core/stdincl.h"
 
 
 typedef struct sb_crypto_md5_ctx {

@@ -30,16 +30,14 @@
 **
 */
 
-#include "../../core/identid.h"
-IDENTID("rijndael.c", "0.1", "1", "2016-07-29");
-
-#include <stdint.h>
-
 #include "rijndael.h"
+
 #include "../../core/bits.h"
 #include "../../core/error.h"
 #include "../../core/memory.h"
-#include "../../core/types/bool.h"
+
+
+IDENTID("rijndael.c", "0.1", "1", "2016-07-29");
 
 
 static const uint32_t table_encrypt_0[256] = {

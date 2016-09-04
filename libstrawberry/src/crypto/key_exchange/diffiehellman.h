@@ -34,26 +34,16 @@
 #define __SB_CRYPTO_ASYMMETRIC_DIFFIEHELLMAN_H
 
 
-#include <stdint.h>
-#include <stddef.h>
-
-#include <gmp.h>
-
-#include "../../core/sbapi.h"
-#include "../../core/types/bool.h"
+#include "../../core/stdincl.h"
 
 
 #define SB_CRYPTO_DIFFIEHELLMAN_DEFAULT_BITCOUNT \
 											1536
 
 
+typedef struct __sb_crypto_diffiehellman_ctx __sb_crypto_diffiehellman_ctx_t;
 typedef struct sb_crypto_diffiehellman_ctx {
-	mpz_t g;	// generator
-	mpz_t m;	// modulo
-	mpz_t pr;	// private
-	mpz_t pu;	// public
-	mpz_t s;	// secret
-	gmp_randstate_t rand;
+	__sb_crypto_diffiehellman_ctx_t *data;
 	uint16_t bits;
 } sb_crypto_diffiehellman_ctx_t;
 
@@ -69,7 +59,7 @@ extern "C" {
 	SBAPI sb_bool_t sb_crypto_diffiehellman_generate_keys(sb_crypto_diffiehellman_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_diffiehellman_generate(sb_crypto_diffiehellman_ctx_t *ctx);
 
-	SBAPI sb_bool_t sb_crypto_diffiehellman_generate_secret(sb_crypto_diffiehellman_ctx_t *ctx, mpz_t public);
+	SBAPI sb_bool_t sb_crypto_diffiehellman_generate_secret(sb_crypto_diffiehellman_ctx_t *ctx, void *pk_bob, sb_size_t size);
 
 	SBAPI sb_bool_t sb_crypto_diffiehellman_copy_base(sb_crypto_diffiehellman_ctx_t *dst, sb_crypto_diffiehellman_ctx_t *src);
 	SBAPI sb_bool_t sb_crypto_diffiehellman_copy_keys(sb_crypto_diffiehellman_ctx_t *dst, sb_crypto_diffiehellman_ctx_t *src);

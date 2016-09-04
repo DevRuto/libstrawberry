@@ -34,12 +34,9 @@
 #define __SB_CORE_MEMORY_H
 
 
-#include <stdint.h>
-#include <stddef.h>
-#include <string.h>
+#include "stdincl.h"
 
-#include "sbapi.h"
-#include "types/bool.h"
+#include <string.h>
 
 
 #define SB_PRIORITY_MEMORY					100

@@ -34,11 +34,7 @@
 #define __SB_CRYPTO_PADDING_PKCS7_H
 
 
-#include <stdint.h>
-#include <stddef.h>
-
-#include "../../core/sbapi.h"
-#include "../../core/types/bool.h"
+#include "../../core/stdincl.h"
 
 
 #ifdef __cplusplus

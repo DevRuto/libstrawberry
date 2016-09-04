@@ -30,13 +30,14 @@
 **
 */
 
-#include "../../core/identid.h"
-IDENTID("rabbit.c", "0.1", "1", "2016-08-12");
-
 #include "rabbit.h"
+
 #include "../../core/error.h"
 #include "../../core/memory.h"
 #include "../../core/bits.h"
+
+
+IDENTID("rabbit.c", "0.1", "1", "2016-08-12");
 
 
 static void sb_crypto_rabbit_next_state(sb_crypto_rabbit_subctx_t *subctx) {

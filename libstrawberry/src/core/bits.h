@@ -84,8 +84,7 @@
 
 #define SB_8M16(x, y)						(((uint16_t)(x) <<  8) | (uint16_t)(y))
 #define SB_8M32(w, x, y, z)					(((uint32_t)(w) << 24) | ((uint32_t)(x) << 16) | ((uint32_t)(y) << 8) | (uint32_t)(z))
-#define SB_8M64(a, b, c, d, w, x, y, z) \
-											(((uint64_t)(a) << 56) | ((uint64_t)(b) << 48) | ((uint64_t)(c) << 40) | ((uint64_t)(d) << 32) | SB_8M32(w, x, y, z))
+#define SB_8M64(a, b, c, d, w, x, y, z)		(((uint64_t)(a) << 56) | ((uint64_t)(b) << 48) | ((uint64_t)(c) << 40) | ((uint64_t)(d) << 32) | SB_8M32(w, x, y, z))
 #define SB_16M32(x, y)						(((uint32_t)(x) << 16) | (uint32_t)(y))
 #define SB_32M64(x, y)						(((uint64_t)(x) << 32) | (uint64_t)(y))
 
@@ -131,6 +130,9 @@
 #	define SB_LE64(x)						(x)
 #	define SB_BE64(x)						SB_IBO_SWAP64(x)
 #endif
+
+
+#define SB_VALID_KEX_BITS(x)				((((x) % 8) == 0))// && ((((x) / 8) % 8) == 0))
 
 
 #endif

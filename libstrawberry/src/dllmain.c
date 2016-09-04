@@ -30,7 +30,8 @@
 **
 */
 
-#include "core/identid.h"
+#include "core/stdincl.h"
+
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 IDENTID("dllmain.c", "0.1", "1", "2016-07-29");
 

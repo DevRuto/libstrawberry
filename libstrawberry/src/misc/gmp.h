@@ -34,10 +34,21 @@
 #define __SB_MISC_GMP_H
 
 
-#include <stdint.h>
-#include <stddef.h>
+#include "../core/stdincl.h"
 
-#include "../core/sbapi.h"
+#include <gmp.h>
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	SBAPI void sb_mpz_import_ex(mpz_t out, void *in, sb_size_t length, int wordorder, sb_size_t wordsize, int endianness, sb_size_t nails);
+	SBAPI void* sb_mpz_export_ex(void *out, mpz_t in, void *countp, int wordorder, sb_size_t wordsize, int endianness, sb_size_t nails);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

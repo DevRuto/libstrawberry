@@ -30,15 +30,17 @@
 **
 */
 
-#include "../../core/identid.h"
-IDENTID("iso97971-2.c", "0.1", "1", "2016-08-12");
-
 #include "iso97971-2.h"
-#include "zero.h"
+
 #include "../../core/error.h"
 #include "../../core/memory.h"
 #include "../../core/math.h"
 #include "../../core/bits.h"
+
+#include "zero.h"
+
+
+IDENTID("iso97971-2.c", "0.1", "1", "2016-08-12");
 
 
 sb_size_t sb_crypto_pad_iso979712_size(sb_size_t blocksize, sb_size_t havesize) {

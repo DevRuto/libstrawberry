@@ -34,9 +34,7 @@
 #define __SB_CORE_TIME_H
 
 
-#include <stdint.h>
-
-#include "sbapi.h"
+#include "stdincl.h"
 
 
 #ifdef __cplusplus

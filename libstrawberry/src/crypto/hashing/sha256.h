@@ -34,10 +34,7 @@
 #define __SB_CRYPTO_HASHING_SHA256_H
 
 
-#include <stdint.h>
-#include <stddef.h>
-
-#include "../../core/sbapi.h"
+#include "../../core/stdincl.h"
 
 
 typedef struct sb_crypto_sha256_ctx {

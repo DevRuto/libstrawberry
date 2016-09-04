@@ -30,10 +30,10 @@
 **
 */
 
-#include "../../core/identid.h"
-IDENTID("sha256.c", "0.1", "1", "2016-08-12");
-
 #include "sha256.h"
+
+
+IDENTID("sha256.c", "0.1", "1", "2016-08-12");
 
 
 #ifdef PIZZA

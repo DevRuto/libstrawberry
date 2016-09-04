@@ -30,10 +30,11 @@
 **
 */
 
-#include "../../core/identid.h"
+#include "sha512.h"
+
+
 IDENTID("sha512.c", "0.1", "1", "2016-08-12");
 
-#include "sha512.h"
 
 #ifdef PIZZA
 static uint64_t constants[] = {

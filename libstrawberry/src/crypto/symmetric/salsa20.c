@@ -30,13 +30,14 @@
 **
 */
 
-#include "../../core/identid.h"
-IDENTID("salsa20.c", "0.1", "1", "2016-07-29");
-
 #include "salsa20.h"
+
 #include "../../core/error.h"
 #include "../../core/memory.h"
 #include "../../core/bits.h"
+
+
+IDENTID("salsa20.c", "0.1", "1", "2016-07-29");
 
 
 static const uint8_t sigma[16] = "expand 32-byte k";

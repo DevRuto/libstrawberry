@@ -34,11 +34,7 @@
 #define __SB_CRYPTO_SYMMETRIC_SALSA20_H
 
 
-#include <stdint.h>
-#include <stddef.h>
-
-#include "../../core/sbapi.h"
-#include "../../core/types/bool.h"
+#include "../../core/stdincl.h"
 
 
 #define SB_CRYPTO_BLOCKSIZE_SALSA20			64

@@ -34,11 +34,7 @@
 #define __SB_CRYPTO_CIPHER_H
 
 
-#include <stdint.h>
-#include <stddef.h>
-
-#include "../core/sbapi.h"
-#include "../core/types/bool.h"
+#include "../core/stdincl.h"
 
 #include "blockmode.h"
 

@@ -34,11 +34,9 @@
 #define __SB_CRYPTO_HASHING_RIPEMD160_H
 
 
-#include <stdint.h>
+#include "../../core/stdincl.h"
 
-#include "../../core/sbapi.h"
 #include "../../core/bits.h"
-#include "../../core/types/bool.h"
 
 
 typedef struct sb_crypto_ripemd160_ctx {

@@ -34,10 +34,7 @@
 #define __SB_CRYPTO_BLOCKMODE_H
 
 
-#include <stdint.h>
-#include <stddef.h>
-
-#include "../core/sbapi.h"
+#include "../core/stdincl.h"
 
 
 #define SB_CRYPTO_BLOCKMODE_CBC				1

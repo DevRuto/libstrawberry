@@ -30,11 +30,12 @@
 **
 */
 
-#include "../core/identid.h"
-IDENTID("socket.c", "0.1", "1", "2016-07-30");
-
 #include "socket.h"
+
 #include "../core/error.h"
+
+
+IDENTID("socket.c", "0.1", "1", "2016-07-30");
 
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)

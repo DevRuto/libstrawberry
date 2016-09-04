@@ -30,14 +30,13 @@
 **
 */
 
-#include "identid.h"
-IDENTID("error.c", "0.1", "1", "2016-07-29");
+#include "error.h"
 
-#include <stdint.h>
 #include <stdio.h>
 #include <signal.h>
 
-#include "../core/error.h"
+
+IDENTID("error.c", "0.1", "1", "2016-07-29");
 
 
 static sb_error_t __sb_errno = 0;

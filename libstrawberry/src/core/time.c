@@ -30,13 +30,13 @@
 **
 */
 
-#include "identid.h"
-IDENTID("time.c", "0.1", "1", "2016-07-29");
+#include "./time.h"
 
-#include <stdint.h>
 #include <time.h>
 
-#include "../core/time.h"
+
+IDENTID("time.c", "0.1", "1", "2016-07-29");
+
 
 uint64_t sb_time_nsec() {
 #if (SB_PLATFORM != SB_PLATFORM_ID_WINDOWS)
