@@ -34,14 +34,16 @@
 
 #include <time.h>
 
+#include "bits.h"
+
 
 IDENTID("time.c", "0.1", "1", "2016-07-29");
 
 
 uint64_t sb_time_tsc() {
-	uint64_t tsc = 0;
-	asm volatile ("rdtsc" : "=A"(tsc));
-	return tsc;
+	uint32_t hi, lo;
+	__asm__ __volatile__ ("rdtsc" : "=a"(lo), "=d"(hi));
+	return (SB_32M64(hi, lo));
 }
 
 
