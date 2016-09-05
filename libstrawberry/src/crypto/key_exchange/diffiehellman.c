@@ -214,7 +214,7 @@ sb_bool_t sb_crypto_diffiehellman_generate(sb_crypto_diffiehellman_ctx_t *ctx) {
 }
 
 
-sb_bool_t sb_crypto_diffiehellman_generate_secret(sb_crypto_diffiehellman_ctx_t *ctx, void *pk_bob, sb_size_t size) {
+sb_bool_t sb_crypto_diffiehellman_generate_secret(sb_crypto_diffiehellman_ctx_t *ctx, void *pk_bob) {
 	sb_error_reset();
 
 	if (!ctx) {
@@ -227,8 +227,9 @@ sb_bool_t sb_crypto_diffiehellman_generate_secret(sb_crypto_diffiehellman_ctx_t 
 		return sb_false;
 	}
 
-	if (size != (ctx->bits / 8)) {
-		sb_error_set(SB_ERROR_PARAM_INVALID);
+	sb_size_t size = sb_crypto_diffiehellman_port_size(ctx);
+	if (size == 0 || size >= 65535) {
+		sb_error_set(SB_ERROR_VALUE_INVALID);
 		return sb_false;
 	}
 
