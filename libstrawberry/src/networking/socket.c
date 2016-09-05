@@ -30,6 +30,9 @@
 **
 */
 
+#ifndef SB_EXCLUDE_NETWORKING
+
+
 #include "socket.h"
 
 #include "../core/error.h"
@@ -217,3 +220,6 @@ sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_ssize_t size) {
 
 	return recv(sock->fd, out, size, 0);
 }
+
+
+#endif

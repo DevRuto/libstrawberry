@@ -30,7 +30,8 @@
 **
 */
 
-#if !defined(SB_EXCLUDE_CRYPTO_KEX_EXCHANGE) && !defined(SB_EXCLUDE_CRYPTO_KEY_EXCHANGE_DIFFIEHELLMAN) && defined(HAVE_GMP)
+#if !defined(SB_EXCLUDE_CRYPTO_KEX_EXCHANGE) && !defined(SB_EXCLUDE_CRYPTO_KEY_EXCHANGE_DIFFIEHELLMAN)
+#ifdef HAVE_GMP
 
 
 #include "diffiehellman.h"
@@ -41,7 +42,7 @@
 #include "../../misc/gmp.h"
 
 
-IDENTID("diffiehellman.c", "0.1", "1", "2016-09-01");
+IDENTID("diffiehellman.c", "0.1", "1", "2016-09-04");
 
 
 struct __sb_crypto_diffiehellman_ctx {
@@ -313,6 +314,53 @@ sb_bool_t sb_crypto_diffiehellman_copy_keys(sb_crypto_diffiehellman_ctx_t *dst, 
 }
 
 
+#define DH_EXPORT(v)										\
+	sb_error_reset();										\
+															\
+	if (!ctx) {												\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);				\
+		return sb_false;									\
+	}														\
+															\
+	if (!ctx->data) {										\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);				\
+		return sb_false;									\
+	}														\
+															\
+	if (!out) {												\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);				\
+		return sb_false;									\
+	}														\
+															\
+	sb_mpz_export_ex(out, v, NULL, 1, 1, 1, 0);				\
+															\
+	return sb_true;
+
+
+sb_bool_t sb_crypto_diffiehellman_export_generator(sb_crypto_diffiehellman_ctx_t *ctx, void *out) {
+	DH_EXPORT(ctx->data->g);
+}
+
+
+sb_bool_t sb_crypto_diffiehellman_export_modulo(sb_crypto_diffiehellman_ctx_t *ctx, void *out) {
+	DH_EXPORT(ctx->data->m);
+}
+
+
+sb_bool_t sb_crypto_diffiehellman_export_public(sb_crypto_diffiehellman_ctx_t *ctx, void *out) {
+	DH_EXPORT(ctx->data->pu);
+}
+
+
+sb_bool_t sb_crypto_diffiehellman_export_secret(sb_crypto_diffiehellman_ctx_t *ctx, void *out) {
+	DH_EXPORT(ctx->data->s);
+}
+
+
+#undef DH_EXPORT
+
+
 #else
 #	error crypto/key_exchange/diffiehellman.c requires libgmp
+#endif
 #endif
