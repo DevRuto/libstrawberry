@@ -57,7 +57,7 @@ uint64_t sb_time_nsec() {
 #if (SB_PLATFORM != SB_PLATFORM_ID_WINDOWS)
 	struct timespec ts;
 	if (clock_gettime(CLOCK_REALTIME, &ts) == 0) {
-		return (ts.tv_sec * 1000000000UL) + ts.tv_nsec;
+		return (ts.tv_sec * 1000000000) + ts.tv_nsec;
 	}
 	return 0;
 #else
