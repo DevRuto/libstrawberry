@@ -42,6 +42,16 @@
 #define SB_PRIORITY_MEMORY					100
 
 
+#ifdef DEBUG
+#	undef NULL
+#	if (SB_ARCH == SB_ARCH_X64)
+#		define NULL						((void*)0xDEADBEEFDEADBEEF)
+#	else
+#		define NULL						((void*)0xDEADBEEF)
+#	endif
+#endif
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
