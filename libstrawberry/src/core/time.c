@@ -67,6 +67,16 @@ uint64_t sb_time_nsec() {
 #endif
 }
 
+
 void sb_time_sleep_nsec(uint64_t nsec) {
-	// TODO
+#if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
+	// I can't believe people still find windows better than anything from the *nix family.
+	uint64_t s = (nsec / 1000000);
+	Sleep((s ? s : 1));
+#else
+	struct timespec ts;
+	ts.tv_sec = (nsec / 1000000000);
+	ts.tv_nsec = (nsec - (ts.tv_sec * 1000000000));
+	while (nanosleep(&ts, &ts) == -1);
+#endif
 }
