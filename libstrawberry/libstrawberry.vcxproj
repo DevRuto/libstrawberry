@@ -189,6 +189,7 @@
     <ClInclude Include="src\core\memory.h" />
     <ClInclude Include="src\core\platform.h" />
     <ClInclude Include="src\core\identid.h" />
+    <ClInclude Include="src\core\stdincl.h" />
     <ClInclude Include="src\core\time.h" />
     <ClInclude Include="src\core\types\bool.h" />
     <ClInclude Include="src\core\sbapi.h" />
@@ -252,6 +253,8 @@
     <ClCompile Include="src\networking\socket.c" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="CompilerFlags.spec" />
+    <None Include="FileLicenseTemplate.spec" />
     <None Include="libstrawberry.cbp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

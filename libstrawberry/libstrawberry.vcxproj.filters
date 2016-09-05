@@ -96,6 +96,9 @@
     <ClInclude Include="src\misc\gmp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\stdincl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\memory.c">
@@ -167,5 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="libstrawberry.cbp" />
+    <None Include="CompilerFlags.spec" />
+    <None Include="FileLicenseTemplate.spec" />
   </ItemGroup>
 </Project>
