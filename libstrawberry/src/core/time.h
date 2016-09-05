@@ -41,6 +41,7 @@
 extern "C" {
 #endif
 
+	SBAPI uint64_t sb_time_tsc();
 	SBAPI uint64_t sb_time_nsec();
 	SBAPI void sb_time_sleep_nsec(uint64_t nsec);
 

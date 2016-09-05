@@ -35,7 +35,8 @@ void test(const char *name, sb_bool_t(*func)()) {
 }
 
 int main(int argc, char **argv, char **env) {
-#define TESTS
+//#define TESTS
+	printf("%lu\n", sb_time_tsc());
 
 #ifdef TESTS
 	test("rijndael", test_rijndael);

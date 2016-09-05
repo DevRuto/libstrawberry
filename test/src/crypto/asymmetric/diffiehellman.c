@@ -8,7 +8,7 @@
 //}
 
 sb_bool_t test_diffiehellman() {
-	sb_crypto_diffiehellman_ctx_t alice;
+	/*sb_crypto_diffiehellman_ctx_t alice;
 	sb_crypto_diffiehellman_ctx_t bob;
 
 	sb_crypto_diffiehellman_init(&alice, 2048, sb_time_nsec());
@@ -27,5 +27,6 @@ sb_bool_t test_diffiehellman() {
 	sb_crypto_diffiehellman_clear(&alice);
 	sb_crypto_diffiehellman_clear(&bob);
 
-	return valid;
+	return valid;*/
+	return sb_false;
 }
