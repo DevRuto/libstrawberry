@@ -41,14 +41,15 @@ IDENTID("time.c", "0.1", "1", "2016-07-29");
 
 
 uint64_t sb_time_tsc() {
-	uint32_t hi, lo;
+	//uint32_t hi, lo;
 	//__asm__ __volatile__ ("rdtsc" : "=a"(lo), "=d"(hi));
-	asm volatile ("rdtscp\n"
+	/*asm volatile ("rdtscp\n"
 				  "movl %%edx, %0\n"
 				  "movl %%eax, %1\n"
 				  "cpuid"
-				  : "=r"(hi), "=r"(lo) : : "%rax", "%rbx", "%rcx", "%rdx");
-	return (SB_32M64(hi, lo));
+				  : "=r"(hi), "=r"(lo) : : "%rax", "%rbx", "%rcx", "%rdx");*/
+	//return (SB_32M64(hi, lo));
+	return 0;
 }
 
 
