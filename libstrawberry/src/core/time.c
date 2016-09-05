@@ -38,6 +38,13 @@
 IDENTID("time.c", "0.1", "1", "2016-07-29");
 
 
+uint64_t sb_time_tsc() {
+	uint64_t tsc = 0;
+	asm volatile ("rdtsc" : "=A"(tsc));
+	return tsc;
+}
+
+
 uint64_t sb_time_nsec() {
 #if (SB_PLATFORM != SB_PLATFORM_ID_WINDOWS)
 	struct timespec ts;
