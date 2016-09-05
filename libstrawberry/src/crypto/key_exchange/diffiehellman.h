@@ -64,12 +64,16 @@ extern "C" {
 	SBAPI sb_bool_t sb_crypto_diffiehellman_copy_base(sb_crypto_diffiehellman_ctx_t *dst, sb_crypto_diffiehellman_ctx_t *src);
 	SBAPI sb_bool_t sb_crypto_diffiehellman_copy_keys(sb_crypto_diffiehellman_ctx_t *dst, sb_crypto_diffiehellman_ctx_t *src);
 
-	#define sb_crypto_diffiehellman_export_size(ctx) (((ctx) && ((ctx)->bits)) ? (((ctx)->bits) / 8) : 0)
+	#define sb_crypto_diffiehellman_port_size(ctx) (((ctx) && ((ctx)->bits)) ? (((ctx)->bits) / 8) : 0)
+
+	SBAPI sb_bool_t sb_crypto_diffiehellman_import_generator(sb_crypto_diffiehellman_ctx_t *ctx, void *in);
+	SBAPI sb_bool_t sb_crypto_diffiehellman_import_modulo(sb_crypto_diffiehellman_ctx_t *ctx, void *in);
+	SBAPI sb_bool_t sb_crypto_diffiehellman_import_public(sb_crypto_diffiehellman_ctx_t *ctx, void *in);
+
 	SBAPI sb_bool_t sb_crypto_diffiehellman_export_generator(sb_crypto_diffiehellman_ctx_t *ctx, void *out);
 	SBAPI sb_bool_t sb_crypto_diffiehellman_export_modulo(sb_crypto_diffiehellman_ctx_t *ctx, void *out);
 	SBAPI sb_bool_t sb_crypto_diffiehellman_export_public(sb_crypto_diffiehellman_ctx_t *ctx, void *out);
 	SBAPI sb_bool_t sb_crypto_diffiehellman_export_secret(sb_crypto_diffiehellman_ctx_t *ctx, void *out);
-
 
 #ifdef __cplusplus
 }

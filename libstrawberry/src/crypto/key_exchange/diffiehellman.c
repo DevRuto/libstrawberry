@@ -314,6 +314,47 @@ sb_bool_t sb_crypto_diffiehellman_copy_keys(sb_crypto_diffiehellman_ctx_t *dst, 
 }
 
 
+#define DH_IMPORT(v, s)										\
+	sb_error_reset();										\
+															\
+	if (!ctx) {												\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);				\
+		return sb_false;									\
+	}														\
+															\
+	if (!ctx->data) {										\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);				\
+		return sb_false;									\
+	}														\
+															\
+	if (!in) {												\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);				\
+		return sb_false;									\
+	}														\
+															\
+	sb_mpz_import_ex(v, in, s, 1, 1, 1, 0);					\
+															\
+	return sb_true;
+
+
+sb_bool_t sb_crypto_diffiehellman_import_generator(sb_crypto_diffiehellman_ctx_t *ctx, void *in) {
+	DH_IMPORT(ctx->data->g, sb_crypto_diffiehellman_port_size(ctx));
+}
+
+
+sb_bool_t sb_crypto_diffiehellman_import_modulo(sb_crypto_diffiehellman_ctx_t *ctx, void *in) {
+	DH_IMPORT(ctx->data->m, sb_crypto_diffiehellman_port_size(ctx));
+}
+
+
+sb_bool_t sb_crypto_diffiehellman_import_public(sb_crypto_diffiehellman_ctx_t *ctx, void *in) {
+	DH_IMPORT(ctx->data->pu, sb_crypto_diffiehellman_port_size(ctx));
+}
+
+
+#undef DH_IMPORT
+
+
 #define DH_EXPORT(v)										\
 	sb_error_reset();										\
 															\
