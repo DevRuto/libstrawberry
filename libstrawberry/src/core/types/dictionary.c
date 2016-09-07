@@ -63,11 +63,10 @@ void sb_dictionary_clear(sb_dictionary_t *dictionary) {
 		for (i = 0; i < dictionary->__size; ++i) {
 			entry = &dictionary->entries[i];
 			if (entry->key) {
-				sb_free(entry->key);
-				entry->key = NULL;
+				entry->key = sb_free(entry->key);
 			}
 		}
-		sb_free(dictionary->entries);
+		dictionary->entries = sb_free(dictionary->entries);
 	}
 
 	sb_memset(dictionary, 0, sizeof(*dictionary));

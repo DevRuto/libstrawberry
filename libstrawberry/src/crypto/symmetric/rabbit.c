@@ -200,6 +200,7 @@ static void get_s(sb_crypto_rabbit_ctx_t *ctx, uint32_t *s_out) {
 }
 
 
+// TODO: process individual blocks
 sb_bool_t sb_crypto_rabbit_process(sb_crypto_rabbit_ctx_t *ctx, void *out, void *in, sb_size_t size) {
 	if (!ctx || !out || !in) {
 		return sb_false;

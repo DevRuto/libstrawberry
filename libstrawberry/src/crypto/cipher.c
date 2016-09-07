@@ -39,6 +39,10 @@
 #include "symmetric/salsa20.h"
 #include "symmetric/rabbit.h"
 
+#include "padding/zero.h"
+#include "padding/pkcs7.h"
+#include "padding/iso97971-2.h"
+
 
 IDENTID("cipher.c", "0.1", "1", "2016-08-23");
 
@@ -57,7 +61,7 @@ sb_size_t sb_crypto_cipher_get_blocksize(uint16_t cipher) {
 }
 
 
-sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, uint16_t flags, uint8_t bits, void *key) {
+sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, uint8_t padding, uint8_t flags, uint8_t bits, void *key) {
 	if (!ctx || !cipher) {
 		return sb_false;
 	}
@@ -82,6 +86,7 @@ sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, ui
 	}
 
 	ctx->cipher = cipher;
+	ctx->padding = padding;
 	ctx->flags = flags;
 
 	return sb_true;
@@ -126,7 +131,7 @@ sb_bool_t sb_crypto_cipher_clear(sb_crypto_cipher_ctx_t *ctx) {
 				return sb_false;
 		}
 		if (clear_success) {
-			sb_free(ctx->data);
+			ctx->data = sb_free(ctx->data);
 		} else {
 			return sb_false;
 		}
@@ -158,8 +163,112 @@ sb_bool_t sb_crypto_cipher_blockmode_set_enabled(sb_crypto_cipher_ctx_t *ctx, sb
 }
 
 
+sb_size_t sb_crypto_cipher_encrypt_size(sb_crypto_cipher_ctx_t *ctx, sb_size_t size) {
+	sb_size_t blocksize = sb_crypto_cipher_get_blocksize(ctx->cipher);
+	switch (ctx->padding) {
+		case SB_CRYPTO_CIPHER_PAD_ZERO:
+			return sb_crypto_pad_zero_size(blocksize, size);
+		case SB_CRYPTO_CIPHER_PAD_PKCS7:
+			return sb_crypto_pad_pkcs7_size(blocksize, size);
+		case SB_CRYPTO_CIPHER_PAD_ISO979712:
+			return sb_crypto_pad_iso979712_size(blocksize, size);
+		default:
+			return 0;
+	}
+}
+
+
 sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void *in, sb_size_t size) {
-	return sb_false;
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!ctx->cipher) {
+		sb_error_set_ex(SB_ERROR_PARAM_INVALID, 1);
+		return sb_false;
+	}
+
+	if (!ctx->data) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+	}
+
+	if (!out) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);
+		return sb_false;
+	}
+
+	if (!in) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 4);
+		return sb_false;
+	}
+
+	if (!size) {
+		sb_error_set_ex(SB_ERROR_PARAM_INVALID, 2);
+		return sb_false;
+	}
+
+    sb_size_t blocksize = sb_crypto_cipher_get_blocksize(ctx->cipher);
+    if (!blocksize) {
+		sb_error_set(SB_ERROR_VALUE_INVALID);
+		return sb_false;
+    }
+
+    SB_MEM_BUFFER_ALLOC(uint8_t, buffer, blocksize);
+
+#define HANDLE_PADDING()											\
+	switch (ctx->padding) {											\
+		case SB_CRYPTO_CIPHER_PAD_ZERO:								\
+			sb_crypto_pad_zero(buffer, iptr, blocksize, size);		\
+			break;													\
+		case SB_CRYPTO_CIPHER_PAD_PKCS7:							\
+			sb_crypto_pad_pkcs7(buffer, iptr, blocksize, size);		\
+			break;													\
+		case SB_CRYPTO_CIPHER_PAD_ISO979712:						\
+			sb_crypto_pad_iso979712(buffer, iptr, blocksize, size);	\
+			break;													\
+		default:													\
+			sb_error_set(SB_ERROR_VALUE_INVALID);					\
+			SB_MEM_BUFFER_FREE(buffer);								\
+			return sb_false;										\
+	}
+
+	uint8_t *optr = out, *iptr = in;
+    switch (ctx->cipher) {
+		case SB_CRYPTO_CIPHER_RIJNDAEL:
+            for (; size > SB_CRYPTO_BLOCKSIZE_RIJNDAEL;) {
+				sb_crypto_rijndael_encrypt_block(ctx->data, buffer, iptr);
+
+				// TODO: block mode of operation
+
+				sb_memcpy(optr, buffer, blocksize);
+
+				iptr += SB_CRYPTO_BLOCKSIZE_RIJNDAEL;
+				optr += SB_CRYPTO_BLOCKSIZE_RIJNDAEL;
+				size -= SB_CRYPTO_BLOCKSIZE_RIJNDAEL;
+            }
+
+			HANDLE_PADDING();
+
+            sb_crypto_rijndael_encrypt_block(ctx->data, buffer, buffer);
+
+            // TODO: block mode of operation
+
+            sb_memcpy(optr, buffer, blocksize);
+			break;
+		case SB_CRYPTO_CIPHER_SALSA20:
+
+			break;
+		case SB_CRYPTO_CIPHER_RABBIT:
+
+			break;
+    }
+
+    SB_MEM_BUFFER_FREE(buffer);
+
+	return sb_true;
 }
 
 

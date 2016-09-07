@@ -43,12 +43,17 @@
 #define SB_CRYPTO_CIPHER_SALSA20			2
 #define SB_CRYPTO_CIPHER_RABBIT				3
 
+#define SB_CRYPTO_CIPHER_PAD_ZERO			1
+#define SB_CRYPTO_CIPHER_PAD_PKCS7			2
+#define SB_CRYPTO_CIPHER_PAD_ISO979712		3
+
 
 typedef struct sb_crypto_cipher_ctx {
 	void *data;
 	sb_crypto_blockmode_ctx_t *blockmode;
 	uint16_t cipher;
-	uint16_t flags;
+	uint8_t padding;
+	uint8_t flags;
 } sb_crypto_cipher_ctx_t;
 
 
@@ -60,7 +65,7 @@ extern "C" {
 
 	// ------------------------------------------------------------------------
 
-	SBAPI sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, uint16_t flags, uint8_t bits, void *key);
+	SBAPI sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, uint8_t padding, uint8_t flags, uint8_t bits, void *key);
 	SBAPI sb_bool_t sb_crypto_cipher_reset(sb_crypto_cipher_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_cipher_clear(sb_crypto_cipher_ctx_t *ctx);
 

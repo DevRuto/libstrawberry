@@ -45,10 +45,21 @@
 #ifdef DEBUG
 #	undef NULL
 #	if (SB_ARCH == SB_ARCH_X64)
-#		define NULL						((void*)0xDEADBEEFDEADBEEF)
+#		define NULL							((void*)0xDEADBEEFDEADBEEF)
 #	else
-#		define NULL						((void*)0xDEADBEEF)
+#		define NULL							((void*)0xDEADBEEF)
 #	endif
+#endif
+
+
+#if (SB_COMPILER == SB_COMPILER_ID_MSC)
+#	define SB_MEM_BUFFER_ALLOC(type, name, size) \
+											type *name = sb_malloc_u(size)
+#	define SB_MEM_BUFFER_FREE(name)			name = sb_free(name)
+#else
+#	define SB_MEM_BUFFER_ALLOC(type, name, size) \
+											type name[size]
+#	define SB_MEM_BUFFER_FREE(name)
 #endif
 
 
@@ -66,7 +77,7 @@ extern "C" {
 	SBAPI void* sb_cpyalloc_s(void *ptr, sb_size_t size);
 	SBAPI void* sb_ntcpyalloc_u(void *ptr, sb_size_t size);
 	SBAPI void* sb_ntcpyalloc_s(void *ptr, sb_size_t size);
-	SBAPI void sb_free(void *ptr);
+	SBAPI void* sb_free(void *ptr);
 	SBAPI void sb_memcpy(void *dst, void *src, sb_size_t size);
 	SBAPI void sb_memset(void *dst, int value, sb_size_t size);
 	SBAPI int sb_memcmp(void *cmp1, void *cmp2, sb_size_t size);

@@ -137,6 +137,7 @@ void sb_crypto_salsa20_nonce_set(sb_crypto_salsa20_ctx_t *ctx, uint64_t nonce) {
 }
 
 
+// TODO: process individual blocks
 void sb_crypto_salsa20_process(sb_crypto_salsa20_ctx_t *ctx, void *out, void *in, sb_size_t size) {
 	sb_error_reset();
 
@@ -235,13 +236,16 @@ void sb_crypto_salsa20_process(sb_crypto_salsa20_ctx_t *ctx, void *out, void *in
 			++ctx->data[9];
 		}
 
-		if (size <= 64) {
+		if (size <= SB_CRYPTO_BLOCKSIZE_SALSA20) {
 			for (i = 0; i < size; ++i) optr[i] = iptr[i] ^ buffer[i];
 			return;
 		}
-		for (i = 0; i < 64; ++i) optr[i] = iptr[i] ^ buffer[i];
-		size -= 64;
-		optr += 64;
-		iptr += 64;
+
+		//for (i = 0; i < SB_CRYPTO_BLOCKSIZE_SALSA20; ++i) optr[i] = iptr[i] ^ buffer[i];
+		for (i = SB_CRYPTO_BLOCKSIZE_SALSA20; i--;) optr[i] = iptr[i] ^ buffer[i];
+
+		size -= SB_CRYPTO_BLOCKSIZE_SALSA20;
+		optr += SB_CRYPTO_BLOCKSIZE_SALSA20;
+		iptr += SB_CRYPTO_BLOCKSIZE_SALSA20;
 	}
 }

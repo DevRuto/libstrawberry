@@ -169,11 +169,12 @@ void* sb_ntcpyalloc_s(void *ptr, sb_size_t size) {
 }
 
 
-void sb_free(void *ptr) {
+void* sb_free(void *ptr) {
 	if (!ptr) {
 		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
 	}
 	free(ptr);
+	return NULL;
 }
 
 

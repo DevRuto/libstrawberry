@@ -575,11 +575,11 @@ sb_bool_t sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *ctx) {
 
 	if (ctx->key_encrypt) {
 		sb_memset(ctx->key_encrypt, 0, ctx->size);
-		sb_free(ctx->key_encrypt);
+		ctx->key_encrypt = sb_free(ctx->key_encrypt);
 	}
 	if (ctx->key_decrypt) {
 		sb_memset(ctx->key_decrypt, 0, ctx->size);
-		sb_free(ctx->key_decrypt);
+		ctx->key_decrypt = sb_free(ctx->key_decrypt);
 	}
 	ctx->flags = 0;
 	ctx->rounds = 0;

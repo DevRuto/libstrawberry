@@ -46,6 +46,11 @@
 #define SB_PLATFORM_ID_MAC					0xBADA771E
 #define SB_PLATFORM_ID_IOS					0x00BA771E
 
+#define SB_COMPILER_ID_GCC					0x600D
+#define SB_COMPILER_ID_MSC					0xBAAD
+#define SB_COMPILER_ID_INTEL				0xB0B0
+#define SB_COMPILER_ID_LLVM					0xBABA
+
 #define SB_ARCH_X86							32
 #define SB_ARCH_X64							64
 
@@ -74,6 +79,19 @@
 #	else
 #		define SB_PLATFORM					SB_PLATFORM_ID_UNKNOWN
 #		define SB_PLATFORM_STRING			"Unknown"
+#	endif
+#endif
+
+
+#ifndef SB_COMPILER
+#	if defined(_MSC_VER)
+#		define SB_COMPILER					SB_COMPILER_ID_MSC
+#	elif defined(__GNUC__)
+#		define SB_COMPILER					SB_COMPILER_ID_GCC
+#	elif defined(__INTEL_COMPILER) || defined(__ICL)
+#		define SB_COMPILER					SB_COMPILER_ID_INTEL
+#	elif defined(__llvm__)
+#		define SB_COMPILER					SB_COMPILER_ID_LLVM
 #	endif
 #endif
 

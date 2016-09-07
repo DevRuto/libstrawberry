@@ -50,4 +50,16 @@ typedef struct sb_crypto_blockmode_ctx {
 } sb_crypto_blockmode_ctx_t;
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	SBAPI sb_bool_t sb_crypto_blockmode_init(sb_crypto_blockmode_ctx_t *ctx, uint16_t mode, uint16_t flags, sb_size_t iv_size);
+	SBAPI sb_bool_t sb_crypto_blockmode_clear(sb_crypto_blockmode_ctx_t *ctx);
+
+#ifdef __cplusplus
+}
+#endif
+
+
 #endif
