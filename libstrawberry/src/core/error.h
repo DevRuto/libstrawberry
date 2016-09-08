@@ -52,6 +52,7 @@ extern "C" {
 	/*SBAPI*/ void _sb_error_reset();
 	/*SBAPI*/ void _sb_error_fatal_ex(const char *file, const char *func, const int line, sb_error_t _errno, sb_error_t _errparam);
 	/*SBAPI*/ void _sb_error_fatal(const char *file, const char *func, const int line, sb_error_t _errno);
+	SBAPI void _sb_error_print();
 
 #ifdef __cplusplus
 }
@@ -65,6 +66,7 @@ extern "C" {
 #	define sb_error_set_param(x)			_sb_error_set_param(x)
 #	define sb_error_set_ex(x, y)			_sb_error_set_ex(x, y)
 #	define sb_error_reset()					_sb_error_reset()
+#	define sb_error_print()					_sb_error_print()
 #else
 #	define sb_error_get()					SB_ERROR_SUCCESS
 #	define sb_error_get_param()				SB_ERROR_SUCCESS
@@ -72,6 +74,7 @@ extern "C" {
 #	define sb_error_set_param(x)
 #	define sb_error_set_ex(x, y)
 #	define sb_error_reset()
+#	define sb_error_print()
 #endif
 
 #define sb_error_fatal_ex(x, y)				_sb_error_fatal_ex(SB_DIAG_FILE, SB_DIAG_FUNC, SB_DIAG_LINE, x, y)

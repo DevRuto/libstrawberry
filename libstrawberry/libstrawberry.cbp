@@ -18,6 +18,7 @@
 					<Add option="-fPIC" />
 					<Add option="-Wno-unused-const-variable" />
 					<Add option="-DDEBUG" />
+					<Add option="-DSB_ERROR_REPORTING" />
 				</Compiler>
 			</Target>
 			<Target title="Release - GCC">
@@ -48,6 +49,7 @@
 					<Add option="-m32" />
 					<Add option="-g" />
 					<Add option="-DDEBUG" />
+					<Add option="-DSB_ERROR_REPORTING" />
 					<Add directory="../dep/windows/include" />
 				</Compiler>
 				<Linker>
@@ -79,7 +81,6 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-DDONT_REPORT_PLATFORM" />
 			<Add option="-DHAVE_GMP" />
 			<Add option="-DSB_OPT_MLOCK" />
 		</Compiler>

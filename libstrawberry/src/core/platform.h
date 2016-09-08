@@ -151,7 +151,7 @@
 #define SB_DIAG_FILE						(__FILE__ + SB_DIAG_FILE_START)
 
 
-#ifndef DONT_REPORT_PLATFORM
+#ifdef REPORT_PLATFORM
 #pragma message("  platform.h: "SB_FULL_PLATFORM_STRING)
 #endif
 

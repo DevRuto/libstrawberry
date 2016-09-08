@@ -36,7 +36,7 @@
 #include <signal.h>
 
 
-IDENTID("error.c", "0.1", "1", "2016-07-29");
+IDENTID("error.c", "0.2", "1", "2016-09-08");
 
 
 static sb_error_t __sb_errno = 0;
@@ -95,4 +95,37 @@ void _sb_error_fatal_ex(const char *file, const char *func, const int line, sb_e
 
 void _sb_error_fatal(const char *file, const char *func, const int line, sb_error_t _errno) {
 	_sb_error_fatal_ex(file, func, line, _errno, 0);
+}
+
+
+void _sb_error_print() {
+	#define __PRINTERR(ec,str) printf("Error #"#ec" = "str)
+	switch (__sb_errno) {
+		case SB_ERROR_SUCCESS:
+			__PRINTERR(SB_ERROR_SUCCESS, "No error occured.");
+			break;
+		case SB_ERROR_NULL_PTR:
+			__PRINTERR(SB_ERROR_NULL_PTR, "Null pointer specified.");
+			break;
+		case SB_ERROR_PARAM_INVALID:
+			__PRINTERR(SB_ERROR_PARAM_INVALID, "Invalid parameter specified.");
+			break;
+		case SB_ERROR_PARAM_RANGE:
+			__PRINTERR(SB_ERROR_PARAM_RANGE, "Specified parameter is out of range.");
+			break;
+		case SB_ERROR_FAILSAFE:
+			__PRINTERR(SB_ERROR_FAILSAFE, "Failsafe triggered.");
+			break;
+		case SB_ERROR_INITIALIZATION:
+			__PRINTERR(SB_ERROR_INITIALIZATION, "Initialization error.");
+			break;
+		case SB_ERROR_DESCRIPTOR_INVALID:
+			__PRINTERR(SB_ERROR_DESCRIPTOR_INVALID, "Descriptor (rendered) invalid.");
+			break;
+		case SB_ERROR_VALUE_INVALID:
+			__PRINTERR(SB_ERROR_VALUE_INVALID, "Invalid value found.");
+			break;
+		default:
+			break;
+	}
 }
