@@ -99,7 +99,7 @@ void _sb_error_fatal(const char *file, const char *func, const int line, sb_erro
 
 
 void _sb_error_print() {
-	#define __PRINTERR(ec,str) printf("Error #"ec" = "str)
+	#define __PRINTERR(ec,str) printf("Error #"ec" = "str"\n")
 	switch (__sb_errno) {
 		case SB_ERROR_SUCCESS:
 			__PRINTERR(SB_STRINGIFY_MACRO(SB_ERROR_SUCCESS), "No error occured.");
