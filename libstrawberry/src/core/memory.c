@@ -38,8 +38,8 @@
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 #	define mlock						VirtualLock
 #	define munlock						VirtualUnlock
-#	define mlock_valid					(x)
-#	define munlock_valid				(x)
+#	define mlock_valid(x)				(x)
+#	define munlock_valid(x)				(x)
 #else
 #	include <sys/mman.h>
 #	define mlock_valid(x)				(!x)
