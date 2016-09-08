@@ -127,12 +127,6 @@ sb_sockfd_t sb_socket_accept(sb_socket_ctx_t *sock, struct sockaddr *saddr, sock
 }
 
 
-#if (SB_PLATFORM != SB_PLATFORM_ID_WINDOWS)
-#	define __CLOSE_SOCKET(fd)				close(fd)
-#else
-#	define __CLOSE_SOCKET(fd)				closesocket(fd)
-#endif
-
 sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port) {
 	if (!sock || !port) {
 		return sb_false;
@@ -150,17 +144,20 @@ sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port) {
 		if (SB_FLAG(sock->flags, SB_SOCKET_SERVER)) {
 			if (bind(sock->fd, ptr->ai_addr, ptr->ai_addrlen) == 0) {
 				if (listen(sock->fd, SOMAXCONN) == 0) {
-					__CLOSE_SOCKET(sock->fd);
-					continue;
+					break;
 				}
 			}
 		} else {
 			if (connect(sock->fd, ptr->ai_addr, ptr->ai_addrlen) == 0) {
-				__CLOSE_SOCKET(sock->fd);
-				continue;
+				break;
 			}
 		}
-		__CLOSE_SOCKET(sock->fd);
+
+#if (SB_PLATFORM != SB_PLATFORM_ID_WINDOWS)
+		close(sock->fd);
+#else
+		closesocket(sock->fd);
+#endif
 	}
 
 	if (!ptr) {
@@ -174,8 +171,6 @@ sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port) {
 
 	return sb_true;
 }
-
-#undef __CLOSE_SOCKET
 
 
 sb_bool_t sb_socket_stop(sb_socket_ctx_t *sock) {
