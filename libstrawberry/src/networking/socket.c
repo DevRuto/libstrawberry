@@ -103,6 +103,24 @@ sb_bool_t sb_socket_clear(sb_socket_ctx_t *sock) {
 }
 
 
+sb_bool_t sb_socket_fromfd(sb_socket_ctx_t *sock, sb_sockfd_t fd, uint32_t flags) {
+	if (!sock) {
+		return sb_false;
+	}
+
+	if (!SB_GOOD_SOCKFD(fd)) {
+		return sb_false;
+	}
+
+	sb_memset(sock, 0, sizeof(*sock));
+
+	sock->fd = fd;
+	sock->flags = flags;
+
+	return sb_true;
+}
+
+
 sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port) {
 	if (!sock || !port) {
 		return sb_false;
