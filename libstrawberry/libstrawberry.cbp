@@ -145,6 +145,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/crypto/key_exchange/diffiehellman.h" />
+		<Unit filename="src/crypto/keygen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/crypto/keygen.h" />
 		<Unit filename="src/crypto/padding/iso97971-2.c">
 			<Option compilerVar="CC" />
 		</Unit>
