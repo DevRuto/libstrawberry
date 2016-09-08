@@ -37,6 +37,11 @@
 #include "stdincl.h"
 
 
+#define sb_time_sleep_micros(s)			sb_time_sleep_nsec((s) * 1000)
+#define sb_time_sleep_millis(s)			sb_time_sleep_nsec((s) * 1000000)
+#define sb_time_sleep_sec(s)			sb_time_sleep_nsec((s) * 1000000000)
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
