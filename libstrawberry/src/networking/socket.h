@@ -81,6 +81,7 @@ typedef uint8_t sb_addr6_storage[16];
 #define SB_SOCKET_SERVER					SB_BIT_1
 #define SB_SOCKET_EXITED					SB_BIT_2
 #define SB_SOCKET_UDP						SB_BIT_3
+#define SB_SOCKET_ACCEPTED					SB_BIT_4
 
 
 #ifdef __cplusplus
@@ -95,7 +96,8 @@ extern "C" {
 	SBAPI sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port);
 	SBAPI sb_bool_t sb_socket_stop(sb_socket_ctx_t *sock);
 
-	SBAPI sb_sockfd_t sb_socket_accept(sb_socket_ctx_t *sock, struct sockaddr *saddr, socklen_t *saddrlen);
+	SBAPI sb_bool_t sb_socket_accept(sb_socket_ctx_t *sock, sb_socket_ctx_t *out, struct sockaddr *saddr, socklen_t *saddrlen);
+	SBAPI sb_sockfd_t sb_socket_acceptfd(sb_socket_ctx_t *sock, struct sockaddr *saddr, socklen_t *saddrlen);
 
 	SBAPI sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_ssize_t size);
 	SBAPI sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_ssize_t size);

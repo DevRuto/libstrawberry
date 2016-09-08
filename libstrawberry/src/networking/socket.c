@@ -89,7 +89,10 @@ sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags
 
 
 sb_bool_t sb_socket_clear(sb_socket_ctx_t *sock) {
+	sb_error_reset();
+
 	if (!sock) {
+		sb_error_set(SB_ERROR_NULL_PTR);
 		return sb_false;
 	}
 
@@ -104,11 +107,15 @@ sb_bool_t sb_socket_clear(sb_socket_ctx_t *sock) {
 
 
 sb_bool_t sb_socket_fromfd(sb_socket_ctx_t *sock, sb_sockfd_t fd, uint32_t flags) {
+	sb_error_reset();
+
 	if (!sock) {
+		sb_error_set(SB_ERROR_NULL_PTR);
 		return sb_false;
 	}
 
 	if (!SB_GOOD_SOCKFD(fd)) {
+		sb_error_set(SB_ERROR_PARAM_INVALID);
 		return sb_false;
 	}
 
@@ -122,7 +129,15 @@ sb_bool_t sb_socket_fromfd(sb_socket_ctx_t *sock, sb_sockfd_t fd, uint32_t flags
 
 
 sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port) {
-	if (!sock || !port) {
+	sb_error_reset();
+
+	if (!sock){
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
+	}
+
+	if (!port) {
+		sb_error_set(SB_ERROR_PARAM_INVALID);
 		return sb_false;
 	}
 
@@ -156,6 +171,7 @@ sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port) {
 
 	if (!ptr) {
 		sock->fd = SB_INVALID_SOCKET;
+		sb_error_set(SB_ERROR_INITIALIZATION);
 		return sb_false;
 	}
 
@@ -168,11 +184,15 @@ sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port) {
 
 
 sb_bool_t sb_socket_stop(sb_socket_ctx_t *sock) {
+	sb_error_reset();
+
 	if (!sock) {
+		sb_error_set(SB_ERROR_NULL_PTR);
 		return sb_false;
 	}
 
 	if (!SB_GOOD_SOCKFD(sock->fd)) {
+		sb_error_set(SB_ERROR_VALUE_INVALID);
 		return sb_false;
 	}
 
@@ -190,7 +210,24 @@ sb_bool_t sb_socket_stop(sb_socket_ctx_t *sock) {
 }
 
 
-sb_sockfd_t sb_socket_accept(sb_socket_ctx_t *sock, struct sockaddr *saddr, socklen_t *saddrlen) {
+sb_bool_t sb_socket_accept(sb_socket_ctx_t *sock, sb_socket_ctx_t *out, struct sockaddr *saddr, socklen_t *saddrlen) {
+	sb_error_reset();
+
+	if (!sock) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!out) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
+	return sb_socket_fromfd(out, sb_socket_acceptfd(sock, saddr, saddrlen), SB_SOCKET_ACCEPTED);
+}
+
+
+sb_sockfd_t sb_socket_acceptfd(sb_socket_ctx_t *sock, struct sockaddr *saddr, socklen_t *saddrlen) {
 	sb_error_reset();
 
 	if (!sock) {
@@ -215,12 +252,26 @@ sb_sockfd_t sb_socket_accept(sb_socket_ctx_t *sock, struct sockaddr *saddr, sock
 
 
 sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_ssize_t size) {
-	if (!sock || !in || size < 1) {
+	sb_error_reset();
+
+	if (!sock) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
 		return -2;
 	}
 
-	if (!SB_GOOD_SOCKFD(sock->fd)) {
+	if (!in) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
 		return -3;
+	}
+
+	if (size < 1) {
+		sb_error_set(SB_ERROR_PARAM_INVALID);
+		return -4;
+	}
+
+	if (!SB_GOOD_SOCKFD(sock->fd)) {
+		sb_error_set(SB_ERROR_VALUE_INVALID);
+		return -5;
 	}
 
 	return send(sock->fd, in, size, 0);
@@ -228,12 +279,26 @@ sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_ssize_t size) {
 
 
 sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_ssize_t size) {
-	if (!sock || !out || size < 1) {
+	sb_error_reset();
+
+	if (!sock) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
 		return -2;
 	}
 
-	if (!SB_GOOD_SOCKFD(sock->fd)) {
+	if (!out) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
 		return -3;
+	}
+
+	if (size < 1) {
+		sb_error_set(SB_ERROR_PARAM_INVALID);
+		return -4;
+	}
+
+	if (!SB_GOOD_SOCKFD(sock->fd)) {
+		sb_error_set(SB_ERROR_VALUE_INVALID);
+		return -5;
 	}
 
 	return recv(sock->fd, out, size, 0);
