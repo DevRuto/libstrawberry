@@ -39,10 +39,11 @@
 #include <gmp.h>
 
 #include "../../core/error.h"
+#include "../../core/memory.h"
 #include "../../misc/gmp.h"
 
 
-IDENTID("diffiehellman.c", "0.1", "1", "2016-09-04");
+IDENTID("diffiehellman.c", "0.2", "1", "2016-09-08");
 
 
 struct __sb_crypto_diffiehellman_ctx {
@@ -94,12 +95,7 @@ sb_bool_t sb_crypto_diffiehellman_init(sb_crypto_diffiehellman_ctx_t *ctx, uint1
 		return sb_false;
 	}
 
-	if (!ctx->data) {
-		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
-		return sb_false;
-	}
-
-	__sb_crypto_diffiehellman_ctx_t *ictx = ctx->data;
+	__sb_crypto_diffiehellman_ctx_t *ictx = ctx->data = sb_malloc_s(sizeof(*ictx));
 
 	mpz_init(ictx->g);
 	mpz_init(ictx->m);
@@ -127,6 +123,7 @@ sb_bool_t sb_crypto_diffiehellman_clear(sb_crypto_diffiehellman_ctx_t *ctx) {
 	}
 
 	if (!ctx->data) {
+		// This shouldn't be nulled.
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
 		return sb_false;
 	}
@@ -140,6 +137,8 @@ sb_bool_t sb_crypto_diffiehellman_clear(sb_crypto_diffiehellman_ctx_t *ctx) {
 	mpz_clear(ictx->s);
 
 	gmp_randclear(ictx->rand);
+
+	ictx = ctx->data = sb_free(ctx->data);
 
 	ctx->bits = 0;
 
