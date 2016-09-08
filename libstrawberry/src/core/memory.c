@@ -38,8 +38,12 @@
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 #	define mlock						VirtualLock
 #	define munlock						VirtualUnlock
+#	define mlock_valid					(x)
+#	define munlock_valid				(x)
 #else
 #	include <sys/mman.h>
+#	define mlock_valid(x)				(!x)
+#	define munlock_valid(x)				(!x)
 #endif
 
 #include "error.h"
@@ -61,7 +65,7 @@ void* sb_malloc_s(sb_size_t size) {
 	void *ptr = sb_malloc_u(size);
 
 	int err;
-	if ((err = mlock(ptr, size))) {
+	if (!mlock_valid((err = mlock(ptr, size)))) {
 		sb_free(ptr);
 		sb_error_fatal_ex(SB_ERROR_FATAL_LOCK_FAILURE, err);
 	} else {
@@ -102,7 +106,7 @@ void* sb_realloc_s(void *ptr, sb_size_t size) {
 	void *p = sb_realloc_u(ptr, size);
 
 	int err;
-	if ((err = mlock(p, size))) {
+	if (!mlock_valid((err = mlock(p, size)))) {
 		sb_free(p);
 		sb_error_fatal_ex(SB_ERROR_FATAL_LOCK_FAILURE, err);
 	} else {
