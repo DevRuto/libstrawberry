@@ -90,10 +90,10 @@ extern "C" {
 	SBAPI sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags);
 	SBAPI sb_bool_t sb_socket_clear(sb_socket_ctx_t *sock);
 
-	SBAPI sb_sockfd_t sb_socket_accept(sb_socket_ctx_t *sock, struct sockaddr *saddr, socklen_t *saddrlen);
-
 	SBAPI sb_bool_t sb_socket_start(sb_socket_ctx_t *sock, uint16_t port);
 	SBAPI sb_bool_t sb_socket_stop(sb_socket_ctx_t *sock);
+
+	SBAPI sb_sockfd_t sb_socket_accept(sb_socket_ctx_t *sock, struct sockaddr *saddr, socklen_t *saddrlen);
 
 	SBAPI sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_ssize_t size);
 	SBAPI sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_ssize_t size);
