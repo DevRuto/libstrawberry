@@ -66,9 +66,9 @@ sb_bool_t sb_crypto_keygen(void *out, sb_size_t outsize, void *in, sb_size_t ins
 
 
 	sb_bool_t m0 = sb_false, m1 = sb_false;
-    sb_size_t o, i, m = 0;
+	sb_size_t o, i, m = 0;
 	uint8_t *out8 = out, *in8 = in, mask = in8[m];
-    for (i = insize, o = outsize; i--;) {
+	for (i = insize, o = outsize; i--;) {
 		if ((i % 3) == 0) {
 			m0 = ((in8[i] % o) == 0);
 		}
@@ -85,7 +85,7 @@ sb_bool_t sb_crypto_keygen(void *out, sb_size_t outsize, void *in, sb_size_t ins
 		if (!o) {
 			o = outsize;
 		}
-    }
+	}
 
 
 	return sb_true;
