@@ -229,6 +229,7 @@ sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 	SB_MEM_BUFFER_ALLOC(uint8_t, buffer, blocksize);
 
 	uint8_t *optr = out, *iptr = in;
+
 	switch (ctx->cipher) {
 		case SB_CRYPTO_CIPHER_RIJNDAEL:
 			for (; size > SB_CRYPTO_BLOCKSIZE_RIJNDAEL;) {
@@ -266,11 +267,7 @@ sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 			sb_memcpy(optr, buffer, blocksize);
 			break;
 		case SB_CRYPTO_CIPHER_SALSA20:
-
-			break;
 		case SB_CRYPTO_CIPHER_RABBIT:
-
-			break;
 		default:
 			SB_MEM_BUFFER_FREE(buffer);
 			return sb_false;
@@ -286,20 +283,34 @@ sb_bool_t sb_crypto_cipher_decrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 
 	SB_MEM_BUFFER_ALLOC(uint8_t, buffer, blocksize);
 
+	sb_size_t origsize = size;
 	uint8_t *optr = out, *iptr = in;
+
 	switch (ctx->cipher) {
 		case SB_CRYPTO_CIPHER_RIJNDAEL:
+			for (; size > SB_CRYPTO_BLOCKSIZE_RIJNDAEL; size -= SB_CRYPTO_BLOCKSIZE_RIJNDAEL) {
+				// TODO: block mode of operation
 
+				sb_crypto_rijndael_decrypt_block(ctx->data, optr, buffer);
+
+				iptr += SB_CRYPTO_BLOCKSIZE_RIJNDAEL;
+				optr += SB_CRYPTO_BLOCKSIZE_RIJNDAEL;
+				size -= SB_CRYPTO_BLOCKSIZE_RIJNDAEL;
+			}
+
+			// TODO: block mode of operation
+
+			sb_crypto_rijndael_decrypt_block(ctx->data, optr, buffer);
 			break;
 		case SB_CRYPTO_CIPHER_SALSA20:
-
-			break;
 		case SB_CRYPTO_CIPHER_RABBIT:
-
-			break;
 		default:
 			SB_MEM_BUFFER_FREE(buffer);
 			return sb_false;
+	}
+
+	if (padoffset) {
+		*padoffset = sb_crypto_cipher_decrypt_size(ctx, out, origsize);
 	}
 
 	SB_MEM_BUFFER_FREE(buffer);
