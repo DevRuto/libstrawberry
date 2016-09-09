@@ -246,6 +246,9 @@ void sb_memdump_ex(void *src, sb_size_t size, sb_size_t columns) {
 				puts("");
 			}
 		}
+		if (c) {
+			puts("");
+		}
 	}
 }
 
