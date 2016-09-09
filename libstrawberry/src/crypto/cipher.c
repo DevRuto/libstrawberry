@@ -227,6 +227,7 @@ sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 	CRYPT_CHECK();
 
 	SB_MEM_BUFFER_ALLOC(uint8_t, buffer, blocksize);
+	sb_memset(buffer, 0, blocksize);
 
 	uint8_t *optr = out, *iptr = in;
 
@@ -260,6 +261,7 @@ sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 					return sb_false;
 			}
 
+			sb_memcpy(buffer, iptr, size);
 			sb_crypto_rijndael_encrypt_block(ctx->data, buffer, buffer);
 
 			// TODO: block mode of operation
@@ -282,6 +284,7 @@ sb_bool_t sb_crypto_cipher_decrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 	CRYPT_CHECK();
 
 	SB_MEM_BUFFER_ALLOC(uint8_t, buffer, blocksize);
+	sb_memset(buffer, 0, blocksize);
 
 	sb_size_t origsize = size;
 	uint8_t *optr = out, *iptr = in;
