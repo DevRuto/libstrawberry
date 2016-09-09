@@ -436,7 +436,7 @@ static const uint32_t rcon[] = {
 )
 
 
-void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *ctx, uint8_t bits, void *key) {
+void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *ctx, uint16_t bits, void *key) {
 	sb_error_reset();
 
 	if (!ctx || !key) {

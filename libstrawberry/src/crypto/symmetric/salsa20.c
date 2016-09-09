@@ -44,7 +44,7 @@ static const uint8_t sigma[16] = "expand 32-byte k";
 static const uint8_t theta[16] = "expand 16-byte k";
 
 
-void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *key, void *nonce, void *constant) {
+void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, uint16_t bits, void *key, void *nonce, void *constant) {
 	sb_error_reset();
 
 	if (!ctx || !key) {
@@ -87,7 +87,7 @@ void sb_crypto_salsa20_init_ex(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void 
 }
 
 
-void sb_crypto_salsa20_init(sb_crypto_salsa20_ctx_t *ctx, uint8_t bits, void *key, void *nonce) {
+void sb_crypto_salsa20_init(sb_crypto_salsa20_ctx_t *ctx, uint16_t bits, void *key, void *nonce) {
 	sb_crypto_salsa20_init_ex(ctx, bits, key, nonce, NULL);
 }
 

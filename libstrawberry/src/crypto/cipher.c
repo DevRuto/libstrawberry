@@ -35,14 +35,6 @@
 #include "../core/error.h"
 #include "../core/memory.h"
 
-#include "symmetric/rijndael.h"
-#include "symmetric/salsa20.h"
-#include "symmetric/rabbit.h"
-
-#include "padding/zero.h"
-#include "padding/pkcs7.h"
-#include "padding/iso97971-2.h"
-
 
 IDENTID("cipher.c", "0.1", "1", "2016-08-23");
 
@@ -61,7 +53,7 @@ sb_size_t sb_crypto_cipher_get_blocksize(uint16_t cipher) {
 }
 
 
-sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, uint8_t padding, uint8_t flags, uint8_t bits, void *key) {
+sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, uint8_t padding, uint8_t flags, uint16_t bits, void *key) {
 	if (!ctx || !cipher) {
 		return sb_false;
 	}

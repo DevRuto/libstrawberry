@@ -39,9 +39,9 @@
 
 #define SB_CRYPTO_BLOCKSIZE_RIJNDAEL		16
 
-#define SB_CRYPTO_RIJNDAEL_128				1
-#define SB_CRYPTO_RIJNDAEL_192				2
-#define SB_CRYPTO_RIJNDAEL_256				3
+#define SB_CRYPTO_RIJNDAEL_128				128
+#define SB_CRYPTO_RIJNDAEL_192				192
+#define SB_CRYPTO_RIJNDAEL_256				256
 
 
 typedef struct sb_crypto_rijndael_ctx {
@@ -57,7 +57,7 @@ typedef struct sb_crypto_rijndael_ctx {
 extern "C" {
 #endif
 
-	SBAPI void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint8_t bits, void *key);
+	SBAPI void sb_crypto_rijndael_init(sb_crypto_rijndael_ctx_t *rijndael, uint16_t bits, void *key);
 	SBAPI sb_bool_t sb_crypto_rijndael_clear(sb_crypto_rijndael_ctx_t *rijndael);
 	SBAPI void sb_crypto_rijndael_encrypt_block(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in);
 	SBAPI void sb_crypto_rijndael_decrypt_block(sb_crypto_rijndael_ctx_t *rijndael, void *out, void *in);

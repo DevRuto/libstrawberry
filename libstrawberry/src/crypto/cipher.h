@@ -38,6 +38,14 @@
 
 #include "blockmode.h"
 
+#include "symmetric/rijndael.h"
+#include "symmetric/salsa20.h"
+#include "symmetric/rabbit.h"
+
+#include "padding/zero.h"
+#include "padding/pkcs7.h"
+#include "padding/iso97971-2.h"
+
 
 #define SB_CRYPTO_CIPHER_RIJNDAEL			1
 #define SB_CRYPTO_CIPHER_SALSA20			2
@@ -65,7 +73,7 @@ extern "C" {
 
 	// ------------------------------------------------------------------------
 
-	SBAPI sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, uint8_t padding, uint8_t flags, uint8_t bits, void *key);
+	SBAPI sb_bool_t sb_crypto_cipher_init(sb_crypto_cipher_ctx_t *ctx, uint16_t cipher, uint8_t padding, uint8_t flags, uint16_t bits, void *key);
 	SBAPI sb_bool_t sb_crypto_cipher_reset(sb_crypto_cipher_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_cipher_clear(sb_crypto_cipher_ctx_t *ctx);
 
