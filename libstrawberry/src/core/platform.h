@@ -86,12 +86,20 @@
 #ifndef SB_COMPILER
 #	if defined(_MSC_VER)
 #		define SB_COMPILER					SB_COMPILER_ID_MSC
+#		define SB_COMPILER_STRING			"MSC"
+#		define SB_COMPILER_STRING_FULL		"Microsoft Visual C++"
 #	elif defined(__GNUC__)
 #		define SB_COMPILER					SB_COMPILER_ID_GCC
-#	elif defined(__INTEL_COMPILER) || defined(__ICL)
+#		define SB_COMPILER_STRING			"GCC"
+#		define SB_COMPILER_STRING_FULL		"GNU Compiler Collection"
+#	elif defined(__INTEL_COMPILER) || defined(__ICL) || defined(__ICC)
 #		define SB_COMPILER					SB_COMPILER_ID_INTEL
+#		define SB_COMPILER_STRING			"ICL"
+#		define SB_COMPILER_STRING_FULL		"Intel C/C++"
 #	elif defined(__llvm__)
 #		define SB_COMPILER					SB_COMPILER_ID_LLVM
+#		define SB_COMPILER_STRING			"LLVM"
+#		define SB_COMPILER_STRING_FULL		"Low Level Virtual Machine"
 #	endif
 #endif
 
@@ -141,7 +149,7 @@
 #endif
 
 
-#define SB_FULL_PLATFORM_STRING				SB_PLATFORM_STRING" ("SB_ARCH_STRING", "SB_ENDIANNESS_STRING", dbg="SB_STRINGIFY_MACRO(SB_DEBUG)")"
+#define SB_FULL_PLATFORM_STRING				SB_PLATFORM_STRING" ("SB_ARCH_STRING", "SB_ENDIANNESS_STRING", dbg="SB_STRINGIFY_MACRO(SB_DEBUG)", "SB_COMPILER_STRING")"
 
 #ifndef SB_DIAG_FILE_START
 #	define SB_DIAG_FILE_START				85

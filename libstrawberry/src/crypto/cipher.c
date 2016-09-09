@@ -165,67 +165,68 @@ sb_size_t sb_crypto_cipher_encrypt_size(sb_crypto_cipher_ctx_t *ctx, sb_size_t s
 		case SB_CRYPTO_CIPHER_PAD_ISO979712:
 			return sb_crypto_pad_iso979712_size(blocksize, size);
 		default:
+			return blocksize;
+	}
+}
+
+
+sb_size_t sb_crypto_cipher_decrypt_size(sb_crypto_cipher_ctx_t *ctx, void *in, sb_size_t insize) {
+	switch (ctx->padding) {
+		case SB_CRYPTO_CIPHER_PAD_ZERO:
+			return sb_crypto_pad_zero_offset(in, insize);
+		case SB_CRYPTO_CIPHER_PAD_PKCS7:
+			return sb_crypto_pad_pkcs7_offset(in, insize);
+		case SB_CRYPTO_CIPHER_PAD_ISO979712:
+			return sb_crypto_pad_iso979712_offset(in, insize);
+		default:
 			return 0;
 	}
 }
 
 
+#define CRYPT_CHECK()													\
+	sb_error_reset();													\
+																		\
+	if (!ctx) {															\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);							\
+		return sb_false;												\
+	}																	\
+																		\
+	if (!ctx->cipher) {													\
+		sb_error_set_ex(SB_ERROR_PARAM_INVALID, 1);						\
+		return sb_false;												\
+	}																	\
+																		\
+	if (!ctx->data) {													\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);							\
+	}																	\
+																		\
+	if (!out) {															\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);							\
+		return sb_false;												\
+	}																	\
+																		\
+	if (!in) {															\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 4);							\
+		return sb_false;												\
+	}																	\
+																		\
+	if (!size) {														\
+		sb_error_set_ex(SB_ERROR_PARAM_INVALID, 2);						\
+		return sb_false;												\
+	}																	\
+																		\
+	sb_size_t blocksize = sb_crypto_cipher_get_blocksize(ctx->cipher);	\
+	if (!blocksize) {													\
+		sb_error_set(SB_ERROR_VALUE_INVALID);							\
+		return sb_false;												\
+	}
+
+
 sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void *in, sb_size_t size) {
-	sb_error_reset();
-
-	if (!ctx) {
-		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
-		return sb_false;
-	}
-
-	if (!ctx->cipher) {
-		sb_error_set_ex(SB_ERROR_PARAM_INVALID, 1);
-		return sb_false;
-	}
-
-	if (!ctx->data) {
-		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
-	}
-
-	if (!out) {
-		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);
-		return sb_false;
-	}
-
-	if (!in) {
-		sb_error_set_ex(SB_ERROR_NULL_PTR, 4);
-		return sb_false;
-	}
-
-	if (!size) {
-		sb_error_set_ex(SB_ERROR_PARAM_INVALID, 2);
-		return sb_false;
-	}
-
-	sb_size_t blocksize = sb_crypto_cipher_get_blocksize(ctx->cipher);
-	if (!blocksize) {
-		sb_error_set(SB_ERROR_VALUE_INVALID);
-		return sb_false;
-	}
+	CRYPT_CHECK();
 
 	SB_MEM_BUFFER_ALLOC(uint8_t, buffer, blocksize);
-
-#define HANDLE_PADDING()											\
-	switch (ctx->padding) {											\
-		case SB_CRYPTO_CIPHER_PAD_ZERO:								\
-			sb_crypto_pad_zero(buffer, iptr, blocksize, size);		\
-			break;													\
-		case SB_CRYPTO_CIPHER_PAD_PKCS7:							\
-			sb_crypto_pad_pkcs7(buffer, iptr, blocksize, size);		\
-			break;													\
-		case SB_CRYPTO_CIPHER_PAD_ISO979712:						\
-			sb_crypto_pad_iso979712(buffer, iptr, blocksize, size);	\
-			break;													\
-		default:													\
-			sb_error_set(SB_ERROR_VALUE_INVALID);					\
-			SB_MEM_BUFFER_FREE(buffer);								\
-			return sb_false;										\
-	}
 
 	uint8_t *optr = out, *iptr = in;
 	switch (ctx->cipher) {
@@ -242,7 +243,21 @@ sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 				size -= SB_CRYPTO_BLOCKSIZE_RIJNDAEL;
 			}
 
-			HANDLE_PADDING();
+			switch (ctx->padding) {
+				case SB_CRYPTO_CIPHER_PAD_ZERO:
+					sb_crypto_pad_zero(buffer, iptr, blocksize, size);
+					break;
+				case SB_CRYPTO_CIPHER_PAD_PKCS7:
+					sb_crypto_pad_pkcs7(buffer, iptr, blocksize, size);
+					break;
+				case SB_CRYPTO_CIPHER_PAD_ISO979712:
+					sb_crypto_pad_iso979712(buffer, iptr, blocksize, size);
+					break;
+				default:
+					sb_error_set(SB_ERROR_VALUE_INVALID);
+					SB_MEM_BUFFER_FREE(buffer);
+					return sb_false;
+			}
 
 			sb_crypto_rijndael_encrypt_block(ctx->data, buffer, buffer);
 
@@ -256,14 +271,40 @@ sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 		case SB_CRYPTO_CIPHER_RABBIT:
 
 			break;
+		default:
+			SB_MEM_BUFFER_FREE(buffer);
+			return sb_false;
 	}
 
 	SB_MEM_BUFFER_FREE(buffer);
-
 	return sb_true;
 }
 
 
-sb_bool_t sb_crypto_cipher_decrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void *in, sb_size_t size) {
+sb_bool_t sb_crypto_cipher_decrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void *in, sb_size_t size, sb_size_t *padoffset) {
+	CRYPT_CHECK();
+
+	SB_MEM_BUFFER_ALLOC(uint8_t, buffer, blocksize);
+
+	uint8_t *optr = out, *iptr = in;
+	switch (ctx->cipher) {
+		case SB_CRYPTO_CIPHER_RIJNDAEL:
+
+			break;
+		case SB_CRYPTO_CIPHER_SALSA20:
+
+			break;
+		case SB_CRYPTO_CIPHER_RABBIT:
+
+			break;
+		default:
+			SB_MEM_BUFFER_FREE(buffer);
+			return sb_false;
+	}
+
+	SB_MEM_BUFFER_FREE(buffer);
 	return sb_false;
 }
+
+
+#undef CRYPT_CHECK

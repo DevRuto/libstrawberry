@@ -82,8 +82,11 @@ extern "C" {
 	SBAPI sb_bool_t sb_crypto_cipher_blockmode_set(sb_crypto_cipher_ctx_t *ctx, sb_crypto_blockmode_ctx_t *blockmodectxptr);
 	SBAPI sb_bool_t sb_crypto_cipher_blockmode_set_enabled(sb_crypto_cipher_ctx_t *ctx, sb_bool_t enabled);
 
+	SBAPI sb_size_t sb_crypto_cipher_encrypt_size(sb_crypto_cipher_ctx_t *ctx, sb_size_t size);
+	SBAPI sb_size_t sb_crypto_cipher_decrypt_size(sb_crypto_cipher_ctx_t *ctx, void *in, sb_size_t insize);
+
 	SBAPI sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void *in, sb_size_t size);
-	SBAPI sb_bool_t sb_crypto_cipher_decrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void *in, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_cipher_decrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void *in, sb_size_t size, sb_size_t *padoffset);
 
 #ifdef __cplusplus
 }
