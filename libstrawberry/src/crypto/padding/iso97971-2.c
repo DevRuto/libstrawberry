@@ -90,9 +90,6 @@ sb_size_t sb_crypto_pad_iso979712_offset(void *in, sb_size_t havesize) {
 		if (pptr[i]) {
 			if (pptr[i] == SB_BIT_8) {
 				return i;
-			} else {
-				sb_error_set(SB_ERROR_FAILSAFE);
-				return SB_MAX_SIZE;
 			}
 		}
 	}

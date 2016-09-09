@@ -314,7 +314,7 @@ sb_bool_t sb_crypto_cipher_decrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 	}
 
 	SB_MEM_BUFFER_FREE(buffer);
-	return sb_false;
+	return sb_true;
 }
 
 
