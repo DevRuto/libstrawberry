@@ -34,6 +34,7 @@
 
 #include "../core/error.h"
 #include "../core/bits.h"
+#include "../core/memory.h"
 
 
 sb_bool_t sb_crypto_keygen(void *out, sb_size_t outsize, void *in, sb_size_t insize) {
@@ -63,6 +64,9 @@ sb_bool_t sb_crypto_keygen(void *out, sb_size_t outsize, void *in, sb_size_t ins
 		sb_error_set(SB_ERROR_PARAM_RANGE);
 		return sb_false;
 	}
+
+
+	sb_memset(out, (SB_BIT_8 | SB_BIT_6 | SB_BIT_4 | SB_BIT_2), outsize);
 
 
 	sb_bool_t m0 = sb_false, m1 = sb_false;
