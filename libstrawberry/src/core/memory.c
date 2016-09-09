@@ -202,11 +202,10 @@ void sb_memset(void *dst, int value, sb_size_t size) {
 
 
 int sb_memcmp(void *cmp1, void *cmp2, sb_size_t size) {
-	int cmp = 2147483647;
 	if (cmp1 && cmp2) {
-		cmp = memcmp(cmp1, cmp2, size);
+		return memcmp(cmp1, cmp2, size);
 	}
-	return cmp;
+	return 2147483647;
 }
 
 

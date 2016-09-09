@@ -245,6 +245,9 @@ sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 				size -= SB_CRYPTO_BLOCKSIZE_RIJNDAEL;
 			}
 
+			sb_memcpy(buffer, iptr, size);
+			sb_memset((buffer + size), 0, (blocksize - size));
+
 			switch (ctx->padding) {
 				case SB_CRYPTO_CIPHER_PAD_ZERO:
 					sb_crypto_pad_zero(buffer, iptr, blocksize, size);
@@ -261,7 +264,6 @@ sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 					return sb_false;
 			}
 
-			sb_memcpy(buffer, iptr, size);
 			sb_crypto_rijndael_encrypt_block(ctx->data, buffer, buffer);
 
 			// TODO: block mode of operation
@@ -300,6 +302,9 @@ sb_bool_t sb_crypto_cipher_decrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 				optr += SB_CRYPTO_BLOCKSIZE_RIJNDAEL;
 				size -= SB_CRYPTO_BLOCKSIZE_RIJNDAEL;
 			}
+
+			sb_memcpy(buffer, iptr, size);
+			sb_memset((buffer + size), 0, (blocksize - size));
 
 			// TODO: block mode of operation
 
