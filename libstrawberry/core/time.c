@@ -39,7 +39,7 @@
 #include "bits.h"
 
 
-IDENTID("time.c", "0.1", "1", "2016-07-29");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
 
 
 uint64_t sb_time_tsc() {

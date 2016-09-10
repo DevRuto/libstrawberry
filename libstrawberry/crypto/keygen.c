@@ -39,6 +39,9 @@
 #include "../core/memory.h"
 
 
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-10");
+
+
 sb_bool_t sb_crypto_keygen(void *out, sb_size_t outsize, void *in, sb_size_t insize) {
 	sb_error_reset();
 

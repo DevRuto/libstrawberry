@@ -51,7 +51,7 @@
 #include "error.h"
 
 
-IDENTID("memory.c", "0.1", "2", "2016-08-14");
+IDENTID(__FILE_LOCAL__, "0.1", "2", "2016-08-14");
 
 
 void* sb_malloc_u(sb_size_t size) {

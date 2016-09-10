@@ -39,7 +39,7 @@
 #include "../../core/math.h"
 
 
-IDENTID("pkcs7.c", "0.1", "1", "2016-07-29");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
 
 
 sb_size_t sb_crypto_pad_pkcs7_size(sb_size_t blocksize, sb_size_t havesize) {

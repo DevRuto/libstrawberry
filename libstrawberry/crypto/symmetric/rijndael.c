@@ -39,7 +39,7 @@
 #include "../../core/memory.h"
 
 
-IDENTID("rijndael.c", "0.1", "1", "2016-07-29");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
 
 
 static const uint32_t table_encrypt_0[256] = {

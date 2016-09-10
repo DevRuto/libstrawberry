@@ -38,7 +38,7 @@
 #include <signal.h>
 
 
-IDENTID("error.c", "0.2", "1", "2016-09-08");
+IDENTID(__FILE_LOCAL__, "0.2", "1", "2016-09-08");
 
 
 static sb_error_t __sb_errno = 0;

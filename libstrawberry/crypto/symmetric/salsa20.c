@@ -39,7 +39,7 @@
 #include "../../core/bits.h"
 
 
-IDENTID("salsa20.c", "0.1", "1", "2016-07-29");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
 
 
 static const uint8_t sigma[16] = "expand 32-byte k";

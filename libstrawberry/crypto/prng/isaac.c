@@ -38,7 +38,7 @@
 #include "../../core/time.h"
 
 
-IDENTID("isaac.c", "0.1", "4", "2016-07-29");
+IDENTID(__FILE_LOCAL__, "0.1", "4", "2016-07-29");
 
 
 #define SB_CRYPTO_PRNG_ISAAC_MIX(a, b, c, d, e, f, g, h) {								\

@@ -45,7 +45,7 @@
 #include "../../misc/gmp.h"
 
 
-IDENTID("diffiehellman.c", "0.2", "1", "2016-09-08");
+IDENTID(__FILE_LOCAL__, "0.2", "1", "2016-09-08");
 
 
 struct __sb_crypto_diffiehellman_ctx {

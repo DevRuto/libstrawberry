@@ -37,7 +37,7 @@
 #include "../../core/memory.h"
 
 
-IDENTID("ripemd160.c", "0.1", "1", "2016-07-29");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
 
 
 #define R1(x, y, z)							((x) ^ (y) ^ (z))

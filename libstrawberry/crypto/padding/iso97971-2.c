@@ -42,7 +42,7 @@
 #include "zero.h"
 
 
-IDENTID("iso97971-2.c", "0.1", "1", "2016-08-12");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-08-12");
 
 
 sb_size_t sb_crypto_pad_iso979712_size(sb_size_t blocksize, sb_size_t havesize) {

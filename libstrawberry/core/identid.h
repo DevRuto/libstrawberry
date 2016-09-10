@@ -43,12 +43,5 @@
 #define _IDENTID(x)							static const char identid[] = x
 #define IDENTID(file, version, rev, date)	_IDENTID("$Id: ["IDENTID_CODENAME"] "file", "version":"rev" "date" $")
 
-/* template
-#include "identid.h"
-IDENTID("xxx.x", "X.X", "X", "XXXX-XX-XX");
-
-
-*/
-
 
 #endif

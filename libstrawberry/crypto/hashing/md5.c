@@ -39,7 +39,7 @@
 #include "../../core/bits.h"
 
 
-IDENTID("md5.c", "0.1", "1", "2016-07-29");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
 
 
 #define F(x, y, z)							((z) ^ ((x) & ((y) ^ (z))))

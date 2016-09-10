@@ -38,7 +38,7 @@
 #include "../core/memory.h"
 
 
-IDENTID("cipher.c", "0.1", "1", "2016-08-23");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-08-23");
 
 
 sb_size_t sb_crypto_cipher_get_blocksize(uint16_t cipher) {

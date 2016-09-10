@@ -36,6 +36,9 @@
 #include "prng/isaac.h"
 
 
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-10");
+
+
 static sb_crypto_prng_isaac_ctx_t __isaac;
 static sb_bool_t __init = sb_false;
 

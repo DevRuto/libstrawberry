@@ -37,7 +37,7 @@
 #include "../memory.h"
 
 
-IDENTID("dictionary.c", "0.1", "1", "2016-07-30");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-30");
 
 
 void sb_dictionary_init(sb_dictionary_t *dictionary, sb_size_t size) {

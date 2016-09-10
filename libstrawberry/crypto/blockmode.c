@@ -35,5 +35,5 @@
 #include "blockmode.h"
 
 
-IDENTID("blockmode.c", "0.1", "1", "2016-07-29");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
 
