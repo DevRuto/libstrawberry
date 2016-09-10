@@ -31,6 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-DCONCLUSIONS_ONLY" />
+			<Add option="-DREPORT_PLATFORM" />
 		</Compiler>
 		<Linker>
 			<Add option="-lstrawberry -lgmp" />

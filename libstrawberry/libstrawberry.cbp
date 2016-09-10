@@ -165,6 +165,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/crypto/prng/isaac.h" />
+		<Unit filename="src/crypto/random.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/crypto/random.h" />
 		<Unit filename="src/crypto/symmetric/rabbit.c">
 			<Option compilerVar="CC" />
 		</Unit>

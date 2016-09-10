@@ -75,7 +75,7 @@ sb_bool_t test_isaac() {
 
 	sb_crypto_prng_isaac_ctx_t ctx;
 	sb_memset(&ctx, 0, sizeof(ctx));
-	sb_crypto_prng_isaac_init(&ctx, sb_true);
+	sb_crypto_prng_isaac_init_ex(&ctx, sb_true, 0);
 
 	for (i = 0, k = 0; i < 2; ++i) {
 		sb_crypto_prng_isaac_update(&ctx);
