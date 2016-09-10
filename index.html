@@ -17,11 +17,11 @@
 				font-size: 2.5em;
 				text-align: center;
 			}
-			h1, h2, h3, h4, h5, h6 {
+			h1, h2, h3, h4, h5, h6, ul {
 				margin: 0;
 			}
 			p {
-				margin: 0 0 0 10px;
+				margin: 0 0 15px 0;
 			}
 			div.center {
 				position: absolute;
@@ -29,13 +29,14 @@
 				top: 0;
 				left: 50%;
 				margin-left: -300px;
+				padding: 0 20px;
 				/*transform: translate(-50%, -50%);*/
 				
 				width: 600px;
 				height: 100%;
 				
 				background-color: black;
-				background-color: rgba(0, 0, 0, 0.5);
+				background-color: rgba(0, 0, 0, 0.3);
 			}
 			div.center > div.footer {
 				position: absolute;
@@ -52,20 +53,117 @@
 				font-size: 0.85em;
 				text-align: right;
 				
-				opacity: 0.5;
+				opacity: 0.6;
 			}
 			code.lib {
 				font-weight: bold;
+			}
+			ul.monos {
+				font-family: monospace;
+			}
+			li.todo {
+				opacity: 0.45;
+			}
+			li.todo:after {
+				content: ' (TODO)';
 			}
 		</style>
 	</head>
 	<body>
 		<div class='center'>
-			<h1 style='margin: 20px 0; font-variant: small-caps;'>libstrawberry</h1>
+			<h1 style='margin: 20px 0 10px 0; font-variant: small-caps;'>libstrawberry</h1>
 			<p>
 				<code class='lib'>libstrawberry</code> is a young, cross-platform cryptography and networking library written in C.
 				It aims to provide a feature-rich, consistent, simplified programming interface.
 			</p>
+			<h2>Features</h2>
+			<ul>
+				<li>
+					<b>Core</b>
+					<ul>
+						<li>
+							<b>Time</b><br/>
+							Acquire timestamps, sleep.
+						</li>
+						<li>
+							<b>Memory</b><br/>
+							Memory helpers, safe (locks memory) and unsafe variants of functions such as <code>malloc</code>, <code>calloc</code>, <code>realloc</code>, <code>cpyalloc</code>, and others.
+						</li>
+						<li>
+							<b>Error Reporting</b><br/>
+							Library functions set error codes and error parameters if things go south, you can use these to diagnose what's going wrong.
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>Cryptography</b>
+					<ul>
+						<li>
+							<b>Helpers</b><br/>
+							Generalized encryption/decryption: easy <u>symmetric</u> encryption and decryption of data using one interface.<br/>
+							Key generation: create keys based on an input seed.<br/>
+							Global PRNG (ISAAC): acquire random 16-bit, 32-bit, and 64-bit numbers without a hassle.
+						</li>
+						<li>
+							<b>Hashing</b><br/>
+							<ul class='monos'>
+								<li>MD5</li>
+								<li>RIPEMD160</li>
+								<li class='todo'>SHA256</li>
+								<li class='todo'>SHA512</li>
+							</ul>
+						</li>
+						<li>
+							<b>Key Exchange</b><br/>
+							<ul class='monos'>
+								<li>Diffie Hellman</li>
+							</ul>
+						</li>
+						<li>
+							<b>Padding</b><br/>
+							<ul class='monos'>
+								<li>PKCS#7</li>
+								<li>ISO 9797-1 #1 (zero padding)</li>
+								<li>ISO 9797-1 #2</li>
+							</ul>
+						</li>
+						<li>
+							<b>Pseudo-random Number Generators</b><br/>
+							<ul class='monos'>
+								<li>ISAAC</li>
+							</ul>
+						</li>
+						<li>
+							<b>Symmetric</b><br/>
+							<ul class='monos'>
+								<li>Rabbit</li>
+								<li>Rijndael</li>
+								<li>Salsa20</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>Miscellaneous</b><br/>
+					<ul>
+						<li>
+							<b>GMP</b><br/>
+							<ul class='monos'>
+								<li>Integer import</li>
+								<li>Integer export</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>Networking</b><br/>
+					<ul>
+						<li>
+							Simplified sockets.
+						</li>
+					</ul>
+				</li>
+			</ul>
 			<div class='footer'>
 				Powered by a beautiful cupcake.
 			</div>
