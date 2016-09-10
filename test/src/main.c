@@ -2,20 +2,20 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../../libstrawberry/src/core/types/dictionary.h"
-#include "../../libstrawberry/src/core/bits.h"
-#include "../../libstrawberry/src/core/time.h"
-#include "../../libstrawberry/src/core/error.h"
-#include "../../libstrawberry/src/core/memory.h"
-#include "../../libstrawberry/src/crypto/hashing/ripemd160.h"
-#include "../../libstrawberry/src/crypto/symmetric/rijndael.h"
-#include "../../libstrawberry/src/core/platform.h"
-#include "../../libstrawberry/src/crypto/symmetric/salsa20.h"
-#include "../../libstrawberry/src/crypto/hashing/md5.h"
-#include "../../libstrawberry/src/networking/socket.h"
+#include "../../libstrawberry/core/types/dictionary.h"
+#include "../../libstrawberry/core/bits.h"
+#include "../../libstrawberry/core/time.h"
+#include "../../libstrawberry/core/error.h"
+#include "../../libstrawberry/core/memory.h"
+#include "../../libstrawberry/crypto/hashing/ripemd160.h"
+#include "../../libstrawberry/crypto/symmetric/rijndael.h"
+#include "../../libstrawberry/core/platform.h"
+#include "../../libstrawberry/crypto/symmetric/salsa20.h"
+#include "../../libstrawberry/crypto/hashing/md5.h"
+#include "../../libstrawberry/networking/socket.h"
 #include "tests.h"
-#include "../../libstrawberry/src/crypto/prng/isaac.h"
-//#include "../../libstrawberry/src/core/base64.h"
+#include "../../libstrawberry/crypto/prng/isaac.h"
+//#include "../../libstrawberry/core/base64.h"
 
 
 void test(const char *name, sb_bool_t(*func)()) {

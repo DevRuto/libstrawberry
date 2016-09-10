@@ -1,5 +1,5 @@
 #include "../../stdincl.h"
-#include "../../../../libstrawberry/src/crypto/hashing/ripemd160.h"
+#include "../../../../libstrawberry/crypto/hashing/ripemd160.h"
 
 static char *tests[6] = {
 	"a",

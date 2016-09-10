@@ -4,9 +4,9 @@
 
 #include <stdio.h>
 
-#include "../../libstrawberry/src/core/types/bool.h"
-#include "../../libstrawberry/src/core/error.h"
-#include "../../libstrawberry/src/core/memory.h"
+#include "../../libstrawberry/core/types/bool.h"
+#include "../../libstrawberry/core/error.h"
+#include "../../libstrawberry/core/memory.h"
 
 //#undef CONCLUSIONS_ONLY
 

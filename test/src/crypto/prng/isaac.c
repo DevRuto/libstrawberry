@@ -1,5 +1,5 @@
 #include "../../stdincl.h"
-#include "../../../../libstrawberry/src/crypto/prng/isaac.h"
+#include "../../../../libstrawberry/crypto/prng/isaac.h"
 
 static uint32_t vectors[512] = {
 	0xF650E4C8, 0xE448E96D, 0x98DB2FB4, 0xF5FAD54F, 0x433F1AFB, 0xEDEC154A, 0xD8370487, 0x46CA4F9A,

@@ -1,6 +1,6 @@
 #include "../../stdincl.h"
 #include <string.h>
-#include "../../../../libstrawberry/src/crypto/hashing/md5.h"
+#include "../../../../libstrawberry/crypto/hashing/md5.h"
 
 
 static uint8_t vectors_input[3][48] = {

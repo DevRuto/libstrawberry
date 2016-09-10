@@ -87,111 +87,109 @@
 		<Linker>
 			<Add option="-lgmp" />
 		</Linker>
-		<Unit filename="CompilerFlags.spec">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="FileLicenseTemplate.spec" />
-		<Unit filename="src/core/bits.h" />
-		<Unit filename="src/core/error.c">
+		<Unit filename="core/bits.h" />
+		<Unit filename="core/error.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/core/error.h" />
-		<Unit filename="src/core/identid.h" />
-		<Unit filename="src/core/math.c">
+		<Unit filename="core/error.h" />
+		<Unit filename="core/identid.h" />
+		<Unit filename="core/math.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/core/math.h" />
-		<Unit filename="src/core/memory.c">
+		<Unit filename="core/math.h" />
+		<Unit filename="core/memory.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/core/memory.h" />
-		<Unit filename="src/core/platform.h" />
-		<Unit filename="src/core/sbapi.h" />
-		<Unit filename="src/core/stdincl.h" />
-		<Unit filename="src/core/time.c">
+		<Unit filename="core/memory.h" />
+		<Unit filename="core/platform.h" />
+		<Unit filename="core/sbapi.h" />
+		<Unit filename="core/stdincl.h" />
+		<Unit filename="core/time.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/core/time.h" />
-		<Unit filename="src/core/types/bool.h" />
-		<Unit filename="src/core/types/dictionary.c">
+		<Unit filename="core/time.h" />
+		<Unit filename="core/types/bool.h" />
+		<Unit filename="core/types/dictionary.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/core/types/dictionary.h" />
-		<Unit filename="src/crypto/blockmode.c">
+		<Unit filename="core/types/dictionary.h" />
+		<Unit filename="crypto/blockmode.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/blockmode.h" />
-		<Unit filename="src/crypto/cipher.c">
+		<Unit filename="crypto/blockmode.h" />
+		<Unit filename="crypto/cipher.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/cipher.h" />
-		<Unit filename="src/crypto/hashing/md5.c">
+		<Unit filename="crypto/cipher.h" />
+		<Unit filename="crypto/hashing/md5.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/hashing/md5.h" />
-		<Unit filename="src/crypto/hashing/ripemd160.c">
+		<Unit filename="crypto/hashing/md5.h" />
+		<Unit filename="crypto/hashing/ripemd160.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/hashing/ripemd160.h" />
-		<Unit filename="src/crypto/hashing/sha256.c">
+		<Unit filename="crypto/hashing/ripemd160.h" />
+		<Unit filename="crypto/hashing/sha256.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/hashing/sha256.h" />
-		<Unit filename="src/crypto/hashing/sha512.c">
+		<Unit filename="crypto/hashing/sha256.h" />
+		<Unit filename="crypto/hashing/sha512.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/hashing/sha512.h" />
-		<Unit filename="src/crypto/key_exchange/diffiehellman.c">
+		<Unit filename="crypto/hashing/sha512.h" />
+		<Unit filename="crypto/key_exchange/diffiehellman.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/key_exchange/diffiehellman.h" />
-		<Unit filename="src/crypto/keygen.c">
+		<Unit filename="crypto/key_exchange/diffiehellman.h" />
+		<Unit filename="crypto/keygen.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/keygen.h" />
-		<Unit filename="src/crypto/padding/iso97971-2.c">
+		<Unit filename="crypto/keygen.h" />
+		<Unit filename="crypto/padding/iso97971-2.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/padding/iso97971-2.h" />
-		<Unit filename="src/crypto/padding/pkcs7.c">
+		<Unit filename="crypto/padding/iso97971-2.h" />
+		<Unit filename="crypto/padding/pkcs7.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/padding/pkcs7.h" />
-		<Unit filename="src/crypto/padding/zero.c">
+		<Unit filename="crypto/padding/pkcs7.h" />
+		<Unit filename="crypto/padding/zero.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/padding/zero.h" />
-		<Unit filename="src/crypto/prng/isaac.c">
+		<Unit filename="crypto/padding/zero.h" />
+		<Unit filename="crypto/prng/isaac.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/prng/isaac.h" />
-		<Unit filename="src/crypto/random.c">
+		<Unit filename="crypto/prng/isaac.h" />
+		<Unit filename="crypto/random.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/random.h" />
-		<Unit filename="src/crypto/symmetric/rabbit.c">
+		<Unit filename="crypto/random.h" />
+		<Unit filename="crypto/symmetric/rabbit.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/symmetric/rabbit.h" />
-		<Unit filename="src/crypto/symmetric/rijndael.c">
+		<Unit filename="crypto/symmetric/rabbit.h" />
+		<Unit filename="crypto/symmetric/rijndael.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/symmetric/rijndael.h" />
-		<Unit filename="src/crypto/symmetric/salsa20.c">
+		<Unit filename="crypto/symmetric/rijndael.h" />
+		<Unit filename="crypto/symmetric/salsa20.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/crypto/symmetric/salsa20.h" />
-		<Unit filename="src/dllmain.c">
+		<Unit filename="crypto/symmetric/salsa20.h" />
+		<Unit filename="dllmain.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/misc/gmp.c">
+		<Unit filename="doc/CompilerFlags.spec" />
+		<Unit filename="doc/FileLicenseTemplate.spec" />
+		<Unit filename="misc/gmp.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/misc/gmp.h" />
-		<Unit filename="src/networking/socket.c">
+		<Unit filename="misc/gmp.h" />
+		<Unit filename="networking/socket.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/networking/socket.h" />
+		<Unit filename="networking/socket.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
