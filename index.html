@@ -36,6 +36,9 @@
 				min-height: 100%;
 				height: 100%;
 				
+				border-left: 1px solid #405060;
+				border-right: 1px solid #405060;
+				
 				background-color: black;
 				background-color: rgba(0, 0, 0, 0.3);
 			}
@@ -47,6 +50,16 @@
 				height: 100%;
 				
 				overflow-y: auto;
+			}
+			div.center > div.content > center {
+				font-size: 0.9em;
+			}
+			div.center > div.content > center > a {
+				color: #0060FF;
+				transition: 0.075s;
+			}
+			div.center > div.content > center > a:hover {
+				color: #0040D0;
 			}
 			div.center > div.footer {
 				position: absolute;
@@ -60,7 +73,7 @@
 				width: 600px;
 				height: 20px;
 				
-				border-top: 1px solid #606060;
+				border-top: 1px solid #405060;
 				
 				font-size: 0.85em;
 				text-align: right;
@@ -79,12 +92,19 @@
 			li.todo:after {
 				content: ' (TODO)';
 			}
+			a {
+				text-decoration: none;
+				color: inherit;
+			}
 		</style>
 	</head>
 	<body>
 		<div class='center'>
 			<div class='content'>
 				<h1 style='margin: 0 0 10px 0; font-variant: small-caps;'>libstrawberry</h1>
+				<center style='margin: 0 0 10px 0;'>
+					<a href='https://github.com/strawberryentrypoint/libstrawberry'><!--<code><font color='#0040E0'>goto</font> <font color=''>repository;</font></code>-->View Repository</a>
+				</center>
 				<p>
 					<code class='lib'>libstrawberry</code> is a young, cross-platform cryptography and networking library written in C.
 					It aims to provide a feature-rich, consistent, simplified programming interface.
@@ -180,7 +200,7 @@
 				<br/>
 			</div>
 			<div class='footer'>
-				Powered by a beautiful cupcake.
+				Powered by a very beautiful cupcake.
 			</div>
 		</div>
 	</body>
