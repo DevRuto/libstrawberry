@@ -87,11 +87,11 @@
 			}
 			a {
 				text-decoration: none;
-				color: #0060FF;
+				color: #00A8FF;
 				transition: 0.075s;
 			}
 			a:hover {
-				color: #0040D0;
+				color: #0080D0;
 			}
 		</style>
 	</head>
@@ -103,9 +103,12 @@
 					<a href='https://github.com/strawberryentrypoint/libstrawberry'><!--<code><font color='#0040E0'>goto</font> <font color=''>repository;</font></code>-->View Repository</a>
 				</center>
 				<p>
-					<code class='lib'>libstrawberry</code> is a young, cross-platform cryptography and networking library written in C.
+					<code class='lib'>libstrawberry</code> is a young, open-source, cross-platform cryptography and networking library written in C, licensed under the MIT license.
 					It aims to provide a feature-rich, consistent, simplified programming interface.
 					Neither strawberries nor cupcakes included.
+				</p>
+				<p>
+					All functions are prefixed with the <code class='lib'>sb_</code> prefix.
 				</p>
 				<h2>Features</h2>
 				<ul>
@@ -114,15 +117,38 @@
 						<ul>
 							<li>
 								<b>Time</b><br/>
-								Acquire timestamps, sleep.
+								<ul class='monos'>
+									<li>Acquiring timestamps and the TSC</li>
+									<li>Sleeping</li>
+								</ul>
 							</li>
 							<li>
 								<b>Memory</b><br/>
-								Memory helpers, safe (locks memory) and unsafe variants of functions such as <code>malloc</code>, <code>calloc</code>, <code>realloc</code>, <code>cpyalloc</code>, and others.
+								<u>Underlined</u> functions have a <code class='lib'>_s</code> (memory locking) and a <code class='lib'>_u</code> (normal) variant.<br/>
+								<ul class='monos'>
+									<li><u>malloc</u>: memory allocation</li>
+									<li><u>calloc</u>: cleared memory allocation</li>
+									<li><u>realloc</u>: memory reallocation</li>
+									<li><u>cpyalloc</u>: cloning memory allocation</li>
+									<li><u>ntcpyalloc</u>: null-terminated cloning memory allocation</li>
+									<li>free: frees memory, always returns <code class='lib'>NULL</code></li>
+									<li>memset: sets memory</li>
+									<li>memcpy: copies memory</li>
+									<li>memcmp: compares memory</li>
+									<li>memequ: checks if memory is equal</li>
+									<li>memdump: dumps the specified region in the memory to <code class='lib'>stdout</code></li>
+									<li>strcpy: copies a string</li>
+									<li>strappend: appends to a string</li>
+								</ul>
 							</li>
 							<li>
 								<b>Error Reporting</b><br/>
-								Library functions set error codes and error parameters if things go south, you can use these to diagnose what's going wrong.
+								Library functions set error codes and error parameters if things go south, which you can use to diagnose what's going wrong.<br/>
+								<ul class='monos'>
+									<li>error_get</li>
+									<li>error_get_param</li>
+									<li>error_print</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
@@ -131,9 +157,17 @@
 						<ul>
 							<li>
 								<b>Helpers</b><br/>
-								Generalized encryption/decryption: easy <u>symmetric</u> encryption and decryption of data using one interface.<br/>
-								Key generation: create keys based on an input seed.<br/>
-								Global PRNG (ISAAC): acquire random 16-bit, 32-bit, and 64-bit numbers without a hassle.
+								<ul class='monos'>
+									<li>
+										Generalized encryption/decryption: easy <u>symmetric</u> encryption and decryption of data using one interface.
+									</li>
+									<li>
+										Key generation: create keys based on an input seed.
+									</li>
+									<li>
+										Global PRNG (ISAAC): acquire random 16-bit, 32-bit, and 64-bit numbers without a hassle.
+									</li>
+								</ul>
 							</li>
 							<li>
 								<b>Hashing</b><br/>
@@ -191,6 +225,16 @@
 						<ul>
 							<li>
 								Simplified sockets.
+								<ul class='monos'>
+									<li>socket_init</li>
+									<li>socket_clear</li>
+									<li>socket_start</li>
+									<li>socket_stop</li>
+									<li>socket_accept</li>
+									<li>socket_acceptfd</li>
+									<li>socket_read</li>
+									<li>socket_write</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
