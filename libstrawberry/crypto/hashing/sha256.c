@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/hashing/sha256.c"
 
+#define __SB_DONT_NEED_INTRINSICS
+
 #include "sha256.h"
 
 

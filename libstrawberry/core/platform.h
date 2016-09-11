@@ -144,21 +144,43 @@
 
 #if defined(_DEBUG) || defined(DEBUG)
 #	define SB_DEBUG							1
-#	define SB_DEBUG_STR						"Debug"
+#	define SB_CHANNEL_STR					"Debug"
+#elif defined(_RELEASE) || defined(RELEASE)
+#	define SB_DEBUG							0
+#	define SB_CHANNEL_STR					"Release"
 #else
 #	define SB_DEBUG							0
-#	define SB_DEBUG_STR						"Release"
+#	define SB_CHANNEL_STR					"Unspecified"
 #endif
 
 
-#define SB_FULL_PLATFORM_STRING				SB_PLATFORM_STRING" ("SB_ARCH_STRING", "SB_ENDIANNESS_STRING", "SB_COMPILER_STRING")"
+#if defined(SB_INCLUDE_INTRINSICS) && (!defined(__SB_DONT_NEED_INTRINSICS) || defined(SB_INTRINSICS))
+#	if (SB_COMPILER == SB_COMPILER_ID_GCC)
+#		if !defined(SB_ASSUME_INTRINSICS_AVAILABLE) && defined(__has_include)
+#			if __has_include(<x86intrin.h>)
+#				include <x86intrin.h>
+#				define SB_HAVE_INTRINSICS	1
+#			else
+#				define SB_HAVE_INTRINSICS	0
+#			endif
+#		else
+#			include <x86intrin.h>
+#			define SB_HAVE_INTRINSICS		1
+#		endif
+#	elif (SB_COMPILER == SB_COMPILER_ID_MSC)
+#		include <intrin.h>
+#		define SB_HAVE_INTRINSICS			1
+#	else
+#		define SB_HAVE_INTRINSICS			0
+#	endif
+#else
+#	define SB_HAVE_INTRINSICS				0
+#endif
 
-#define SB_DIAG_FUNC						__func__
-#define SB_DIAG_LINE						__LINE__
-
-
-#ifdef REPORT_PLATFORM
-#	pragma message("  platform.h: "SB_FULL_PLATFORM_STRING)
+#if SB_HAVE_INTRINSICS
+#	define SB_INTRINSICS_STR				"+"
+#else
+#	define SB_INTRINSICS_STR				"-"
 #endif
 
 
@@ -182,6 +204,14 @@
 #	define SB_MAX_SIZE						SB_MAX_UINT32
 	typedef uint32_t sb_size_t;
 	typedef int32_t sb_ssize_t;
+#endif
+
+
+#define SB_FULL_PLATFORM_STRING				SB_PLATFORM_STRING" ("SB_ARCH_STRING", "SB_ENDIANNESS_STRING", "SB_COMPILER_STRING""SB_INTRINSICS_STR")"
+
+
+#ifdef REPORT_PLATFORM
+#	pragma message("  platform.h: "SB_FULL_PLATFORM_STRING)
 #endif
 
 

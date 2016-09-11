@@ -77,8 +77,8 @@ extern "C" {
 #	define sb_error_print()
 #endif
 
-#define sb_error_fatal_ex(x, y)				_sb_error_fatal_ex(__FILE_LOCAL__, SB_DIAG_FUNC, SB_DIAG_LINE, x, y)
-#define sb_error_fatal(x)					_sb_error_fatal(__FILE_LOCAL__, SB_DIAG_FUNC, SB_DIAG_LINE, x)
+#define sb_error_fatal_ex(x, y)				_sb_error_fatal_ex(__FILE_LOCAL__, __func__, __LINE__, x, y)
+#define sb_error_fatal(x)					_sb_error_fatal(__FILE_LOCAL__, __func__, __LINE__, x)
 
 #define SB_ERROR_SUCCESS					0
 #define SB_ERROR_NULL_PTR					1
@@ -92,6 +92,9 @@ extern "C" {
 #define SB_ERROR_FATAL_LOCK_FAILURE			9
 #define SB_ERROR_DESCRIPTOR_INVALID			10
 #define SB_ERROR_VALUE_INVALID				11
+#define SB_ERROR_ENTRY_NOT_FOUND			12
+#define SB_ERROR_FUNCTIONALITY				13
+#define SB_ERROR_CLEANUP					14
 
 
 #endif

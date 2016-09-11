@@ -53,8 +53,8 @@ typedef struct sb_dictionary {
 extern "C" {
 #endif
 
-	SBAPI void sb_dictionary_init(sb_dictionary_t *dictionary, sb_size_t size);
-	SBAPI void sb_dictionary_clear(sb_dictionary_t *dictionary);
+	SBAPI sb_bool_t sb_dictionary_init(sb_dictionary_t *dictionary, sb_size_t size);
+	SBAPI sb_bool_t sb_dictionary_clear(sb_dictionary_t *dictionary);
 	SBAPI sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, sb_size_t *index);
 	SBAPI sb_dictionary_entry_t* sb_dictionary_get(sb_dictionary_t *dictionary, const char *key);
 	SBAPI sb_bool_t sb_dictionary_set(sb_dictionary_t *dictionary, const char *key, void *value);

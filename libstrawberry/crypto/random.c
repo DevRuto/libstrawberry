@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/random.c"
 
+#define __SB_DONT_NEED_INTRINSICS
+
 #include "./random.h"
 #include "prng/isaac.h"
 

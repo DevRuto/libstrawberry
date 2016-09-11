@@ -26,11 +26,13 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
+**    // XXX TODO FIXME: fails test every once in a while, search and destroy.
 **
 */
 
 #define __FILE_LOCAL__						"crypto/key_exchange/diffiehellman.c"
+
+#define __SB_DONT_NEED_INTRINSICS
 
 #if !defined(SB_EXCLUDE_CRYPTO_KEX_EXCHANGE) && !defined(SB_EXCLUDE_CRYPTO_KEY_EXCHANGE_DIFFIEHELLMAN)
 #ifdef HAVE_GMP

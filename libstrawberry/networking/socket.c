@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"networking/socket.c"
 
+#define __SB_DONT_NEED_INTRINSICS
+
 #ifndef SB_EXCLUDE_NETWORKING
 
 

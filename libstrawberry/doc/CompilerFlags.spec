@@ -10,12 +10,21 @@ Release build.
 
 [LOGGING FLAGS]
 
-DONT_REPORT_PLATFORM
-Do not report platform information upon inclusion of core/platform.h.
+REPORT_PLATFORM
+Report platform information upon inclusion of core/platform.h.
 
 
 
 [MISC IN/EXCLUSION FLAGS]
+
+SB_INCLUDE_INTRINSICS
+Specifies that intrinsics should be used.
+
+SB_ASSUME_INTRINSICS_AVAILABLE (GCC 5.0+ only)
+Disable checking if the necessary files are available.
+
+SB_ERROR_REPORTING
+Specifies that error reporting functionality should be included.
 
 SB_OPT_MLOCK
 Specifies that memory locking functionality should be available.

@@ -47,10 +47,10 @@
 #define SB_VERSION_MAJOR					0
 #define SB_VERSION_MINOR					1
 #define SB_VERSION							((SB_VERSION_MAJOR << 16) | (SB_VERSION_MINOR << 8) | SB_DEBUG)
-#define SB_VERSION_STRING					"libstrawberry "SB_STRINGIFY_MACRO(SB_VERSION_MAJOR)"."SB_STRINGIFY_MACRO(SB_VERSION_MINOR)" ("IDENTID_CODENAME", "SB_DEBUG_STR") "__DATE__" "__TIME__
+#define SB_VERSION_STRING					"libstrawberry "SB_STRINGIFY_MACRO(SB_VERSION_MAJOR)"."SB_STRINGIFY_MACRO(SB_VERSION_MINOR)" ("IDENTID_CODENAME", "SB_CHANNEL_STR") "__DATE__" "__TIME__
 
 
-// Build platform information.
+// Compile-time build information.
 const char* sb_platform();
 const char* sb_version();
 const char* sb_version_full();

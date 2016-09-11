@@ -32,31 +32,40 @@
 
 #define __FILE_LOCAL__						"core/types/dictionary.c"
 
+#define __SB_DONT_NEED_INTRINSICS
+
 #include "dictionary.h"
 
 #include "../memory.h"
+#include "../error.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-30");
 
 
-void sb_dictionary_init(sb_dictionary_t *dictionary, sb_size_t size) {
+sb_bool_t sb_dictionary_init(sb_dictionary_t *dictionary, sb_size_t size) {
+	sb_error_reset();
+
 	if (!dictionary) {
-		return;
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
 	}
 
 	sb_memset(dictionary, 0, sizeof(*dictionary));
 
 	dictionary->__size = size;
+	dictionary->entries = sb_calloc_u((sizeof(*dictionary->entries) * dictionary->__size));
 
-	sb_size_t msize = (sizeof(*dictionary->entries) * dictionary->__size);
-	dictionary->entries = sb_calloc_u(msize);
+	return sb_true;
 }
 
 
-void sb_dictionary_clear(sb_dictionary_t *dictionary) {
+sb_bool_t sb_dictionary_clear(sb_dictionary_t *dictionary) {
+	sb_error_reset();
+
 	if (!dictionary) {
-		return;
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
 	}
 
 	if (dictionary->entries) {
@@ -72,11 +81,21 @@ void sb_dictionary_clear(sb_dictionary_t *dictionary) {
 	}
 
 	sb_memset(dictionary, 0, sizeof(*dictionary));
+
+	return sb_true;
 }
 
 
 sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, sb_size_t *index) {
-	if (!dictionary || !dictionary->entries) {
+	sb_error_reset();
+
+	if (!dictionary) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!dictionary->entries) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
 		return sb_false;
 	}
 
@@ -85,7 +104,7 @@ sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, 
 		sb_dictionary_entry_t *entry;
 		for (i = 0; i < dictionary->__size; ++i) {
 			entry = &dictionary->entries[i];
-			if (entry->key && strlen(entry->key) == keylen && sb_memequ((void*)key, entry->key, keylen)) {
+			if (entry->key && (strlen(entry->key) == keylen /* FIXME: Store size? */) && sb_memequ((void*)key, entry->key, keylen)) {
 				if (index) {
 					*index = i;
 				}
@@ -109,7 +128,20 @@ sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, 
 
 
 sb_dictionary_entry_t* sb_dictionary_get(sb_dictionary_t *dictionary, const char *key) {
-	if (!dictionary || !dictionary->entries || !key) {
+	sb_error_reset();
+
+	if (!dictionary) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return NULL;
+	}
+
+	if (!key) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);
+		return NULL;
+	}
+
+	if (!dictionary->entries) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
 		return NULL;
 	}
 
@@ -122,12 +154,26 @@ sb_dictionary_entry_t* sb_dictionary_get(sb_dictionary_t *dictionary, const char
 		}
 	}
 
+	sb_error_set(SB_ERROR_ENTRY_NOT_FOUND);
 	return NULL;
 }
 
 
 sb_bool_t sb_dictionary_set(sb_dictionary_t *dictionary, const char *key, void *value) {
-	if (!dictionary || !dictionary->entries || !key) {
+	sb_error_reset();
+
+	if (!dictionary) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!key) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);
+		return sb_false;
+	}
+
+	if (!dictionary->entries) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
 		return sb_false;
 	}
 
@@ -136,16 +182,20 @@ sb_bool_t sb_dictionary_set(sb_dictionary_t *dictionary, const char *key, void *
 		index = dictionary->__size++;
 		dictionary->entries = sb_realloc_u(dictionary->entries, sizeof(*dictionary->entries) * dictionary->__size);
 	} else {
-		if (!sb_dictionary_get_index(dictionary, NULL, &index)) {
-			// error
-			return sb_false;
+		if (!sb_dictionary_get_index(dictionary, key, &index)) {
+			if (!sb_dictionary_get_index(dictionary, NULL, &index)) {
+				sb_error_set(SB_ERROR_VALUE_INVALID);
+				return sb_false;
+			}
+		} else {
+			sb_free(dictionary->entries[index].key);
 		}
 	}
 
 	dictionary->entries[index].key = sb_ntcpyalloc_u((void*)key, strlen(key));
 	dictionary->entries[index].value = value;
 
-	++(dictionary->count);
+	++dictionary->count;
 
 	return sb_true;
 }

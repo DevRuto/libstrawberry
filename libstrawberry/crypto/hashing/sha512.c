@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/hashing/sha512.c"
 
+#define __SB_DONT_NEED_INTRINSICS
+
 #include "sha512.h"
 
 

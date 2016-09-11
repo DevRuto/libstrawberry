@@ -53,11 +53,11 @@ typedef struct sb_crypto_md5_ctx {
 extern "C" {
 #endif
 
-	SBAPI void sb_crypto_md5_init(sb_crypto_md5_ctx_t *ctx);
-	SBAPI void sb_crypto_md5_clear(sb_crypto_md5_ctx_t *ctx);
-	SBAPI void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t size);
-	SBAPI void sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out);
-	SBAPI void sb_crypto_md5(void *out, void *in, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_md5_init(sb_crypto_md5_ctx_t *ctx);
+	SBAPI sb_bool_t sb_crypto_md5_clear(sb_crypto_md5_ctx_t *ctx);
+	SBAPI sb_bool_t sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out);
+	SBAPI sb_bool_t sb_crypto_md5(void *out, void *in, sb_size_t size);
 
 #ifdef __cplusplus
 }

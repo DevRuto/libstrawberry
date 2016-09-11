@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"core/memory.c"
 
+#define __SB_DONT_NEED_INTRINSICS
+
 #include "memory.h"
 
 #include <stdlib.h>

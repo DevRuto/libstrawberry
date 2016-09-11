@@ -32,10 +32,12 @@
 
 #define __FILE_LOCAL__						"misc/gmp.c"
 
+#define __SB_DONT_NEED_INTRINSICS
+
 #ifdef HAVE_GMP
 
 
-#include "gmp.h"
+#include "./gmp.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-04");

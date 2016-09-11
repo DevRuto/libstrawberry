@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/hashing/md5.c"
 
+#define __SB_DONT_NEED_INTRINSICS
+
 #include "md5.h"
 
 #include "../../core/error.h"
@@ -196,12 +198,12 @@ static void *sb_crypto_md5_internal_update(sb_crypto_md5_ctx_t *ctx, void *data,
 }
 
 
-void sb_crypto_md5_init(sb_crypto_md5_ctx_t *ctx) {
+sb_bool_t sb_crypto_md5_init(sb_crypto_md5_ctx_t *ctx) {
 	sb_error_reset();
 
 	if (!ctx) {
 		sb_error_set(SB_ERROR_NULL_PTR);
-		return;
+		return sb_false;
 	}
 
 	sb_crypto_md5_clear(ctx);
@@ -210,20 +212,28 @@ void sb_crypto_md5_init(sb_crypto_md5_ctx_t *ctx) {
 	ctx->b = 0xEFCDAB89U;
 	ctx->c = 0x98BADCFEU;
 	ctx->d = 0x10325476U;
+
+	return sb_true;
 }
 
 
-void sb_crypto_md5_clear(sb_crypto_md5_ctx_t *ctx) {
+sb_bool_t sb_crypto_md5_clear(sb_crypto_md5_ctx_t *ctx) {
 	sb_memset(ctx, 0, sizeof(*ctx));
+	return sb_true;
 }
 
 
-void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t size) {
+sb_bool_t sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t size) {
 	sb_error_reset();
 
-	if (!ctx || !in) {
-		sb_error_set(SB_ERROR_NULL_PTR);
-		return;
+	if (!ctx) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!in) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
 	}
 
 	uint32_t saved_lo;
@@ -241,7 +251,7 @@ void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t size) {
 
 		if (size < available) {
 			sb_memcpy(&ctx->buffer[used], in, size);
-			return;
+			return sb_true;
 		}
 
 		sb_memcpy(&ctx->buffer[used], in, available);
@@ -256,15 +266,22 @@ void sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t size) {
 	}
 
 	sb_memcpy(ctx->buffer, in, size);
+
+	return sb_true;
 }
 
 
-void sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
+sb_bool_t sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 	sb_error_reset();
 
-	if (!ctx || !out) {
-		sb_error_set(SB_ERROR_NULL_PTR);
-		return;
+	if (!ctx) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!out) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
 	}
 
 	sb_size_t used, available;
@@ -297,13 +314,32 @@ void sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 	out32[3] = SB_LE32(ctx->d);
 
 	sb_memset(ctx, 0, sizeof(*ctx));
+
+	return sb_true;
 }
 
 
-void sb_crypto_md5(void *out, void *in, sb_size_t size) {
+sb_bool_t sb_crypto_md5(void *out, void *in, sb_size_t size) {
+	sb_error_reset();
+
+	sb_bool_t success = sb_true;
 	sb_crypto_md5_ctx_t ctx;
-	sb_crypto_md5_init(&ctx);
-	sb_crypto_md5_update(&ctx, in, size);
-	sb_crypto_md5_finish(&ctx, out);
-	sb_crypto_md5_clear(&ctx);
+	if (!sb_crypto_md5_init(&ctx)) {
+		sb_error_set(SB_ERROR_INITIALIZATION);
+		return sb_false;
+	}
+	if (!sb_crypto_md5_update(&ctx, in, size)) {
+		sb_error_set_ex(SB_ERROR_FUNCTIONALITY, 1);
+		success = sb_false;
+	} else {
+		if (!sb_crypto_md5_finish(&ctx, out)) {
+			sb_error_set_ex(SB_ERROR_FUNCTIONALITY, 2);
+			success = sb_false;
+		}
+	}
+	if (!sb_crypto_md5_clear(&ctx)) {
+		sb_error_set(SB_ERROR_CLEANUP);
+		success = sb_false;
+	}
+	return success;
 }

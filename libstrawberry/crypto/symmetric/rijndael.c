@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/symmetric/rijndael.c"
 
+#define __SB_DONT_NEED_INTRINSICS
+
 #include "rijndael.h"
 
 #include "../../core/bits.h"

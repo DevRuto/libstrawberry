@@ -36,8 +36,9 @@ void test(const char *name, sb_bool_t(*func)()) {
 }
 
 int main(int argc, char **argv, char **env) {
+	printf("%lu\n", sb_time_tsc());
 	puts(sb_version_full());
-	return 0;
+	//return 0;
 	/*sb_crypto_prng_isaac_ctx_t isaac;
 	sb_crypto_prng_isaac_init_ex(&isaac, sb_false, (uint64_t)(argv));
 	uint32_t buffer[64], i;
@@ -47,7 +48,6 @@ int main(int argc, char **argv, char **env) {
 	sb_memdump(buffer, sizeof(buffer));
 	return 0;*/
 #define TESTS
-	//printf("%lu\n", sb_time_tsc());
 
 #ifdef TESTS
 	test("rijndael", test_rijndael);

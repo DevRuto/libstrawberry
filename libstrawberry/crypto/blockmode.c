@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/blockmode.c"
 
+#define __SB_DONT_NEED_INTRINSICS
+
 #include "blockmode.h"
 
 

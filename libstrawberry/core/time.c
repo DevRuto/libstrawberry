@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"core/time.c"
 
+//#define __SB_DONT_NEED_INTRINSICS			// Line added for the sake of consistency.
+
 #include "./time.h"
 
 #include <time.h>
@@ -43,15 +45,20 @@ IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
 
 
 uint64_t sb_time_tsc() {
-	//uint32_t hi, lo;
-	//__asm__ __volatile__ ("rdtsc" : "=a"(lo), "=d"(hi));
-	/*asm volatile ("rdtscp\n"
+#if SB_HAVE_INTRINSICS
+	return __rdtsc();
+#else
+#	undef DO_ASM_RDTSC
+	uint32_t hi, lo;
+	asm volatile ("rdtscp\n"
 				  "movl %%edx, %0\n"
 				  "movl %%eax, %1\n"
 				  "cpuid"
-				  : "=r"(hi), "=r"(lo) : : "%rax", "%rbx", "%rcx", "%rdx");*/
-	//return (SB_32M64(hi, lo));
-	return 0;
+				  : "=r"(hi), "=r"(lo)
+				  :
+				  : "%rax", "%rbx", "%rcx", "%rdx");
+	return (SB_32M64(hi, lo));
+#endif
 }
 
 
@@ -72,7 +79,6 @@ uint64_t sb_time_nsec() {
 
 void sb_time_sleep_nsec(uint64_t nsec) {
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
-	// I can't believe people still find windows better than anything from the *nix family.
 	uint64_t s = (nsec / 1000000);
 	Sleep((s ? s : 1));
 #else

@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/padding/iso97971-2.c"
 
+#define __SB_DONT_NEED_INTRINSICS
+
 #include "iso97971-2.h"
 
 #include "../../core/error.h"

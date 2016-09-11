@@ -32,6 +32,7 @@
 					<Add option="-O2" />
 					<Add option="-fPIC" />
 					<Add option="-Wno-unused-const-variable" />
+					<Add option="-Wno-strict-aliasing" />
 					<Add option="-DRELEASE" />
 				</Compiler>
 				<Linker>
@@ -83,6 +84,8 @@
 			<Add option="-Wall" />
 			<Add option="-DHAVE_GMP" />
 			<Add option="-DSB_OPT_MLOCK" />
+			<Add option="-DSB_INCLUDE_INTRINSICS" />
+			<Add option="-DSB_ASSUME_INTRINSICS_AVAILABLE" />
 		</Compiler>
 		<Linker>
 			<Add option="-lgmp" />

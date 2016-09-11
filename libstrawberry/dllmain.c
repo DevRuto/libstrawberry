@@ -32,18 +32,20 @@
 
 #define __FILE_LOCAL__						"dllmain.c"
 
+//#define __SB_DONT_NEED_INTRINSICS // Needed for intrinsics detection.
+
 #include "core/stdincl.h"
 
 
-inline const char* sb_platform() {
+const char* sb_platform() {
 	return SB_FULL_PLATFORM_STRING;
 }
 
-inline const char* sb_version() {
+const char* sb_version() {
 	return SB_VERSION_STRING;
 }
 
-inline const char* sb_version_full() {
+const char* sb_version_full() {
 	return SB_VERSION_STRING" "SB_FULL_PLATFORM_STRING;
 }
 
