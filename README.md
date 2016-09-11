@@ -3,7 +3,7 @@
 
 ## TODO
 *Ordered by priority.*
-* Key exchange.
-* Centralized crypto helpers.
+* diffiehellman.c: fails test every once in a while, search and destroy.
+* Further implement crypto helpers.
 * Expand crypto arsenal.
 * File IO support.
