@@ -175,7 +175,7 @@
 #			else
 #				define SB_HAVE_INTRINSICS	0
 #			endif
-#		#else
+#		else
 #			include <intrin.h>
 #			define SB_HAVE_INTRINSICS		1
 #		endif

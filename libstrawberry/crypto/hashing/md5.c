@@ -255,26 +255,28 @@ sb_bool_t sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t siz
 
 	used = (saved_lo & 0x3F);
 
+	uint8_t *in8 = in;
+
 	if (used) {
 		available = (64 - used);
 
 		if (size < available) {
-			sb_memcpy(&ctx->buffer[used], in, size);
+			sb_memcpy(&ctx->buffer[used], in8, size);
 			return sb_true;
 		}
 
-		sb_memcpy(&ctx->buffer[used], in, available);
-		in += available;
+		sb_memcpy(&ctx->buffer[used], in8, available);
+		in8 += available;
 		size -= available;
 		sb_crypto_md5_internal_update(ctx, ctx->buffer, 64);
 	}
 
 	if (size >= 64) {
-		in = sb_crypto_md5_internal_update(ctx, in, size & ~(sb_size_t)0x3F);
+		in8 = sb_crypto_md5_internal_update(ctx, in8, size & ~(sb_size_t)0x3F);
 		size &= 0x3F;
 	}
 
-	sb_memcpy(ctx->buffer, in, size);
+	sb_memcpy(ctx->buffer, in8, size);
 
 	return sb_true;
 }

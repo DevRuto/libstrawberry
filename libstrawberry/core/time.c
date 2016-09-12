@@ -41,14 +41,13 @@
 #include "bits.h"
 
 
-IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
+IDENTID(__FILE_LOCAL__, "0.2", "1", "2016-09-12");
 
 
 uint64_t sb_time_tsc() {
 #if SB_HAVE_INTRINSICS
 	return __rdtsc();
 #else
-#	undef DO_ASM_RDTSC
 	uint32_t hi, lo;
 	asm volatile ("rdtscp\n"
 				  "movl %%edx, %0\n"

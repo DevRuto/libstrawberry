@@ -36,6 +36,7 @@
 
 #include "./random.h"
 #include "prng/isaac.h"
+#include "../core/time.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-10");
@@ -46,7 +47,7 @@ static sb_bool_t __init = sb_false;
 
 #define __INIT_FUN()																\
 	if (!__init) {																	\
-		sb_crypto_prng_isaac_init_ex(&__isaac, sb_false, (uint64_t)sb_random32);	\
+		sb_crypto_prng_isaac_init_ex(&__isaac, sb_false, sb_time_tsc());			\
 		__init = sb_true;															\
 	}
 

@@ -231,7 +231,7 @@ sb_bool_t sb_crypto_rabbit_process(sb_crypto_rabbit_ctx_t *ctx, void *out, void 
 	}
 
 	if (!out) {
-		sb_error_set_ex(SB_ERROR_NULL_PTR, 2)
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
 		return sb_false;
 	}
 
