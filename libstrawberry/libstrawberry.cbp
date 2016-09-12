@@ -18,7 +18,7 @@
 					<Add option="-fPIC" />
 					<Add option="-Wno-unused-const-variable" />
 					<Add option="-DDEBUG" />
-					<Add option="-DSB_ERROR_REPORTING" />
+					<Add option="-D_SB_ERROR_REPORTING" />
 				</Compiler>
 			</Target>
 			<Target title="Release - GCC">

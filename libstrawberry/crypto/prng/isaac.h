@@ -59,9 +59,9 @@ typedef struct sb_crypto_prng_isaac_ctx {
 extern "C" {
 #endif
 
-	SBAPI void sb_crypto_prng_isaac_init_ex(sb_crypto_prng_isaac_ctx_t *ctx, sb_bool_t preseeded, uint64_t seednonce);
-	SBAPI void sb_crypto_prng_isaac_clear(sb_crypto_prng_isaac_ctx_t *ctx);
-	SBAPI void sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx);
+	SBAPI sb_bool_t sb_crypto_prng_isaac_init_ex(sb_crypto_prng_isaac_ctx_t *ctx, sb_bool_t preseeded, uint64_t seednonce);
+	SBAPI sb_bool_t sb_crypto_prng_isaac_clear(sb_crypto_prng_isaac_ctx_t *ctx);
+	SBAPI sb_bool_t sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx);
 	SBAPI uint32_t sb_crypto_prng_isaac(sb_crypto_prng_isaac_ctx_t *ctx);
 	SBAPI uint32_t sb_crypto_prng_isaac_range(sb_crypto_prng_isaac_ctx_t *ctx, uint32_t min, uint32_t max);
 

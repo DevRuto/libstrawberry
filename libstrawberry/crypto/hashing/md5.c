@@ -96,7 +96,7 @@ IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
 	)
 #endif
 
-static void *sb_crypto_md5_internal_update(sb_crypto_md5_ctx_t *ctx, void *data, sb_size_t size) {
+static void* sb_crypto_md5_internal_update(sb_crypto_md5_ctx_t *ctx, void *data, sb_size_t size) {
 	uint8_t *ptr = data;
 
 	register uint32_t a, b, c, d;
@@ -218,7 +218,15 @@ sb_bool_t sb_crypto_md5_init(sb_crypto_md5_ctx_t *ctx) {
 
 
 sb_bool_t sb_crypto_md5_clear(sb_crypto_md5_ctx_t *ctx) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
+	}
+
 	sb_memset(ctx, 0, sizeof(*ctx));
+
 	return sb_true;
 }
 
@@ -240,14 +248,15 @@ sb_bool_t sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t siz
 	sb_size_t used, available;
 
 	saved_lo = ctx->lo;
-	if ((ctx->lo = (saved_lo + size) & 0x1FFFFFFF) < saved_lo)
+	if ((ctx->lo = ((saved_lo + size) & 0x1FFFFFFF)) < saved_lo) {
 		++ctx->hi;
+	}
 	ctx->hi += (uint32_t)(size >> 29);
 
-	used = saved_lo & 0x3F;
+	used = (saved_lo & 0x3F);
 
 	if (used) {
-		available = 64 - used;
+		available = (64 - used);
 
 		if (size < available) {
 			sb_memcpy(&ctx->buffer[used], in, size);
@@ -255,7 +264,7 @@ sb_bool_t sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t siz
 		}
 
 		sb_memcpy(&ctx->buffer[used], in, available);
-		in = (unsigned char *)in + available;
+		in += available;
 		size -= available;
 		sb_crypto_md5_internal_update(ctx, ctx->buffer, 64);
 	}

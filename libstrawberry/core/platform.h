@@ -168,8 +168,17 @@
 #			define SB_HAVE_INTRINSICS		1
 #		endif
 #	elif (SB_COMPILER == SB_COMPILER_ID_MSC)
-#		include <intrin.h>
-#		define SB_HAVE_INTRINSICS			1
+#		if !defined(SB_ASSUME_INTRINSICS_AVAILABLE) && defined(__has_include)
+#			if __has_include(<intrin.h>)
+#				include <intrin.h>
+#				define SB_HAVE_INTRINSICS	1
+#			else
+#				define SB_HAVE_INTRINSICS	0
+#			endif
+#		#else
+#			include <intrin.h>
+#			define SB_HAVE_INTRINSICS		1
+#		endif
 #	else
 #		define SB_HAVE_INTRINSICS			0
 #	endif
@@ -196,6 +205,7 @@
 
 #include <stdint.h>
 
+#define SB_MIN_SIZE							0
 #if (SB_ARCH == 64)
 #	define SB_MAX_SIZE						SB_MAX_UINT64
 	typedef uint64_t sb_size_t;

@@ -37,6 +37,7 @@
 #include "ripemd160.h"
 
 #include "../../core/memory.h"
+#include "../../core/error.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
@@ -61,21 +62,51 @@ IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
 #define PR5(a,b,c,d,e,x,s)					{ (a) += R1((b), (c), (d)) + (x);               (a) = SB_ROTL32((a), (s)) + (e); (c) = SB_ROTL32((c), 10); }
 
 
-void sb_crypto_ripemd160_init(sb_crypto_ripemd160_ctx_t *ctx) {
+sb_bool_t sb_crypto_ripemd160_init(sb_crypto_ripemd160_ctx_t *ctx) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
+	}
+
 	ctx->data[0] = 0x67452301U;
 	ctx->data[1] = 0xEFCDAB89U;
 	ctx->data[2] = 0x98BADCFEU;
 	ctx->data[3] = 0x10325476U;
 	ctx->data[4] = 0xC3D2E1F0U;
+
+	return sb_true;
 }
 
 
-void sb_crypto_ripemd160_clear(sb_crypto_ripemd160_ctx_t *ctx) {
+sb_bool_t sb_crypto_ripemd160_clear(sb_crypto_ripemd160_ctx_t *ctx) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
+	}
+
 	sb_memset(ctx, 0, sizeof(*ctx));
+
+	return sb_true;
 }
 
 
-void sb_crypto_ripemd160_update(sb_crypto_ripemd160_ctx_t *ctx, uint32_t X[16]) {
+sb_bool_t sb_crypto_ripemd160_update(sb_crypto_ripemd160_ctx_t *ctx, uint32_t X[16]) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!X) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
 	register uint32_t A1 = ctx->data[0], B1 = ctx->data[1], C1 = ctx->data[2], D1 = ctx->data[3], E1 = ctx->data[4];
 	register uint32_t A2 = ctx->data[0], B2 = ctx->data[1], C2 = ctx->data[2], D2 = ctx->data[3], E2 = ctx->data[4];
 
@@ -255,10 +286,24 @@ void sb_crypto_ripemd160_update(sb_crypto_ripemd160_ctx_t *ctx, uint32_t X[16]) 
 	ctx->data[3] = ctx->data[4] + A1 + B2;
 	ctx->data[4] = ctx->data[0] + B1 + C2;
 	ctx->data[0] = D2;
+
+	return sb_true;
 }
 
 
-void sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, sb_size_t size) {
+sb_bool_t sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, sb_size_t size) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!in) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
 	uint32_t x[16];
 	sb_memset(x, 0, sizeof(x));
 
@@ -279,10 +324,24 @@ void sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, sb_siz
 	x[14] = (uint32_t)(size << 3);
 	x[15] = (uint32_t)(size >> 29);
 	sb_crypto_ripemd160_update(ctx, x);
+
+	return sb_true;
 }
 
 
-void sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size) {
+sb_bool_t sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size) {
+	sb_error_reset();
+
+	if (!digest) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!data) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
 	uint32_t block[16];
 	sb_memset(&block, 0, sizeof(block));
 
@@ -294,8 +353,7 @@ void sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size) {
 	register sb_size_t i;
 	for (i = size; i > 63; i -= 64) {
 		for (ii = 0; ii < 16; ++ii) {
-			block[ii] = *data32;
-			++data32;
+			block[ii] = *(data32++);
 		}
 		sb_crypto_ripemd160_update(&ctx, block);
 	}
@@ -310,4 +368,6 @@ void sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size) {
 	}
 
 	sb_crypto_ripemd160_clear(&ctx);
+
+	return sb_true;
 }

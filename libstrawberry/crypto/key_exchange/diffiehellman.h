@@ -64,7 +64,7 @@ extern "C" {
 	SBAPI sb_bool_t sb_crypto_diffiehellman_copy_base(sb_crypto_diffiehellman_ctx_t *dst, sb_crypto_diffiehellman_ctx_t *src);
 	SBAPI sb_bool_t sb_crypto_diffiehellman_copy_keys(sb_crypto_diffiehellman_ctx_t *dst, sb_crypto_diffiehellman_ctx_t *src);
 
-	#define sb_crypto_diffiehellman_port_size(ctx) (((ctx) && ((ctx)->bits)) ? (((ctx)->bits) / 8) : 0)
+	SBAPI sb_size_t sb_crypto_diffiehellman_port_size(sb_crypto_diffiehellman_ctx_t *ctx);
 
 	SBAPI sb_bool_t sb_crypto_diffiehellman_import_generator(sb_crypto_diffiehellman_ctx_t *ctx, void *in);
 	SBAPI sb_bool_t sb_crypto_diffiehellman_import_modulo(sb_crypto_diffiehellman_ctx_t *ctx, void *in);

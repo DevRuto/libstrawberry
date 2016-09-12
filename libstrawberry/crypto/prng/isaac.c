@@ -38,6 +38,7 @@
 
 #include "../../core/memory.h"
 #include "../../core/time.h"
+#include "../../core/error.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.1", "4", "2016-07-29");
@@ -63,7 +64,14 @@ IDENTID(__FILE_LOCAL__, "0.1", "4", "2016-07-29");
 }
 
 
-void sb_crypto_prng_isaac_init_ex(sb_crypto_prng_isaac_ctx_t *ctx, sb_bool_t preseeded, uint64_t seednonce) {
+sb_bool_t sb_crypto_prng_isaac_init_ex(sb_crypto_prng_isaac_ctx_t *ctx, sb_bool_t preseeded, uint64_t seednonce) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
+	}
+
 	register uint_fast32_t i;
 
 	register sb_crypto_prng_isaac_int_t a, b, c, d, e, f, g, h;
@@ -74,7 +82,7 @@ void sb_crypto_prng_isaac_init_ex(sb_crypto_prng_isaac_ctx_t *ctx, sb_bool_t pre
 	m = ctx->mem;
 	r = ctx->rsl;
 
-	const uint_fast32_t constant = 0x9E3779B9;
+	const sb_crypto_prng_isaac_int_t constant = 0x9E3779B9;
 	if (preseeded || !seednonce) {
 		a = b = c = d = e = f = g = h = constant;
 	} else {
@@ -120,15 +128,33 @@ void sb_crypto_prng_isaac_init_ex(sb_crypto_prng_isaac_ctx_t *ctx, sb_bool_t pre
 
 	sb_crypto_prng_isaac_update(ctx);
 	ctx->cnt = SB_CRYPTO_PRNG_ISAAC_SIZE;
+
+	return sb_true;
 }
 
 
-void sb_crypto_prng_isaac_clear(sb_crypto_prng_isaac_ctx_t *ctx) {
+sb_bool_t sb_crypto_prng_isaac_clear(sb_crypto_prng_isaac_ctx_t *ctx) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
+	}
+
 	sb_memset(ctx, 0, sizeof(*ctx));
+
+	return sb_true;
 }
 
 
-void sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx) {
+sb_bool_t sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
+	}
+
 	sb_crypto_prng_isaac_int_t
 		x, y, *m,
 		*m2, *mend;
@@ -148,6 +174,8 @@ void sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx) {
 	}
 
 	ctx->b = b; ctx->a = a;
+
+	return sb_true;
 }
 
 

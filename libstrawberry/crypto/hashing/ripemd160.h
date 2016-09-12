@@ -48,11 +48,11 @@ typedef struct sb_crypto_ripemd160_ctx {
 extern "C" {
 #endif
 
-	SBAPI void sb_crypto_ripemd160_init(sb_crypto_ripemd160_ctx_t *ctx);
-	SBAPI void sb_crypto_ripemd160_clear(sb_crypto_ripemd160_ctx_t *ctx);
-	SBAPI void sb_crypto_ripemd160_update(sb_crypto_ripemd160_ctx_t *ctx, uint32_t X[16]);
-	SBAPI void sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, sb_size_t size);
-	SBAPI void sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_ripemd160_init(sb_crypto_ripemd160_ctx_t *ctx);
+	SBAPI sb_bool_t sb_crypto_ripemd160_clear(sb_crypto_ripemd160_ctx_t *ctx);
+	SBAPI sb_bool_t sb_crypto_ripemd160_update(sb_crypto_ripemd160_ctx_t *ctx, uint32_t X[16]);
+	SBAPI sb_bool_t sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size);
 
 #ifdef __cplusplus
 }

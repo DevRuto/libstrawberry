@@ -55,13 +55,23 @@ sb_size_t sb_crypto_pad_pkcs7_size(sb_size_t blocksize, sb_size_t havesize) {
 sb_bool_t sb_crypto_pad_pkcs7(void *out, void *in, sb_size_t blocksize, sb_size_t havesize) {
 	sb_error_reset();
 
-	if (!out || !in) {
-		sb_error_set(SB_ERROR_NULL_PTR);
+	if (!out) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
 		return sb_false;
 	}
 
-	if (!blocksize || !havesize) {
-		sb_error_set(SB_ERROR_PARAM_RANGE);
+	if (!in) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
+	if (!blocksize) {
+		sb_error_set_ex(SB_ERROR_PARAM_RANGE, 1);
+		return sb_false;
+	}
+
+	if (!havesize) {
+		sb_error_set_ex(SB_ERROR_PARAM_RANGE, 2);
 		return sb_false;
 	}
 
@@ -90,12 +100,12 @@ sb_size_t sb_crypto_pad_pkcs7_offset(void *in, sb_size_t havesize) {
 
 	if (!in) {
 		sb_error_set(SB_ERROR_NULL_PTR);
-		return SB_MAX_SIZE;
+		return SB_MIN_SIZE;
 	}
 
 	if (!havesize) {
 		sb_error_set(SB_ERROR_PARAM_RANGE);
-		return SB_MAX_SIZE;
+		return SB_MIN_SIZE;
 	}
 
 	return (havesize - ((uint8_t*)in)[havesize - 1]);

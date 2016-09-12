@@ -318,6 +318,11 @@ sb_bool_t sb_crypto_diffiehellman_copy_keys(sb_crypto_diffiehellman_ctx_t *dst, 
 }
 
 
+sb_size_t sb_crypto_diffiehellman_port_size(sb_crypto_diffiehellman_ctx_t *ctx) {
+	return ((ctx && (ctx->bits)) ? ((ctx->bits) / 8) : 0);
+}
+
+
 #define DH_IMPORT(v, s)										\
 	sb_error_reset();										\
 															\
