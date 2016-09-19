@@ -61,7 +61,7 @@ static void __sb_const() {
 
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
-static int APIENTRY DllMain(HMODULE hModule, DWORD ulCallReason, LPVOID lpReserved) {
+int APIENTRY DllMain(HMODULE hModule, DWORD ulCallReason, LPVOID lpReserved) {
 	__sb_const();
 	switch (ulCallReason) {
 		case DLL_PROCESS_ATTACH:

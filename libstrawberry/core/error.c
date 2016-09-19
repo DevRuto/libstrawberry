@@ -96,7 +96,11 @@ void _sb_error_fatal_ex(const char *file, const char *func, const uint32_t line,
 		file, line,
 		_errno,
 		_errparam,
+#if (SB_PLATFORM != SB_PLATFORM_ID_WINDOWS)
 		errno
+#else
+		GetLastError()
+#endif
 	);
 	raise(SIGABRT);
 }
