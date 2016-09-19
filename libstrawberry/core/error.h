@@ -50,8 +50,8 @@ extern "C" {
 	/*SBAPI*/ void _sb_error_set_param(sb_error_t _errparam);
 	/*SBAPI*/ void _sb_error_set_ex(sb_error_t _errno, sb_error_t _errparam);
 	/*SBAPI*/ void _sb_error_reset();
-	/*SBAPI*/ void _sb_error_fatal_ex(const char *file, const char *func, const int line, sb_error_t _errno, sb_error_t _errparam);
-	/*SBAPI*/ void _sb_error_fatal(const char *file, const char *func, const int line, sb_error_t _errno);
+	/*SBAPI*/ void _sb_error_fatal_ex(const char *file, const char *func, const uint32_t line, sb_error_t _errno, sb_error_t _errparam);
+	/*SBAPI*/ void _sb_error_fatal(const char *file, const char *func, const uint32_t line, sb_error_t _errno);
 	SBAPI void _sb_error_print();
 
 #ifdef __cplusplus
@@ -95,6 +95,8 @@ extern "C" {
 #define SB_ERROR_ENTRY_NOT_FOUND			12
 #define SB_ERROR_FUNCTIONALITY				13
 #define SB_ERROR_CLEANUP					14
+#define SB_ERROR_NOERR_SIMULATION			0xBEEFCAFE
+#define SB_ERROR_NOERR_SIMULATION_PARAM		0xDEAFBEE5
 
 
 #endif

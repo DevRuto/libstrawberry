@@ -30,41 +30,22 @@
 **
 */
 
-#define __FILE_LOCAL__						"crypto/random.c"
-
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "./random.h"
-
-#include "prng/isaac.h"
-#include "../core/time.h"
+#ifndef __SB_CRYPTO_SEEDGEN_H
+#define __SB_CRYPTO_SEEDGEN_H
 
 
-IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-10");
+#include "../core/stdincl.h"
 
 
-static sb_crypto_prng_isaac_ctx_t __isaac;
-static sb_bool_t __init = sb_false;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#define __INIT_FUN()																\
-	if (!__init) {																	\
-		sb_crypto_prng_isaac_init_ex(&__isaac, sb_false, sb_time_tsc());			\
-		__init = sb_true;															\
-	}
+	SBAPI uint64_t sb_seedgen(uint64_t noise);
 
-
-uint16_t sb_random16() {
-	return (sb_random32() & 0xFFFF);
+#ifdef __cplusplus
 }
+#endif
 
 
-uint32_t sb_random32() {
-	__INIT_FUN();
-	return sb_crypto_prng_isaac(&__isaac);
-}
-
-
-uint64_t sb_random64() {
-	__INIT_FUN();
-	return (((uint64_t)sb_crypto_prng_isaac(&__isaac) << 32) | sb_crypto_prng_isaac(&__isaac));
-}
+#endif

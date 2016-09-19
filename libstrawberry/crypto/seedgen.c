@@ -30,41 +30,21 @@
 **
 */
 
-#define __FILE_LOCAL__						"crypto/random.c"
+#define __FILE_LOCAL__						"crypto/seedgen.c"
 
 #define __SB_DONT_NEED_INTRINSICS
 
+#include "seedgen.h"
+
+#include "../core/time.h"
+#include "../core/bits.h"
 #include "./random.h"
 
-#include "prng/isaac.h"
-#include "../core/time.h"
+
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-14");
 
 
-IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-10");
-
-
-static sb_crypto_prng_isaac_ctx_t __isaac;
-static sb_bool_t __init = sb_false;
-
-#define __INIT_FUN()																\
-	if (!__init) {																	\
-		sb_crypto_prng_isaac_init_ex(&__isaac, sb_false, sb_time_tsc());			\
-		__init = sb_true;															\
-	}
-
-
-uint16_t sb_random16() {
-	return (sb_random32() & 0xFFFF);
-}
-
-
-uint32_t sb_random32() {
-	__INIT_FUN();
-	return sb_crypto_prng_isaac(&__isaac);
-}
-
-
-uint64_t sb_random64() {
-	__INIT_FUN();
-	return (((uint64_t)sb_crypto_prng_isaac(&__isaac) << 32) | sb_crypto_prng_isaac(&__isaac));
+uint64_t sb_seedgen(uint64_t noise) {
+	uint64_t tsc = sb_time_tsc();
+	return ((tsc + ((SB_ROTR64(sb_time_nsec(), (tsc & 7))) ^ noise)) & ~sb_random64());
 }

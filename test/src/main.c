@@ -35,9 +35,13 @@ void test(const char *name, sb_bool_t(*func)()) {
 	}
 }
 
+void __sb_simulate_fatal();
+
 int main(int argc, char **argv, char **env) {
 	printf("%lu\n", sb_time_tsc());
 	puts(sb_version_full());
+	sb_time_sleep_millis(2000);
+	__sb_simulate_fatal();
 	//return 0;
 	/*sb_crypto_prng_isaac_ctx_t isaac;
 	sb_crypto_prng_isaac_init_ex(&isaac, sb_false, (uint64_t)(argv));

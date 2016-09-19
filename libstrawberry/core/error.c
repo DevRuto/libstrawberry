@@ -34,10 +34,13 @@
 
 #define __SB_DONT_NEED_INTRINSICS
 
-#include "error.h"
+#include "./error.h"
 
 #include <stdio.h>
 #include <signal.h>
+#include <errno.h>
+
+#include "./time.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.2", "1", "2016-09-08");
@@ -45,6 +48,9 @@ IDENTID(__FILE_LOCAL__, "0.2", "1", "2016-09-08");
 
 static sb_error_t __sb_errno = 0;
 static sb_error_t __sb_errparam = 0;
+
+
+uint64_t __sb_get_start_nsec();
 
 
 sb_error_t _sb_error_get() {
@@ -79,25 +85,29 @@ void _sb_error_reset() {
 }
 
 
-void _sb_error_fatal_ex(const char *file, const char *func, const int line, sb_error_t _errno, sb_error_t _errparam) {
+void _sb_error_fatal_ex(const char *file, const char *func, const uint32_t line, sb_error_t _errno, sb_error_t _errparam) {
 	printf(
 		" === STRAWBERRY - FATAL ERROR ===\n"
+		"  Loaded %lu sec ago.\n"
 		"  By: %s\n"
-		"  In: %s:%d\n"
+		"  In: %s:%u\n"
 		"\n"
 		"      %08X\n"
 		"      %08X\n"
+		"      %08X\n"
 		"\n",
+		((sb_time_nsec() - __sb_get_start_nsec()) / 1000000000),
 		func,
 		file, line,
 		_errno,
-		_errparam
+		_errparam,
+		errno
 	);
 	raise(SIGABRT);
 }
 
 
-void _sb_error_fatal(const char *file, const char *func, const int line, sb_error_t _errno) {
+void _sb_error_fatal(const char *file, const char *func, const uint32_t line, sb_error_t _errno) {
 	_sb_error_fatal_ex(file, func, line, _errno, 0);
 }
 
@@ -133,3 +143,9 @@ void _sb_error_print() {
 			break;
 	}
 }
+
+#if SB_DEBUG
+void __sb_simulate_fatal() {
+	sb_error_fatal_ex(SB_ERROR_NOERR_SIMULATION, SB_ERROR_NOERR_SIMULATION_PARAM);
+}
+#endif

@@ -168,6 +168,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="crypto/random.h" />
+		<Unit filename="crypto/seedgen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="crypto/seedgen.h" />
 		<Unit filename="crypto/symmetric/rabbit.c">
 			<Option compilerVar="CC" />
 		</Unit>

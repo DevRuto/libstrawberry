@@ -36,6 +36,11 @@
 
 #include "core/stdincl.h"
 
+#include "core/time.h"
+
+
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
+
 
 const char* sb_platform() {
 	return SB_FULL_PLATFORM_STRING;
@@ -50,14 +55,19 @@ const char* sb_version_full() {
 }
 
 
+static uint64_t __ts_start = 0;
+static void __sb_const() {
+	__ts_start = sb_time_nsec();
+}
+
+uint64_t __sb_get_start_nsec() {
+	return __ts_start;
+}
+
+
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
-IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
-
-
-#include <stdio.h>
-
-
-int APIENTRY DllMain(HMODULE hModule, DWORD ulCallReason, LPVOID lpReserved) {
+static int APIENTRY DllMain(HMODULE hModule, DWORD ulCallReason, LPVOID lpReserved) {
+	__sb_const();
 	switch (ulCallReason) {
 		case DLL_PROCESS_ATTACH:
 		case DLL_THREAD_ATTACH:
@@ -67,6 +77,8 @@ int APIENTRY DllMain(HMODULE hModule, DWORD ulCallReason, LPVOID lpReserved) {
 	}
 	return 1;
 }
-
-
+#else
+static void __attribute__ ((constructor)) __sb_constructor() {
+	__sb_const();
+}
 #endif
