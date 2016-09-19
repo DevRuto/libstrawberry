@@ -55,13 +55,8 @@ const char* sb_version_full() {
 }
 
 
-static uint64_t __ts_start = 0;
 static void __sb_const() {
-	__ts_start = sb_time_nsec();
-}
-
-uint64_t __sb_get_start_nsec() {
-	return __ts_start;
+	return;
 }
 
 

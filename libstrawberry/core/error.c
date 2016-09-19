@@ -50,9 +50,6 @@ static sb_error_t __sb_errno = 0;
 static sb_error_t __sb_errparam = 0;
 
 
-uint64_t __sb_get_start_nsec();
-
-
 sb_error_t _sb_error_get() {
 	return __sb_errno;
 }
@@ -88,7 +85,6 @@ void _sb_error_reset() {
 void _sb_error_fatal_ex(const char *file, const char *func, const uint32_t line, sb_error_t _errno, sb_error_t _errparam) {
 	printf(
 		" === STRAWBERRY - FATAL ERROR ===\n"
-		"  Loaded %lu sec ago.\n"
 		"  By: %s\n"
 		"  In: %s:%u\n"
 		"\n"
@@ -96,7 +92,6 @@ void _sb_error_fatal_ex(const char *file, const char *func, const uint32_t line,
 		"      %08X\n"
 		"      %08X\n"
 		"\n",
-		((sb_time_nsec() - __sb_get_start_nsec()) / 1000000000),
 		func,
 		file, line,
 		_errno,
