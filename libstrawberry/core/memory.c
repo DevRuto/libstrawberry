@@ -182,7 +182,7 @@ void* sb_free(void *ptr) {
 		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
 	}
 	free(ptr);
-	return SB_NULL;
+	return NULL;
 }
 
 
