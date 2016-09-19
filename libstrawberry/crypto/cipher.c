@@ -298,7 +298,7 @@ sb_bool_t sb_crypto_cipher_decrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 	switch (ctx->cipher) {
 		case SB_CRYPTO_CIPHER_RIJNDAEL:
 			for (; size > SB_CRYPTO_BLOCKSIZE_RIJNDAEL;) {
-				// TODO: block mode of operation
+				sb_memcpy(buffer, iptr, SB_CRYPTO_BLOCKSIZE_RIJNDAEL); // TODO: block mode of operation
 
 				sb_crypto_rijndael_decrypt_block(ctx->data, optr, buffer);
 
