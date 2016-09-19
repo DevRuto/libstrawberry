@@ -39,6 +39,9 @@
 		<Unit filename="src/crypto/asymmetric/diffiehellman.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/crypto/cipher.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/crypto/hashing/md5.c">
 			<Option compilerVar="CC" />
 		</Unit>
