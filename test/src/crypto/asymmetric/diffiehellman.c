@@ -1,6 +1,6 @@
 #include "../../stdincl.h"
-#include "../../../../libstrawberry/crypto/key_exchange/diffiehellman.h"
-#include "../../../../libstrawberry/crypto/random.h"
+#include <libstrawberry/crypto/key_exchange/diffiehellman.h>
+#include <libstrawberry/crypto/random.h>
 
 
 sb_bool_t test_diffiehellman() {
