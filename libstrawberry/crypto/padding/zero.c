@@ -107,7 +107,7 @@ sb_size_t sb_crypto_pad_zero_offset(void *in, sb_size_t havesize) {
 	sb_size_t i;
 	for (i = havesize; i--;) {
 		if (pptr[i]) {
-			return i;
+			return (i + 1);
 		}
 	}
 
