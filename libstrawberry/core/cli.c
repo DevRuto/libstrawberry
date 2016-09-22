@@ -35,6 +35,7 @@
 #include "./cli.h"
 
 #include "./bits.h"
+#include "./memory.h"
 
 #include <stdio.h>
 
@@ -55,14 +56,21 @@ void sb_cprint(const char *msg, uint8_t color) {
 		return;
 	}
 #ifdef SB_CLI_COLORS
-	const char colorcodes[8] = "01234567";
-	char ansi[8] = "\x1b[37;1m\0";
-	ansi[3] = colorcodes[(color & 7)];
+	sb_size_t sz0 = 7, sz1 = strlen(msg);
+	char aecc[7] = "\x1B[37;1m";
+	aecc[3] = (0x30 | (color & 7));
 	if (!SB_FLAG(color, SB_COLOR_BRIGHT)) {
-		ansi[4] = 'm';
-		ansi[5] = 0;
+		aecc[4] = 'm';
+		sz0 = 5;
 	}
-	printf("%s%s\x1b[0m\n", ansi, msg);
+	SB_MEM_BUFFER_ALLOC(char, buffer, (sz0 + sz1 + 4 + 1));
+	char *bp = buffer;
+	sb_memcpy(bp, aecc, sz0);
+	sb_strcpy((bp = (bp + sz0)), msg);
+	sb_strcpy((bp = (bp + sz1)), "\x1B[0m");
+	*(bp + 4) = 0;
+	puts(buffer);
+	SB_MEM_BUFFER_FREE(buffer);
 #else
 	puts(msg);
 #endif

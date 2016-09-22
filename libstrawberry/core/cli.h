@@ -37,7 +37,9 @@
 #include "./stdincl.h"
 
 
-#define SB_COLOR_BLACK						0
+#define SB_COLOR_BRIGHT						128
+
+#define SB_COLOR_DARK_GRAY					0
 #define SB_COLOR_RED						1
 #define SB_COLOR_GREEN						2
 #define SB_COLOR_YELLOW						3
@@ -46,7 +48,18 @@
 #define SB_COLOR_CYAN						6
 #define SB_COLOR_WHITE						7
 
-#define SB_COLOR_BRIGHT						128
+#define SB_COLOR_GRAY						(SB_COLOR_BRIGHT | SB_COLOR_DARK_GRAY)
+#define SB_COLOR_BRIGHT_RED					(SB_COLOR_BRIGHT | SB_COLOR_RED)
+#define SB_COLOR_BRIGHT_GREEN				(SB_COLOR_BRIGHT | SB_COLOR_GREEN)
+#define SB_COLOR_BRIGHT_YELLOW				(SB_COLOR_BRIGHT | SB_COLOR_YELLOW)
+#define SB_COLOR_BRIGHT_BLUE				(SB_COLOR_BRIGHT | SB_COLOR_BLUE)
+#define SB_COLOR_BRIGHT_MAGENTA				(SB_COLOR_BRIGHT | SB_COLOR_MAGENTA)
+#define SB_COLOR_BRIGHT_CYAN				(SB_COLOR_BRIGHT | SB_COLOR_CYAN)
+#define SB_COLOR_BRIGHT_WHITE				(SB_COLOR_BRIGHT | SB_COLOR_WHITE)
+
+// To avoid a war with the British.
+#define SB_COLOR_DARK_GREY					SB_COLOR_DARK_GRAY
+#define SB_COLOR_GREY						SB_COLOR_GRAY
 
 
 #ifdef __cplusplus
