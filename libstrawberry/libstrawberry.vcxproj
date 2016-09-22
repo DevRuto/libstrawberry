@@ -184,6 +184,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="core\bits.h" />
+    <ClInclude Include="core\cli.h" />
     <ClInclude Include="core\error.h" />
     <ClInclude Include="core\identid.h" />
     <ClInclude Include="core\math.h" />
@@ -207,6 +208,7 @@
     <ClInclude Include="crypto\padding\zero.h" />
     <ClInclude Include="crypto\prng\isaac.h" />
     <ClInclude Include="crypto\random.h" />
+    <ClInclude Include="crypto\seedgen.h" />
     <ClInclude Include="crypto\symmetric\rabbit.h" />
     <ClInclude Include="crypto\symmetric\rijndael.h" />
     <ClInclude Include="crypto\symmetric\salsa20.h" />
@@ -214,6 +216,7 @@
     <ClInclude Include="networking\socket.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="core\cli.c" />
     <ClCompile Include="core\error.c" />
     <ClCompile Include="core\math.c" />
     <ClCompile Include="core\memory.c" />
@@ -232,6 +235,7 @@
     <ClCompile Include="crypto\padding\zero.c" />
     <ClCompile Include="crypto\prng\isaac.c" />
     <ClCompile Include="crypto\random.c" />
+    <ClCompile Include="crypto\seedgen.c" />
     <ClCompile Include="crypto\symmetric\rabbit.c" />
     <ClCompile Include="crypto\symmetric\rijndael.c" />
     <ClCompile Include="crypto\symmetric\salsa20.c" />
@@ -240,8 +244,8 @@
     <ClCompile Include="networking\socket.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CompilerFlags.spec" />
-    <None Include="FileLicenseTemplate.spec" />
+    <None Include="doc\CompilerFlags.spec" />
+    <None Include="doc\FileLicenseTemplate.spec" />
     <None Include="libstrawberry.cbp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

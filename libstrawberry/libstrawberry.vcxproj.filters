@@ -102,6 +102,12 @@
     <ClInclude Include="networking\socket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="core\cli.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="crypto\seedgen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.c">
@@ -176,10 +182,16 @@
     <ClCompile Include="networking\socket.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="core\cli.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crypto\seedgen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="libstrawberry.cbp" />
-    <None Include="CompilerFlags.spec" />
-    <None Include="FileLicenseTemplate.spec" />
+    <None Include="doc\CompilerFlags.spec" />
+    <None Include="doc\FileLicenseTemplate.spec" />
   </ItemGroup>
 </Project>
