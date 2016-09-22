@@ -148,6 +148,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="crypto/keygen.h" />
+		<Unit filename="crypto/otp/isaac-otp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="crypto/otp/isaac-otp.h" />
 		<Unit filename="crypto/padding/iso97971-2.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -254,3 +254,16 @@ void sb_memdump_ex(void *src, sb_size_t size, sb_size_t columns) {
 void sb_memdump(void *src, sb_size_t size) {
 	sb_memdump_ex(src, size, 16);
 }
+
+
+void sb_vmemdump_ex(const char *msg, void *src, sb_size_t size, sb_size_t columns) {
+	if (msg) {
+		puts(msg);
+	}
+	sb_memdump_ex(src, size, columns);
+}
+
+
+void sb_vmemdump(const char *msg, void *src, sb_size_t size) {
+    sb_vmemdump_ex(msg, src, size, 16);
+}

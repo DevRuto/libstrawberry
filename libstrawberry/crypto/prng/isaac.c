@@ -161,7 +161,7 @@ sb_bool_t sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx) {
 
 	sb_crypto_prng_isaac_int_t
 		a = ctx->a,
-		b = ctx->b + (++ctx->c),
+		b = (ctx->b + (++ctx->c)),
 		*mm = ctx->mem,
 		*r = ctx->rsl;
 
