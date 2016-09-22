@@ -32,9 +32,7 @@
 
 #define __FILE_LOCAL__						"crypto/cipher.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "cipher.h"
+#include "./cipher.h"
 
 #include "../core/error.h"
 #include "../core/memory.h"

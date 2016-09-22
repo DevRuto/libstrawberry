@@ -32,9 +32,7 @@
 
 #define __FILE_LOCAL__						"crypto/keygen.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "keygen.h"
+#include "./keygen.h"
 
 #include "../core/error.h"
 #include "../core/bits.h"

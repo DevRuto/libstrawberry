@@ -34,23 +34,12 @@
 #define __SB_CORE_MEMORY_H
 
 
-#include "stdincl.h"
+#include "./stdincl.h"
 
 #include <string.h>
 
 
 #define SB_PRIORITY_MEMORY					100
-
-
-#ifdef DEBUG
-#	if (SB_ARCH == SB_ARCH_X64)
-#		define SB_NULL							((void*)0xDEADBEEFDEADBEEF)
-#	else
-#		define SB_NULL							((void*)0xDEADBEEF)
-#	endif
-#else
-#	define SB_NULL								NULL
-#endif
 
 
 #if (SB_COMPILER == SB_COMPILER_ID_MSC)

@@ -36,15 +36,15 @@
 
 #include "../core/stdincl.h"
 
-#include "blockmode.h"
+#include "./blockmode.h"
 
-#include "symmetric/rijndael.h"
-#include "symmetric/salsa20.h"
-#include "symmetric/rabbit.h"
+#include "./symmetric/rijndael.h"
+#include "./symmetric/salsa20.h"
+#include "./symmetric/rabbit.h"
 
-#include "padding/zero.h"
-#include "padding/pkcs7.h"
-#include "padding/iso97971-2.h"
+#include "./padding/zero.h"
+#include "./padding/pkcs7.h"
+#include "./padding/iso97971-2.h"
 
 
 #define SB_CRYPTO_CIPHER_RIJNDAEL			1

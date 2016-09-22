@@ -34,7 +34,7 @@
 #define __SB_CORE_RCSID_H
 
 
-#include "platform.h"
+#include "./platform.h"
 
 
 #define IDENTID_CODENAME					"Cupcake"

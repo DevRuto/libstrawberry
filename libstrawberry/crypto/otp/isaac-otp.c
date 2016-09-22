@@ -30,4 +30,9 @@
 **
 */
 
-#include "isaac-otp.h"
+#define __FILE_LOCAL__						"crypto/otp/isaac-otp.c"
+
+#include "./isaac-otp.h"
+
+
+//IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-22");

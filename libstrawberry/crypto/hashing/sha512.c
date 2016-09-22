@@ -32,12 +32,10 @@
 
 #define __FILE_LOCAL__						"crypto/hashing/sha512.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "sha512.h"
+#include "./sha512.h"
 
 
-IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-08-12");
+//IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-08-12");
 
 
 #ifdef PIZZA

@@ -32,9 +32,7 @@
 
 #define __FILE_LOCAL__						"crypto/hashing/ripemd160.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "ripemd160.h"
+#include "./ripemd160.h"
 
 #include "../../core/memory.h"
 #include "../../core/error.h"

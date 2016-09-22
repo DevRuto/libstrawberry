@@ -34,7 +34,7 @@
 #define __SB_CORE_MATH_H
 
 
-#include "stdincl.h"
+#include "./stdincl.h"
 
 
 #define SB_MATH_RANGE(min, max, value)		(value % (max - min) + min)

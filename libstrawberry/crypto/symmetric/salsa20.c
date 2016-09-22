@@ -32,9 +32,7 @@
 
 #define __FILE_LOCAL__						"crypto/symmetric/salsa20.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "salsa20.h"
+#include "./salsa20.h"
 
 #include "../../core/error.h"
 #include "../../core/memory.h"

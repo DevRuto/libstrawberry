@@ -32,13 +32,13 @@
 
 #define __FILE_LOCAL__						"core/time.c"
 
-//#define __SB_DONT_NEED_INTRINSICS			// Line added for the sake of consistency.
+#define SB_INTRINSICS
 
 #include "./time.h"
 
 #include <time.h>
 
-#include "bits.h"
+#include "./bits.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.2", "1", "2016-09-12");

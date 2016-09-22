@@ -34,7 +34,7 @@
 #define __SB_CORE_TIME_H
 
 
-#include "stdincl.h"
+#include "./stdincl.h"
 
 
 #define sb_time_sleep_micros(s)			sb_time_sleep_nsec((s) * 1000)

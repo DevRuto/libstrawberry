@@ -32,9 +32,7 @@
 
 #define __FILE_LOCAL__						"crypto/prng/isaac.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "isaac.h"
+#include "./isaac.h"
 
 #include "../../core/memory.h"
 #include "../../core/time.h"

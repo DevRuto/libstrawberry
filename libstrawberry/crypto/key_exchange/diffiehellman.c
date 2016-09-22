@@ -32,13 +32,11 @@
 
 #define __FILE_LOCAL__						"crypto/key_exchange/diffiehellman.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
 #if !defined(SB_EXCLUDE_CRYPTO_KEX_EXCHANGE) && !defined(SB_EXCLUDE_CRYPTO_KEY_EXCHANGE_DIFFIEHELLMAN)
 #ifdef HAVE_GMP
 
 
-#include "diffiehellman.h"
+#include "./diffiehellman.h"
 
 #include <gmp.h>
 

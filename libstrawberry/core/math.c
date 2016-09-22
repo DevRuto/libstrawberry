@@ -32,8 +32,6 @@
 
 #define __FILE_LOCAL__						"core/math.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
 #include "./math.h"
 
 #include <math.h>

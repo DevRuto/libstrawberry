@@ -32,9 +32,7 @@
 
 #define __FILE_LOCAL__						"crypto/hashing/md5.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "md5.h"
+#include "./md5.h"
 
 #include "../../core/error.h"
 #include "../../core/memory.h"

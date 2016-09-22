@@ -32,16 +32,14 @@
 
 #define __FILE_LOCAL__						"crypto/padding/iso97971-2.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "iso97971-2.h"
+#include "./iso97971-2.h"
 
 #include "../../core/error.h"
 #include "../../core/memory.h"
 #include "../../core/math.h"
 #include "../../core/bits.h"
 
-#include "zero.h"
+#include "./zero.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-08-12");

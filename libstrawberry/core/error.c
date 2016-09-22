@@ -32,8 +32,6 @@
 
 #define __FILE_LOCAL__						"core/error.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
 #include "./error.h"
 
 #include <stdio.h>

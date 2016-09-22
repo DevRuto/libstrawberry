@@ -15,6 +15,7 @@
 #include <libstrawberry/networking/socket.h>
 #include "./tests.h"
 #include <libstrawberry/crypto/prng/isaac.h>
+#include <libstrawberry/core/cli.h>
 
 
 void test(const char *name, sb_bool_t(*func)()) {
@@ -38,7 +39,14 @@ void __sb_simulate_fatal();
 
 int main(int argc, char **argv, char **env) {
 	//printf("%lu\n", sb_time_tsc());
-	puts(sb_version_full());
+	const char *version = sb_version_full();
+	puts(version);
+	sb_print(version);
+	uint8_t ci;
+	for (ci = 0; ci < 8; ++ci) {
+		sb_cprint(version, ci);
+		sb_cprint(version, ci | SB_COLOR_BRIGHT);
+	}
 	//sb_time_sleep_millis(2000);
 	//__sb_simulate_fatal();
 	//return 0;

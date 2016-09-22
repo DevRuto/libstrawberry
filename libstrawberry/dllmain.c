@@ -32,11 +32,11 @@
 
 #define __FILE_LOCAL__						"dllmain.c"
 
-//#define __SB_DONT_NEED_INTRINSICS // Needed for intrinsics detection.
+#define SB_INTRINSICS
 
-#include "core/stdincl.h"
+#include "./core/stdincl.h"
 
-#include "core/time.h"
+#include "./core/time.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
@@ -62,9 +62,10 @@ static void __sb_const() {
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 int APIENTRY DllMain(HMODULE hModule, DWORD ulCallReason, LPVOID lpReserved) {
-	__sb_const();
 	switch (ulCallReason) {
 		case DLL_PROCESS_ATTACH:
+			__sb_const();
+			break;
 		case DLL_THREAD_ATTACH:
 		case DLL_THREAD_DETACH:
 		case DLL_PROCESS_DETACH:

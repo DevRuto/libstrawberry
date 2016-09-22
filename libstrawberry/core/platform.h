@@ -154,7 +154,7 @@
 #endif
 
 
-#if defined(SB_INCLUDE_INTRINSICS) && (!defined(__SB_DONT_NEED_INTRINSICS) || defined(SB_INTRINSICS))
+#if defined(SB_INCLUDE_INTRINSICS) && defined(SB_INTRINSICS)
 #	if (SB_COMPILER == SB_COMPILER_ID_GCC)
 #		if !defined(SB_ASSUME_INTRINSICS_AVAILABLE) && defined(__has_include)
 #			if __has_include(<x86intrin.h>)

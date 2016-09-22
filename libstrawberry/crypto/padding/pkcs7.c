@@ -32,9 +32,7 @@
 
 #define __FILE_LOCAL__						"crypto/padding/pkcs7.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "pkcs7.h"
+#include "./pkcs7.h"
 
 #include "../../core/error.h"
 #include "../../core/memory.h"

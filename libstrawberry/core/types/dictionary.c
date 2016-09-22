@@ -32,9 +32,7 @@
 
 #define __FILE_LOCAL__						"core/types/dictionary.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "dictionary.h"
+#include "./dictionary.h"
 
 #include "../memory.h"
 #include "../error.h"

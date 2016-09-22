@@ -37,11 +37,11 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#include "platform.h"
-#include "identid.h"
-#include "sbapi.h"
+#include "./platform.h"
+#include "./identid.h"
+#include "./sbapi.h"
 
-#include "types/bool.h"
+#include "./types/bool.h"
 
 
 #define SB_VERSION_MAJOR					0

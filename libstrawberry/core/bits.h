@@ -35,7 +35,7 @@
 
 
 #include <stdint.h>
-#include "platform.h"
+#include "./platform.h"
 
 
 #define SB_BIT_1							1

@@ -32,9 +32,7 @@
 
 #define __FILE_LOCAL__						"crypto/padding/zero.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "zero.h"
+#include "./zero.h"
 
 #include "../../core/error.h"
 #include "../../core/memory.h"

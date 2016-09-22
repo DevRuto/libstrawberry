@@ -32,9 +32,7 @@
 
 #define __FILE_LOCAL__						"crypto/symmetric/rabbit.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "rabbit.h"
+#include "./rabbit.h"
 
 #include "../../core/error.h"
 #include "../../core/memory.h"

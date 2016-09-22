@@ -32,12 +32,10 @@
 
 #define __FILE_LOCAL__						"networking/socket.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
 #ifndef SB_EXCLUDE_NETWORKING
 
 
-#include "socket.h"
+#include "./socket.h"
 
 #include "../core/error.h"
 

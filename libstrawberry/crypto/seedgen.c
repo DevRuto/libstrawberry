@@ -32,9 +32,7 @@
 
 #define __FILE_LOCAL__						"crypto/seedgen.c"
 
-#define __SB_DONT_NEED_INTRINSICS
-
-#include "seedgen.h"
+#include "./seedgen.h"
 
 #include "../core/time.h"
 #include "../core/bits.h"
