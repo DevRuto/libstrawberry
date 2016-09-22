@@ -34,6 +34,8 @@
 
 #include "./memory.h"
 
+#include "./cli.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -264,4 +266,17 @@ void sb_vmemdump_ex(const char *msg, void *src, sb_size_t size, sb_size_t column
 
 void sb_vmemdump(const char *msg, void *src, sb_size_t size) {
     sb_vmemdump_ex(msg, src, size, 16);
+}
+
+
+void sb_cvmemdump_ex(const char *msg, uint8_t color, void *src, sb_size_t size, sb_size_t columns) {
+    if (msg) {
+		sb_cprint(msg, color);
+    }
+    sb_memdump_ex(src, size, columns);
+}
+
+
+void sb_cvmemdump(const char *msg, uint8_t color, void *src, sb_size_t size) {
+	sb_cvmemdump_ex(msg, color, src, size, 16);
 }

@@ -81,6 +81,8 @@ extern "C" {
 	SBAPI void sb_memdump(void *src, sb_size_t size);
 	SBAPI void sb_vmemdump_ex(const char *msg, void *src, sb_size_t size, sb_size_t columns);
 	SBAPI void sb_vmemdump(const char *msg, void *src, sb_size_t size);
+	SBAPI void sb_cvmemdump_ex(const char *msg, uint8_t color, void *src, sb_size_t size, sb_size_t columns);
+	SBAPI void sb_cvmemdump(const char *msg, uint8_t color, void *src, sb_size_t size);
 
 #ifdef __cplusplus
 }
