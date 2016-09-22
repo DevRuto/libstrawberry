@@ -34,8 +34,6 @@
 
 #include "./memory.h"
 
-#include "./cli.h"
-
 #include <stdlib.h>
 #include <stdio.h>
 

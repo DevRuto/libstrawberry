@@ -36,6 +36,8 @@
 
 #include "./stdincl.h"
 
+#include "./cli.h"
+
 #include <string.h>
 
 
