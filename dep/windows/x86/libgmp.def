@@ -1,4 +1,4 @@
-LIBRARY GMP 
+LIBRARY libgmp
 EXPORTS 
 __gmp_0 
 __gmp_allocate_func 

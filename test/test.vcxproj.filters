@@ -36,6 +36,12 @@
     <ClCompile Include="src\crypto\symmetric\rabbit.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\crypto\cipher.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\asymmetric\diffiehellman.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdincl.h">

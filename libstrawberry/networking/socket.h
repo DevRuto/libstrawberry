@@ -40,11 +40,13 @@
 #include "../core/memory.h"
 
 
+// Experimental changes.
+typedef uint64_t sb_sockfd_t;
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 #	include <winsock2.h>
 #	include <ws2tcpip.h>
 
-	typedef SOCKET sb_sockfd_t;
+	//typedef SOCKET sb_sockfd_t;
 #	define SB_INVALID_SOCKET				INVALID_SOCKET
 #	define SB_GOOD_SOCKFD(x)				((x) != SB_INVALID_SOCKET)
 #elif (SB_PLATFORM == SB_PLATFORM_ID_LINUX)
@@ -57,7 +59,7 @@
 #	include <sys/ioctl.h>
 #	include <netdb.h>
 
-	typedef int sb_sockfd_t;
+	//typedef int sb_sockfd_t;
 
 #	define SB_INVALID_SOCKET				-1
 #	define SB_GOOD_SOCKFD(x)				((x) > 0)
@@ -69,9 +71,9 @@
 typedef struct addrinfo sb_addrinfo_t;
 
 typedef struct sb_socket_ctx {
+	sb_sockfd_t fd;
 	sb_addrinfo_t *addrinfo;
 	sb_addrinfo_t *selected;
-	sb_sockfd_t fd;
 	uint32_t flags;
 } sb_socket_ctx_t;
 

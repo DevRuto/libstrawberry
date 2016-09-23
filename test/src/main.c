@@ -28,7 +28,7 @@ void test(const char *name, sb_bool_t(*func)()) {
 	//}
 	if (valid) {
 		ns_stop = sb_time_nsec();
-		printf(status_passed" %15s: %lu\n", name, (ns_stop - ns_start));
+		printf(status_passed" %15s: %lu\n", name, (unsigned long)(ns_stop - ns_start));
 		//printf(status_passed" %s\n", name);
 	} else {
 		printf(status_failed" %s\n", name);
