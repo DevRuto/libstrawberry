@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using LibStrawberry.Crypto.KeyExchange;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using LibStrawberry.Crypto.KeyExchange;
 
 namespace cs_libstrawberry_unit_tests
 {

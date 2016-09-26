@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-using LibStrawberry.Crypto;
 using LibStrawberry.Crypto.KeyExchange;
 using LibStrawberry.Networking;
 
