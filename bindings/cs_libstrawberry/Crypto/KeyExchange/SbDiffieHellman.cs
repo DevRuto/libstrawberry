@@ -38,7 +38,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 		private sb_crypto_diffiehellman_ctx_t ctx = new sb_crypto_diffiehellman_ctx_t();
 
 		public SbDiffieHellman(ushort bits, ulong seed = 0) {
-			if (Imports.sb_crypto_diffiehellman_init(ref ctx, bits, ((seed != 0) ? seed : SbRandom.GetULong())) != 1) {
+			if (Imports.sb_crypto_diffiehellman_init(ref ctx, bits, ((seed != 0) ? seed : SbSeedgen.GetULong(SbRandom.GetULong()))) != 1) {
 				throw new SbException(SbExceptionType.Initialization);
 			}
 		}

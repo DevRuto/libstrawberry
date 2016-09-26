@@ -147,6 +147,12 @@ namespace LibStrawberry.BindingBase
 		[DllImport(lib, CharSet = cs, CallingConvention = cc)]
 		internal static extern ulong sb_random64();
 		#endregion
+		#region crypto/seedgen.c
+		[DllImport(lib, CharSet = cs, CallingConvention = cc)]
+		internal static extern ulong sb_seedgen(
+			ulong noise
+		);
+		#endregion
 		#region networking/socket.c
 		[DllImport(lib, CharSet = cs, CallingConvention = cc)]
 		internal static extern uint sb_socket_init(

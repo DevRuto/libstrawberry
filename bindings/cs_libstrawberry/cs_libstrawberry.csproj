@@ -48,6 +48,7 @@
     <Compile Include="Crypto\KeyExchange\SbDiffieHellman.cs" />
     <Compile Include="Crypto\SbCipher.cs" />
     <Compile Include="Crypto\SbRandom.cs" />
+    <Compile Include="Crypto\SbSeedgen.cs" />
     <Compile Include="Exceptions\SbException.cs" />
     <Compile Include="BindingBase\Imports.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
