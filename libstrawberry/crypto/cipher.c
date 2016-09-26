@@ -201,6 +201,7 @@ sb_size_t sb_crypto_cipher_decrypt_size(sb_crypto_cipher_ctx_t *ctx, void *in, s
 																		\
 	if (!ctx->data) {													\
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);							\
+		return sb_false;												\
 	}																	\
 																		\
 	if (!out) {															\

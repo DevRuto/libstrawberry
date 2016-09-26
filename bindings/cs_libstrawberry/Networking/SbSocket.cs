@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using LibStrawberry.BindingBase;
 using LibStrawberry.Exceptions;
 
-namespace LibStrawberry
+namespace LibStrawberry.Networking
 {
 	[StructLayout(LayoutKind.Sequential)]
 	internal struct sb_socket_ctx_t
@@ -23,7 +23,7 @@ namespace LibStrawberry
 	}
 
 	[Flags]
-	public enum SocketFlag : uint
+	public enum SbSocketFlag : uint
 	{
 		Server		= 0x00000001,
 		Exited		= 0x00000002,
@@ -35,24 +35,26 @@ namespace LibStrawberry
 	{
 		public string Node { get; private set; }
 		public ushort Port { get; private set; }
-		public uint Flags { get; private set; }
+		public SbSocketFlag Flags {
+			get {
+				return (SbSocketFlag)ctx.flags;
+			}
+		}
 
 		private sb_socket_ctx_t ctx = new sb_socket_ctx_t();
 
-		public SbSocket(string node = null, uint flags = 0) {
+		public SbSocket(string node = null, SbSocketFlag flags = 0) {
 			this.Node = node;
-			this.Flags = flags;
 			if (node != null) {
-				if (Imports.sb_socket_init(ref ctx, node, flags) != 1) {
-					throw new SbInitializationException();
+				if (Imports.sb_socket_init(ref ctx, node, (uint)flags) != 1) {
+					throw new SbException(SbExceptionType.Initialization);
 				}
 			}
 		}
 
-		public SbSocket(ulong fd, uint flags = 0) {
-			this.Flags = flags;
-			if (Imports.sb_socket_fromfd(ref ctx, fd, flags) != 1) {
-				throw new SbInitializationException();
+		public SbSocket(ulong fd, SbSocketFlag flags = 0) {
+			if (Imports.sb_socket_fromfd(ref ctx, fd, (uint)flags) != 1) {
+				throw new SbException(SbExceptionType.Initialization);
 			}
 		}
 
@@ -72,11 +74,11 @@ namespace LibStrawberry
 				throw new ArgumentOutOfRangeException();
 			}
 			if (this.Node == null) {
-				throw new SbInitializationException();
+				throw new SbException();
 			}
 			this.Port = port;
 			if (Imports.sb_socket_start(ref ctx, port) != 1) {
-				throw new SbStartException();
+				throw new SbException(SbExceptionType.Start);
 			}
 		}
 
@@ -85,21 +87,21 @@ namespace LibStrawberry
 				throw new ArgumentOutOfRangeException();
 			}
 			if (node == null) {
-				throw new SbInitializationException();
+				throw new SbException(SbExceptionType.Initialization);
 			}
 			this.Node = node;
-			if (Imports.sb_socket_init(ref ctx, node, this.Flags) != 1) {
-				throw new SbInitializationException();
+			if (Imports.sb_socket_init(ref ctx, node, (uint)this.Flags) != 1) {
+				throw new SbException(SbExceptionType.Initialization);
 			}
 			this.Port = port;
 			if (Imports.sb_socket_start(ref ctx, port) != 1) {
-				throw new SbStartException();
+				throw new SbException(SbExceptionType.Start);
 			}
 		}
 
 		public void Stop() {
 			if (Imports.sb_socket_stop(ref ctx) != 1) {
-				throw new SbStopException();
+				throw new SbException(SbExceptionType.Stop);
 			} 
 		}
 

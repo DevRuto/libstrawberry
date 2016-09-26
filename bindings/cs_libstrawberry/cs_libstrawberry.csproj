@@ -44,11 +44,12 @@
   <ItemGroup>
     <Compile Include="BindingBase\Native.cs" />
     <Compile Include="Core\SbError.cs" />
+    <Compile Include="Core\SbInfo.cs" />
+    <Compile Include="Crypto\KeyExchange\SbDiffieHellman.cs" />
+    <Compile Include="Crypto\SbCipher.cs" />
+    <Compile Include="Crypto\SbRandom.cs" />
     <Compile Include="Exceptions\SbException.cs" />
-    <Compile Include="Exceptions\SbInitializationException.cs" />
     <Compile Include="BindingBase\Imports.cs" />
-    <Compile Include="Exceptions\SbStartException.cs" />
-    <Compile Include="Exceptions\SbStopException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
