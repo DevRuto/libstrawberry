@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 
 using LibStrawberry.BindingBase;
 using LibStrawberry.Core;
-using LibStrawberry.Exceptions;
 
 namespace LibStrawberry.Crypto.KeyExchange
 {
@@ -38,31 +37,37 @@ namespace LibStrawberry.Crypto.KeyExchange
 		private sb_crypto_diffiehellman_ctx_t ctx = new sb_crypto_diffiehellman_ctx_t();
 
 		public SbDiffieHellman(ushort bits, ulong seed = 0) {
-			if (Imports.sb_crypto_diffiehellman_init(ref ctx, bits, ((seed != 0) ? seed : SbSeedgen.GetULong(SbRandom.GetULong()))) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_init(ref ctx, bits, ((seed != 0) ? seed : SbSeedgen.GetULong(SbRandom.GetULong()))) != 1) {
 				throw new SbException(SbExceptionType.Initialization);
 			}
 		}
 
 		#region IDisposable
+		private bool __disposed = false;
 		protected virtual void Dispose(bool disposing) {
+			if (this.__disposed) {
+				return;
+			} else {
+				this.__disposed = true;
+			}
 			if (disposing) {
 				// Free managed objects here.
 			}
-			if (Imports.sb_crypto_diffiehellman_clear(ref ctx) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_clear(ref ctx) != 1) {
 				throw new SbException(SbExceptionType.Disposal) { DeemedFatal = true };
 			}
 		}
 
 		public void Dispose() {
-			Dispose(true);
+			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 		#endregion
 
 		public bool GenerateBase() {
-			if (Imports.sb_crypto_diffiehellman_generate_base(ref ctx) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_generate_base(ref ctx) != 1) {
 				if (SbInfo.ThrowExceptions) {
-					throw new SbException(SbExceptionType.Initialization);
+					throw new SbException(SbExceptionType.Generic);
 				} else {
 					return false;
 				}
@@ -71,9 +76,9 @@ namespace LibStrawberry.Crypto.KeyExchange
 		}
 
 		public bool GenerateKeys() {
-			if (Imports.sb_crypto_diffiehellman_generate_keys(ref ctx) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_generate_keys(ref ctx) != 1) {
 				if (SbInfo.ThrowExceptions) {
-					throw new SbException(SbExceptionType.Initialization);
+					throw new SbException(SbExceptionType.Generic);
 				} else {
 					return false;
 				}
@@ -82,9 +87,9 @@ namespace LibStrawberry.Crypto.KeyExchange
 		}
 
 		public bool Generate() {
-			if (Imports.sb_crypto_diffiehellman_generate(ref ctx) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_generate(ref ctx) != 1) {
 				if (SbInfo.ThrowExceptions) {
-					throw new SbException(SbExceptionType.Initialization);
+					throw new SbException(SbExceptionType.Generic);
 				} else {
 					return false;
 				}
@@ -93,9 +98,9 @@ namespace LibStrawberry.Crypto.KeyExchange
 		}
 
 		public bool GenerateSecret(byte[] pk_bob) {
-			if (Imports.sb_crypto_diffiehellman_generate_secret(ref ctx, pk_bob) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_generate_secret(ref ctx, pk_bob) != 1) {
 				if (SbInfo.ThrowExceptions) {
-					throw new SbException(SbExceptionType.Initialization);
+					throw new SbException(SbExceptionType.Generic);
 				} else {
 					return false;
 				}
@@ -104,7 +109,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 		}
 
 		public static bool CopyBase(SbDiffieHellman dst, SbDiffieHellman src) {
-			if (Imports.sb_crypto_diffiehellman_copy_base(ref dst.ctx, ref src.ctx) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_copy_base(ref dst.ctx, ref src.ctx) != 1) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -115,7 +120,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 		}
 
 		public static bool CopyKeys(SbDiffieHellman dst, SbDiffieHellman src) {
-			if (Imports.sb_crypto_diffiehellman_copy_keys(ref dst.ctx, ref src.ctx) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_copy_keys(ref dst.ctx, ref src.ctx) != 1) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -132,7 +137,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 			if (generator.Length != this.Size) {
 				throw new ArgumentException();
 			}
-			if (Imports.sb_crypto_diffiehellman_import_generator(ref ctx, generator) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_import_generator(ref ctx, generator) != 1) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -149,7 +154,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 			if (modulo.Length != this.Size) {
 				throw new ArgumentException();
 			}
-			if (Imports.sb_crypto_diffiehellman_import_modulo(ref ctx, modulo) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_import_modulo(ref ctx, modulo) != 1) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -166,7 +171,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 			if (_public.Length != this.Size) {
 				throw new ArgumentException();
 			}
-			if (Imports.sb_crypto_diffiehellman_import_public(ref ctx, _public) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_import_public(ref ctx, _public) != 1) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -197,7 +202,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 
 		public byte[] ExportGenerator() {
 			byte[] b = new byte[this.Size];
-			if (Imports.sb_crypto_diffiehellman_export_generator(ref ctx, b) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_export_generator(ref ctx, b) != 1) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -209,7 +214,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 
 		public byte[] ExportModulo() {
 			byte[] b = new byte[this.Size];
-			if (Imports.sb_crypto_diffiehellman_export_modulo(ref ctx, b) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_export_modulo(ref ctx, b) != 1) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -221,7 +226,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 
 		public byte[] ExportPublic() {
 			byte[] b = new byte[this.Size];
-			if (Imports.sb_crypto_diffiehellman_export_public(ref ctx, b) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_export_public(ref ctx, b) != 1) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -233,7 +238,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 
 		public byte[] ExportSecret() {
 			byte[] b = new byte[this.Size];
-			if (Imports.sb_crypto_diffiehellman_export_secret(ref ctx, b) != 1) {
+			if (NativeMethods.sb_crypto_diffiehellman_export_secret(ref ctx, b) != 1) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {

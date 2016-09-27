@@ -5,7 +5,7 @@ namespace LibStrawberry.Crypto
 	public static class SbSeedgen
 	{
 		public static ulong GetULong(ulong noise) {
-			return Imports.sb_seedgen(noise);
+			return NativeMethods.sb_seedgen(noise);
 		}
 	}
 }

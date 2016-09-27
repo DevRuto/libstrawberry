@@ -34,7 +34,7 @@
 			<Add directory="../" />
 		</Compiler>
 		<Linker>
-			<Add option="-lstrawberry -lgmp" />
+			<Add option="-lstrawberry" />
 			<Add directory="../bin" />
 		</Linker>
 		<Unit filename="src/crypto/asymmetric/diffiehellman.c">

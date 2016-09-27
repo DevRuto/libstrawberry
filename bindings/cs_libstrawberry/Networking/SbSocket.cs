@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 
 using LibStrawberry.BindingBase;
-using LibStrawberry.Exceptions;
 
 namespace LibStrawberry.Networking
 {
@@ -25,13 +24,14 @@ namespace LibStrawberry.Networking
 	[Flags]
 	public enum SbSocketFlag : uint
 	{
+		Unspecified = 0x00000000,
 		Server		= 0x00000001,
 		Exited		= 0x00000002,
 		UDP			= 0x00000004,
 		Accepted	= 0x00000008
 	}
 
-	public class SbSocket
+	public class SbSocket : IDisposable
 	{
 		public string Node { get; private set; }
 		public ushort Port { get; private set; }
@@ -46,14 +46,14 @@ namespace LibStrawberry.Networking
 		public SbSocket(string node = null, SbSocketFlag flags = 0) {
 			this.Node = node;
 			if (node != null) {
-				if (Imports.sb_socket_init(ref ctx, node, (uint)flags) != 1) {
+				if (NativeMethods.sb_socket_init(ref ctx, node, (uint)flags) != 1) {
 					throw new SbException(SbExceptionType.Initialization);
 				}
 			}
 		}
 
 		public SbSocket(ulong fd, SbSocketFlag flags = 0) {
-			if (Imports.sb_socket_fromfd(ref ctx, fd, (uint)flags) != 1) {
+			if (NativeMethods.sb_socket_fromfd(ref ctx, fd, (uint)flags) != 1) {
 				throw new SbException(SbExceptionType.Initialization);
 			}
 		}
@@ -65,9 +65,27 @@ namespace LibStrawberry.Networking
 			this.ctx.flags = ctx.flags;
 		}
 
-		internal bool Clear() {
-			return (Imports.sb_socket_clear(ref ctx) == 1);
+		#region IDisposable
+		private bool __disposed = false;
+		protected virtual void Dispose(bool disposing) {
+			if (this.__disposed) {
+				return;
+			} else {
+				this.__disposed = true;
+			}
+			if (disposing) {
+				// Free managed objects here.
+			}
+			if (NativeMethods.sb_socket_clear(ref ctx) != 1) {
+				throw new SbException(SbExceptionType.Disposal) { DeemedFatal = true };
+			}
 		}
+
+		public void Dispose() {
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		#endregion
 
 		public void Start(ushort port) {
 			if (port == 0) {
@@ -77,8 +95,8 @@ namespace LibStrawberry.Networking
 				throw new SbException();
 			}
 			this.Port = port;
-			if (Imports.sb_socket_start(ref ctx, port) != 1) {
-				throw new SbException(SbExceptionType.Start);
+			if (NativeMethods.sb_socket_start(ref ctx, port) != 1) {
+				throw new SbException(SbExceptionType.Generic);
 			}
 		}
 
@@ -90,24 +108,24 @@ namespace LibStrawberry.Networking
 				throw new SbException(SbExceptionType.Initialization);
 			}
 			this.Node = node;
-			if (Imports.sb_socket_init(ref ctx, node, (uint)this.Flags) != 1) {
+			if (NativeMethods.sb_socket_init(ref ctx, node, (uint)this.Flags) != 1) {
 				throw new SbException(SbExceptionType.Initialization);
 			}
 			this.Port = port;
-			if (Imports.sb_socket_start(ref ctx, port) != 1) {
-				throw new SbException(SbExceptionType.Start);
+			if (NativeMethods.sb_socket_start(ref ctx, port) != 1) {
+				throw new SbException(SbExceptionType.Generic);
 			}
 		}
 
 		public void Stop() {
-			if (Imports.sb_socket_stop(ref ctx) != 1) {
-				throw new SbException(SbExceptionType.Stop);
+			if (NativeMethods.sb_socket_stop(ref ctx) != 1) {
+				throw new SbException(SbExceptionType.Generic);
 			} 
 		}
 
 		public SbSocket Accept() {
 			sb_socket_ctx_t nctx = new sb_socket_ctx_t();
-			if (Imports.sb_socket_accept(ref ctx, ref nctx, UIntPtr.Zero, UIntPtr.Zero) != 1) {
+			if (NativeMethods.sb_socket_accept(ref ctx, ref nctx, UIntPtr.Zero, UIntPtr.Zero) != 1) {
 				throw new SbException();
 			}
 			return new SbSocket(ref nctx);
@@ -117,7 +135,7 @@ namespace LibStrawberry.Networking
 			if (data == null) {
 				throw new ArgumentNullException();
 			}
-			return (long)Imports.sb_socket_write(ref ctx, data, (IntPtr)data.Length);
+			return (long)NativeMethods.sb_socket_write(ref ctx, data, (IntPtr)data.Length);
 		}
 
 		public long Read(ref byte[] buffer, long size) {
@@ -130,7 +148,7 @@ namespace LibStrawberry.Networking
 			if (size == 0) {
 				return 0;
 			}
-			return (long)Imports.sb_socket_read(ref ctx, buffer, (IntPtr)size);
+			return (long)NativeMethods.sb_socket_read(ref ctx, buffer, (IntPtr)size);
 		}
 	}
 }

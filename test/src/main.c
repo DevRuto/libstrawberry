@@ -38,6 +38,28 @@ void test(const char *name, sb_bool_t(*func)()) {
 void __sb_simulate_fatal();
 
 int main(int argc, char **argv, char **env) {
+	uint64_t tsc_start = 0, tsc_stop = 0;
+	uint64_t i, c;
+	for (i = 10; i--;) {
+		sb_cprint("warmup", SB_COLOR_BRIGHT_BLUE);
+	}
+	tsc_start = sb_time_tsc();
+	for (i = 800000, c = 0; i--;) {
+		if ((i % 8) == 0) {
+			++c;
+		}
+	}
+	tsc_stop = sb_time_tsc();
+	printf("modulo found %llu in %llu\n", c, (tsc_stop - tsc_start));
+	tsc_start = sb_time_tsc();
+	for (i = 800000, c = 0; i--;) {
+		if ((i & 7) == 0) {
+			++c;
+		}
+	}
+	tsc_stop = sb_time_tsc();
+	printf("   AND found %llu in %llu\n", c, (tsc_stop - tsc_start));
+	return 0;
 	//printf("%lu\n", sb_time_tsc());
 	const char *version = sb_version_full();
 	puts(version);

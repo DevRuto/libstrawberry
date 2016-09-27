@@ -5,15 +5,15 @@ namespace LibStrawberry.Crypto
 	public static class SbRandom
 	{
 		public static ushort GetUShort() {
-			return Imports.sb_random16();
+			return NativeMethods.sb_random16();
 		}
 
 		public static uint GetUInt() {
-			return Imports.sb_random32();
+			return NativeMethods.sb_random32();
 		}
 
 		public static ulong GetULong() {
-			return Imports.sb_random64();
+			return NativeMethods.sb_random64();
 		}
 
 		public static byte[] GetBytes(uint count) {

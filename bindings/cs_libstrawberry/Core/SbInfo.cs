@@ -7,9 +7,9 @@ namespace LibStrawberry.Core
 	public static class SbInfo
 	{
 		private static readonly string
-			_platform = Marshal.PtrToStringAnsi(Imports.sb_platform()),
-			_version = Marshal.PtrToStringAnsi(Imports.sb_version()),
-			_version_full = Marshal.PtrToStringAnsi(Imports.sb_version_full());
+			_platform = Marshal.PtrToStringAnsi(NativeMethods.sb_platform()),
+			_version = Marshal.PtrToStringAnsi(NativeMethods.sb_version()),
+			_version_full = Marshal.PtrToStringAnsi(NativeMethods.sb_version_full());
 
 		public static string Platform {
 			get {

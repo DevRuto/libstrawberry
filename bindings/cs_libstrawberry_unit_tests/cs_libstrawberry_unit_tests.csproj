@@ -52,8 +52,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Crypto\KeyExchange\SbDiffieHellman.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="KeyExchange.cs" />
+    <Compile Include="Crypto\SbCipher.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cs_libstrawberry\cs_libstrawberry.csproj">
