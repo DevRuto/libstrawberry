@@ -1,9 +1,7 @@
 ﻿using LibStrawberry.BindingBase;
 
-namespace LibStrawberry.Crypto
-{
-	public static class SbRandom
-	{
+namespace LibStrawberry.Crypto {
+	public static class SbRandom {
 		public static ushort GetUShort() {
 			return NativeMethods.sb_random16();
 		}
@@ -22,10 +20,10 @@ namespace LibStrawberry.Crypto
 			uint r, i;
 			for (i = 0; count > 3; count -= 4, i += 4) {
 				r = SbRandom.GetUInt();
-				b[i    ] = (byte)((r >> 24) & 0xFF);
+				b[i] = (byte)((r >> 24) & 0xFF);
 				b[i + 1] = (byte)((r >> 16) & 0xFF);
-				b[i + 2] = (byte)((r >>  8) & 0xFF);
-				b[i + 3] = (byte)((r      ) & 0xFF);
+				b[i + 2] = (byte)((r >> 8) & 0xFF);
+				b[i + 3] = (byte)((r) & 0xFF);
 			}
 			if (count > 0) {
 				r = SbRandom.GetUInt();

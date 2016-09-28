@@ -3,11 +3,9 @@ using System.Runtime.InteropServices;
 using LibStrawberry.BindingBase;
 using LibStrawberry.Core;
 
-namespace LibStrawberry.Crypto
-{
+namespace LibStrawberry.Crypto {
 	[StructLayout(LayoutKind.Sequential)]
-	internal struct sb_crypto_cipher_ctx_t
-	{
+	internal struct sb_crypto_cipher_ctx_t {
 		[MarshalAs(UnmanagedType.SysUInt)]
 		internal UIntPtr data;
 
@@ -24,39 +22,37 @@ namespace LibStrawberry.Crypto
 		internal byte flags;
 	}
 
-	public enum SbCipherAlgorithm : ushort
-	{
+	public enum SbCipherAlgorithm : ushort {
 		Unspecified = 0,
 		Rijndael = 1,
 		Salsa20 = 2,
 		Rabbit = 3
 	}
 
-	public enum SbCipherPaddingAlgorithm : byte
-	{
+	public enum SbCipherPaddingAlgorithm : byte {
 		Default = 0,
 		Zero = 1,
 		PKCS7 = 2,
 		ISO979712 = 3
 	}
 
-	public enum SbCipherFlags : byte
-	{
+	public enum SbCipherFlags : byte {
 		Unspecified = 0
 	}
 
-	public class SbCipher : IDisposable
-	{
+	public class SbCipher : IDisposable {
 		public SbCipherAlgorithm Algorithm {
 			get {
 				return (SbCipherAlgorithm)ctx.cipher;
 			}
 		}
+
 		public SbCipherPaddingAlgorithm PaddingAlgorithm {
 			get {
 				return (SbCipherPaddingAlgorithm)ctx.padding;
 			}
 		}
+
 		public SbCipherFlags Flags {
 			get {
 				return (SbCipherFlags)ctx.flags;
@@ -84,7 +80,9 @@ namespace LibStrawberry.Crypto
 		}
 
 		#region IDisposable
+
 		private bool __disposed = false;
+
 		protected virtual void Dispose(bool disposing) {
 			if (this.__disposed) {
 				return;
@@ -103,6 +101,7 @@ namespace LibStrawberry.Crypto
 			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
+
 		#endregion
 
 		public bool Reset() {

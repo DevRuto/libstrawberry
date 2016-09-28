@@ -2,10 +2,8 @@
 
 using LibStrawberry.BindingBase;
 
-namespace LibStrawberry.Core
-{
-	public static class SbInfo
-	{
+namespace LibStrawberry.Core {
+	public static class SbInfo {
 		private static readonly string
 			_platform = Marshal.PtrToStringAnsi(NativeMethods.sb_platform()),
 			_version = Marshal.PtrToStringAnsi(NativeMethods.sb_version()),

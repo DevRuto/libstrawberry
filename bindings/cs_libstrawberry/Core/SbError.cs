@@ -1,9 +1,7 @@
 ﻿using LibStrawberry.BindingBase;
 
-namespace LibStrawberry.Core
-{
-	public static class SbError
-	{
+namespace LibStrawberry.Core {
+	public static class SbError {
 		public static uint Get() {
 			return NativeMethods.sb_error_get();
 		}

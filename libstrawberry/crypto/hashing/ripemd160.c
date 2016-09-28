@@ -327,6 +327,31 @@ sb_bool_t sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, s
 }
 
 
+sb_bool_t sb_crypto_ripemd160_get_digest(sb_crypto_ripemd160_ctx_t *ctx, uint8_t digest[20]) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!digest) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
+	uint32_t i;
+	for (i = 0; i < 20; i += 4) {
+		digest[i    ] = ( ctx->data[i >> 2]        & 0xFF);
+		digest[i + 1] = ((ctx->data[i >> 2] >>  8) & 0xFF);
+		digest[i + 2] = ((ctx->data[i >> 2] >> 16) & 0xFF);
+		digest[i + 3] = ((ctx->data[i >> 2] >> 24) & 0xFF);
+	}
+
+	return sb_true;
+}
+
+
 sb_bool_t sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size) {
 	sb_error_reset();
 
@@ -358,14 +383,9 @@ sb_bool_t sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size) {
 
 	sb_crypto_ripemd160_finish(&ctx, data, size);
 
-	for (i = 0; i < 20; i += 4) {
-		digest[i    ] = ( ctx.data[i >> 2]        & 0xFF);
-		digest[i + 1] = ((ctx.data[i >> 2] >>  8) & 0xFF);
-		digest[i + 2] = ((ctx.data[i >> 2] >> 16) & 0xFF);
-		digest[i + 3] = ((ctx.data[i >> 2] >> 24) & 0xFF);
-	}
+	sb_bool_t retval = sb_crypto_ripemd160_get_digest(&ctx, digest);
 
 	sb_crypto_ripemd160_clear(&ctx);
 
-	return sb_true;
+	return retval;
 }

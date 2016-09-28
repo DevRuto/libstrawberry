@@ -2,10 +2,8 @@
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
-namespace LibStrawberry
-{
-	public enum SbExceptionType : byte
-	{
+namespace LibStrawberry {
+	public enum SbExceptionType : byte {
 		Unspecified = 0,
 		Generic = 1,
 		Initialization = 2,
@@ -16,13 +14,14 @@ namespace LibStrawberry
 	}
 
 	[Serializable]
-	public class SbException : Exception
-	{
+	public class SbException : Exception {
 		public SbExceptionType Type { get; private set; }
+
 		public bool DeemedFatal { get; internal set; }
 
 
-		public SbException() : this(SbExceptionType.Generic) { }
+		public SbException() : this(SbExceptionType.Generic) {
+		}
 
 		public SbException(SbExceptionType type) : base() {
 			this.Type = type;

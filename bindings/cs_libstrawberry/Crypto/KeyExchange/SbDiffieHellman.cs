@@ -4,11 +4,9 @@ using System.Runtime.InteropServices;
 using LibStrawberry.BindingBase;
 using LibStrawberry.Core;
 
-namespace LibStrawberry.Crypto.KeyExchange
-{
+namespace LibStrawberry.Crypto.KeyExchange {
 	[StructLayout(LayoutKind.Sequential)]
-	internal struct sb_crypto_diffiehellman_ctx_t
-	{
+	internal struct sb_crypto_diffiehellman_ctx_t {
 		[MarshalAs(UnmanagedType.SysUInt)]
 		internal UIntPtr data;
 
@@ -16,8 +14,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 		internal ushort bits;
 	}
 
-	public class SbDiffieHellman : IDisposable
-	{
+	public class SbDiffieHellman : IDisposable {
 		public ushort Bits {
 			get {
 				return ctx.bits;
@@ -43,7 +40,9 @@ namespace LibStrawberry.Crypto.KeyExchange
 		}
 
 		#region IDisposable
+
 		private bool __disposed = false;
+
 		protected virtual void Dispose(bool disposing) {
 			if (this.__disposed) {
 				return;
@@ -62,6 +61,7 @@ namespace LibStrawberry.Crypto.KeyExchange
 			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
+
 		#endregion
 
 		public bool GenerateBase() {

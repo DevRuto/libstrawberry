@@ -3,11 +3,9 @@ using System.Runtime.InteropServices;
 
 using LibStrawberry.BindingBase;
 
-namespace LibStrawberry.Networking
-{
+namespace LibStrawberry.Networking {
 	[StructLayout(LayoutKind.Sequential)]
-	internal struct sb_socket_ctx_t
-	{
+	internal struct sb_socket_ctx_t {
 		[MarshalAs(UnmanagedType.U8)]
 		internal ulong fd;
 		
@@ -22,19 +20,19 @@ namespace LibStrawberry.Networking
 	}
 
 	[Flags]
-	public enum SbSocketFlag : uint
-	{
+	public enum SbSocketFlag : uint {
 		Unspecified = 0x00000000,
-		Server		= 0x00000001,
-		Exited		= 0x00000002,
-		UDP			= 0x00000004,
+		Server = 0x00000001,
+		Exited = 0x00000002,
+		UDP = 0x00000004,
 		Accepted	= 0x00000008
 	}
 
-	public class SbSocket : IDisposable
-	{
+	public class SbSocket : IDisposable {
 		public string Node { get; private set; }
+
 		public ushort Port { get; private set; }
+
 		public SbSocketFlag Flags {
 			get {
 				return (SbSocketFlag)ctx.flags;
@@ -66,7 +64,9 @@ namespace LibStrawberry.Networking
 		}
 
 		#region IDisposable
+
 		private bool __disposed = false;
+
 		protected virtual void Dispose(bool disposing) {
 			if (this.__disposed) {
 				return;
@@ -85,6 +85,7 @@ namespace LibStrawberry.Networking
 			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
+
 		#endregion
 
 		public void Start(ushort port) {
