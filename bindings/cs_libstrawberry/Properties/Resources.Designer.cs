@@ -63,9 +63,9 @@ namespace LibStrawberry.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] libgmp {
+        internal static byte[] win_libgmp {
             get {
-                object obj = ResourceManager.GetObject("libgmp", resourceCulture);
+                object obj = ResourceManager.GetObject("win_libgmp", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace LibStrawberry.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] libstrawberry {
+        internal static byte[] win_libstrawberry {
             get {
-                object obj = ResourceManager.GetObject("libstrawberry", resourceCulture);
+                object obj = ResourceManager.GetObject("win_libstrawberry", resourceCulture);
                 return ((byte[])(obj));
             }
         }

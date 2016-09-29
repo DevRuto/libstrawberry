@@ -43,14 +43,30 @@ namespace LibStrawberry.BindingBase {
 		/*
 		[DllImport(lib, CharSet = cs, CallingConvention = cc)]
 		*/
-		const string lib = "libstrawberry.dll";
+		const string lib = "libstrawberry";
 		const CharSet cs = CharSet.Ansi;
 		const CallingConvention cc = CallingConvention.Cdecl;
 
 		static NativeMethods() {
 			try {
-				System.IO.File.WriteAllBytes(Environment.CurrentDirectory + "/libgmp.dll", Properties.Resources.libgmp);
-				System.IO.File.WriteAllBytes(Environment.CurrentDirectory + "/libstrawberry.dll", Properties.Resources.libstrawberry);
+				PlatformID platform = Environment.OSVersion.Platform;
+				switch (platform) {
+					case PlatformID.Win32NT:
+					case PlatformID.Win32S:
+					case PlatformID.Win32Windows:
+					case PlatformID.WinCE:
+						System.IO.File.WriteAllBytes(Environment.CurrentDirectory + "/libgmp.dll", Properties.Resources.win_libgmp);
+						System.IO.File.WriteAllBytes(Environment.CurrentDirectory + "/libstrawberry.dll", Properties.Resources.win_libstrawberry);
+						break;
+					case PlatformID.MacOSX:
+						throw new SbException(SbExceptionType.Initialization) { DeemedFatal = true };
+						//break;
+					case PlatformID.Unix:
+						throw new SbException(SbExceptionType.Initialization) { DeemedFatal = true };
+						//break;
+					default:
+						throw new SbException(SbExceptionType.Initialization) { DeemedFatal = true };
+				}
 			} catch (Exception ex) {
 				Console.WriteLine(ex.Message);
 				Console.WriteLine(ex.StackTrace);

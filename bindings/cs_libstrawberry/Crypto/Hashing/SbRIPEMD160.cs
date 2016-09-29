@@ -144,7 +144,11 @@ namespace LibStrawberry.Crypto.Hashing {
 					for (i = 0; length > 63; length -= 64, i += 64) {
 						Array.Copy(data, i, buffer, 0, 64);
 						if (!md.Update(buffer)) {
-							// TODO
+							if (SbInfo.ThrowExceptions) {
+								throw new SbException(SbExceptionType.Generic);
+							} else {
+								return null;
+							}
 						}
 					}
 				}
@@ -152,7 +156,11 @@ namespace LibStrawberry.Crypto.Hashing {
 					buffer = new byte[length];
 					Array.Copy(data, i, buffer, 0, length);
 					if (!md.Finish(buffer)) {
-						// TODO
+						if (SbInfo.ThrowExceptions) {
+							throw new SbException(SbExceptionType.Generic);
+						} else {
+							return null;
+						}
 					}
 				}
 				return md.GetDigest();

@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="libgmp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="win_libgmp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\libgmp.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="libstrawberry" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="win_libstrawberry" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\libstrawberry.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
