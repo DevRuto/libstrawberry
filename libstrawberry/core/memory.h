@@ -48,7 +48,7 @@
 #	include <malloc.h>
 #	define SB_MEM_BUFFER_ALLOC(type, name, size) \
 											type *name = _malloca(size)
-#	define SB_MEM_BUFFER_FREE(name)			_freea(size)
+#	define SB_MEM_BUFFER_FREE(name)			_freea(name)
 #else
 #	define SB_MEM_BUFFER_ALLOC(type, name, size) \
 											type name[size]
