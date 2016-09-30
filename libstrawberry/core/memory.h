@@ -45,6 +45,7 @@
 
 
 #if (SB_COMPILER == SB_COMPILER_ID_MSC)
+#	include <malloc.h>
 #	define SB_MEM_BUFFER_ALLOC(type, name, size) \
 											type *name = _malloca(size)
 #	define SB_MEM_BUFFER_FREE(name)			_freea(size)
