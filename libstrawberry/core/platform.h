@@ -88,19 +88,35 @@
 #		define SB_COMPILER					SB_COMPILER_ID_MSC
 #		define SB_COMPILER_STRING			"MSC"
 #		define SB_COMPILER_STRING_FULL		"Microsoft Visual C++"
+#		define SB_THREADLOCAL				__declspec(thread)
+#	elif defined(__llvm__) || defined(__clang__)
+#		define SB_COMPILER					SB_COMPILER_ID_LLVM
+#		define SB_COMPILER_STRING			"LLVM"
+#		define SB_COMPILER_STRING_FULL		"Low Level Virtual Machine"
+#		define SB_THREADLOCAL				__thread
+#		define SB_USED						__attribute__((used))
 #	elif defined(__GNUC__)
 #		define SB_COMPILER					SB_COMPILER_ID_GCC
 #		define SB_COMPILER_STRING			"GCC"
 #		define SB_COMPILER_STRING_FULL		"GNU Compiler Collection"
+#		define SB_THREADLOCAL				__thread
+#		define SB_USED						__attribute__((used))
 #	elif defined(__INTEL_COMPILER) || defined(__ICL) || defined(__ICC)
 #		define SB_COMPILER					SB_COMPILER_ID_INTEL
 #		define SB_COMPILER_STRING			"ICL"
 #		define SB_COMPILER_STRING_FULL		"Intel C/C++"
-#	elif defined(__llvm__)
-#		define SB_COMPILER					SB_COMPILER_ID_LLVM
-#		define SB_COMPILER_STRING			"LLVM"
-#		define SB_COMPILER_STRING_FULL		"Low Level Virtual Machine"
+#		if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
+#			define SB_THREADLOCAL			__declspec(thread)
+#		else
+#			define SB_THREADLOCAL			__thread
+#		endif
 #	endif
+#endif
+#ifndef SB_THREADLOCAL
+#define SB_THREADLOCAL
+#endif
+#ifndef SB_USED
+#define SB_USED
 #endif
 
 
@@ -155,7 +171,7 @@
 
 
 #if defined(SB_INCLUDE_INTRINSICS) && defined(SB_INTRINSICS)
-#	if (SB_COMPILER == SB_COMPILER_ID_GCC)
+#	if (SB_COMPILER == SB_COMPILER_ID_GCC) || (SB_COMPILER == SB_COMPILER_ID_LLVM)
 #		if !defined(SB_ASSUME_INTRINSICS_AVAILABLE) && defined(__has_include)
 #			if __has_include(<x86intrin.h>)
 #				include <x86intrin.h>
@@ -205,16 +221,19 @@
 
 #include <stdint.h>
 
-#define SB_MIN_SIZE							0
 #if (SB_ARCH == 64)
 #	define SB_MAX_SIZE						SB_MAX_UINT64
+#	define SB_SIZE_MASK						0x7FFFFFFFFFFFFFFF
 	typedef uint64_t sb_size_t;
 	typedef int64_t sb_ssize_t;
 #else
 #	define SB_MAX_SIZE						SB_MAX_UINT32
+#	define SB_SIZE_MASK						0x7FFFFFFF
 	typedef uint32_t sb_size_t;
 	typedef int32_t sb_ssize_t;
 #endif
+#define SB_MIN_SIZE							0
+#define SB_SIZE_DROP_SIGN(x)				((x) & SB_SIZE_MASK)
 
 
 #define SB_FULL_PLATFORM_STRING				SB_PLATFORM_STRING" ("SB_ARCH_STRING", "SB_ENDIANNESS_STRING", "SB_COMPILER_STRING""SB_INTRINSICS_STR")"

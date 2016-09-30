@@ -40,7 +40,7 @@
 #include "../core/error.h"
 
 
-IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-30");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-30");
 
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
@@ -80,7 +80,7 @@ sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags
 	hints.ai_flags = (SB_FLAG(flags, SB_SOCKET_SERVER) ? AI_PASSIVE : 0);
 	hints.ai_protocol = 0;
 
-	int err; // TODO: remove or output/register
+	int err;
 	if ((err = getaddrinfo(node, NULL, &hints, &sock->addrinfo)) != 0) {
 		sb_error_set_ex(SB_ERROR_INITIALIZATION, err);
 		return sb_false;
@@ -253,7 +253,7 @@ sb_sockfd_t sb_socket_acceptfd(sb_socket_ctx_t *sock, struct sockaddr *saddr, so
 }
 
 
-sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_ssize_t size) {
+sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_size_t size) {
 	sb_error_reset();
 
 	if (!sock) {
@@ -280,7 +280,24 @@ sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_ssize_t size) {
 }
 
 
-sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_ssize_t size) {
+sb_ssize_t sb_socket_write_str(sb_socket_ctx_t *sock, const char *str) {
+	sb_error_reset();
+
+	if (!sock) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return -2;
+	}
+
+	if (!str) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return -6;
+	}
+
+	return sb_socket_write(sock, (char*)str, strlen(str));
+}
+
+
+sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_size_t size) {
 	sb_error_reset();
 
 	if (!sock) {

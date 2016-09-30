@@ -39,7 +39,7 @@
 #include "./core/time.h"
 
 
-IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-30");
 
 
 const char* sb_platform() {
@@ -52,6 +52,22 @@ const char* sb_version() {
 
 const char* sb_version_full() {
 	return SB_VERSION_STRING" "SB_FULL_PLATFORM_STRING;
+}
+
+const char* sb_compiler() {
+	return SB_COMPILER_STRING;
+}
+
+const char* sb_compiler_full() {
+	return SB_COMPILER_STRING_FULL;
+}
+
+const char* sb_compile_date() {
+	return __DATE__;
+}
+
+const char* sb_compile_time() {
+	return __TIME__;
 }
 
 

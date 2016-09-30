@@ -58,6 +58,10 @@ extern "C" {
 	SBAPI const char* sb_platform();
 	SBAPI const char* sb_version();
 	SBAPI const char* sb_version_full();
+	SBAPI const char* sb_compiler();
+	SBAPI const char* sb_compiler_full();
+	SBAPI const char* sb_compile_date();
+	SBAPI const char* sb_compile_time();
 
 
 #ifdef __cplusplus

@@ -41,11 +41,11 @@
 #include "./time.h"
 
 
-IDENTID(__FILE_LOCAL__, "0.2", "1", "2016-09-08");
+IDENTID(__FILE_LOCAL__, "0.3", "1", "2016-09-30");
 
 
-static sb_error_t __sb_errno = 0;
-static sb_error_t __sb_errparam = 0;
+static SB_THREADLOCAL sb_error_t __sb_errno = 0;
+static SB_THREADLOCAL sb_error_t __sb_errparam = 0;
 
 
 sb_error_t _sb_error_get() {

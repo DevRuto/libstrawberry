@@ -101,8 +101,9 @@ extern "C" {
 	SBAPI sb_bool_t sb_socket_accept(sb_socket_ctx_t *sock, sb_socket_ctx_t *out, struct sockaddr *saddr, socklen_t *saddrlen);
 	SBAPI sb_sockfd_t sb_socket_acceptfd(sb_socket_ctx_t *sock, struct sockaddr *saddr, socklen_t *saddrlen);
 
-	SBAPI sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_ssize_t size);
-	SBAPI sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_ssize_t size);
+	SBAPI sb_ssize_t sb_socket_write(sb_socket_ctx_t *sock, void *in, sb_size_t size);
+	SBAPI sb_ssize_t sb_socket_write_str(sb_socket_ctx_t *sock, const char *str);
+	SBAPI sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_size_t size);
 
 #ifdef __cplusplus
 }

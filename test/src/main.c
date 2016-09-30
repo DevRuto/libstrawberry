@@ -20,67 +20,28 @@
 
 void test(const char *name, sb_bool_t(*func)()) {
 	sb_bool_t valid = sb_true;
-	register uint64_t ns_start = sb_time_nsec(), ns_stop;//, i;
-	//for (i = 0; i < 500; ++i) {
-		if (!func()) {
-			valid = sb_false;
-		}
-	//}
+	register uint64_t ns_start = sb_time_nsec(), ns_stop;
+	if (!func()) {
+		valid = sb_false;
+	}
 	if (valid) {
 		ns_stop = sb_time_nsec();
 		printf(status_passed" %15s: %lu\n", name, (unsigned long)(ns_stop - ns_start));
-		//printf(status_passed" %s\n", name);
 	} else {
 		printf(status_failed" %s\n", name);
 	}
 }
 
-void __sb_simulate_fatal();
+//void __sb_simulate_fatal();
+
+#define TESTS
 
 int main(int argc, char **argv, char **env) {
-	uint64_t tsc_start = 0, tsc_stop = 0;
-	uint64_t i, c;
-	for (i = 10; i--;) {
-		sb_cprint("warmup", SB_COLOR_BRIGHT_BLUE);
-	}
-	tsc_start = sb_time_tsc();
-	for (i = 800000, c = 0; i--;) {
-		if ((i % 8) == 0) {
-			++c;
-		}
-	}
-	tsc_stop = sb_time_tsc();
-	printf("modulo found %llu in %llu\n", c, (tsc_stop - tsc_start));
-	tsc_start = sb_time_tsc();
-	for (i = 800000, c = 0; i--;) {
-		if ((i & 7) == 0) {
-			++c;
-		}
-	}
-	tsc_stop = sb_time_tsc();
-	printf("   AND found %llu in %llu\n", c, (tsc_stop - tsc_start));
+	sb_cprint(sb_version_full(), SB_COLOR_BRIGHT_YELLOW);
+	sb_cprint(sb_compiler_full(), SB_COLOR_BRIGHT_BLUE);
+	sb_cprint(sb_compile_date(), SB_COLOR_RED);
+	sb_cprint(sb_compile_time(), SB_COLOR_GREEN);
 	return 0;
-	//printf("%lu\n", sb_time_tsc());
-	const char *version = sb_version_full();
-	puts(version);
-	sb_print(version);
-	uint8_t ci;
-	for (ci = 0; ci < 8; ++ci) {
-		sb_cprint(version, ci);
-		sb_cprint(version, ci | SB_COLOR_BRIGHT);
-	}
-	//sb_time_sleep_millis(2000);
-	//__sb_simulate_fatal();
-	//return 0;
-	/*sb_crypto_prng_isaac_ctx_t isaac;
-	sb_crypto_prng_isaac_init_ex(&isaac, sb_false, (uint64_t)(argv));
-	uint32_t buffer[64], i;
-	for (i = 64; i--;) {
-		buffer[i] = sb_crypto_prng_isaac(&isaac);
-	}
-	sb_memdump(buffer, sizeof(buffer));
-	return 0;*/
-#define TESTS
 
 #ifdef TESTS
 	test("rijndael", test_rijndael);
@@ -92,44 +53,6 @@ int main(int argc, char **argv, char **env) {
 	test("asym/dh", test_diffiehellman);
 	test("haaalp/cipher", test_cipher);
 #endif
-
-	/*int i = 100;
-	while (i-- \
-			  //\
-			 //  \
-		____//____\
-		\_________/
-				  \
-				   > 0) {
-		puts("test");
-	}*/
-
-	/*char request[] = "GET / HTTP/1.1\r\nHost: example.com\r\nAccept: * / *\r\n\r\n";
-#define BUFFSIZE 128
-	char buffer[BUFFSIZE + 1];
-
-	sb_socket_ctx_t socket;
-	if (!sb_socket_init(&socket, "example.com", 0)) {
-		perror("sb_socket_init()");
-		return 1;
-	}
-	if (!sb_socket_start(&socket, 80)) {
-		perror("sb_socket_start()");
-		return 1;
-	}
-	if (sb_socket_write(&socket, request, strlen(request)) < 1) {
-		perror("sb_socket_write()");
-		return 1;
-	}
-
-	sb_ssize_t i;
-	while (i = sb_socket_read(&socket, &buffer, BUFFSIZE)) {
-		buffer[i] = 0;
-		puts(buffer);
-	}
-
-	sb_socket_stop(&socket);
-	sb_socket_clear(&socket);*/
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 	fgetc(stdin);

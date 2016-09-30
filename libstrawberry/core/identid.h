@@ -40,8 +40,8 @@
 #define IDENTID_CODENAME					"Cupcake"
 
 
-#define _IDENTID(x)							static const char identid[] = x
-#define IDENTID(file, version, rev, date)	_IDENTID("$Id: ["IDENTID_CODENAME"] "file", "version":"rev" "date" $")
+#define _IDENTID(x)							static SB_USED const char identid[] = x
+#define IDENTID(file, version, rev, date)	_IDENTID("$Id: ["IDENTID_CODENAME"] "date" "version":"rev" "file" $")
 
 
 #endif
