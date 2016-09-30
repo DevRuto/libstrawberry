@@ -67,7 +67,9 @@ extern "C" {
 #endif
 
 	SBAPI void sb_print(const char *msg);
+	SBAPI void sb_println(const char *msg);
 	SBAPI void sb_cprint(const char *msg, uint8_t color);
+	SBAPI void sb_cprintln(const char *msg, uint8_t color);
 
 #ifdef __cplusplus
 }

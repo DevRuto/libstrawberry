@@ -47,11 +47,19 @@ void sb_print(const char *msg) {
 	if (!msg) {
 		return;
 	}
+	fputs(msg, stdout);
+}
+
+
+void sb_println(const char *msg) {
+	if (!msg) {
+		return;
+	}
 	puts(msg);
 }
 
 
-void sb_cprint(const char *msg, uint8_t color) {
+static void sb_cprint_ex(const char *msg, uint8_t color, sb_bool_t newline) {
 	if (!msg) {
 		return;
 	}
@@ -69,9 +77,23 @@ void sb_cprint(const char *msg, uint8_t color) {
 	sb_strcpy((bp = (bp + sz0)), msg);
 	sb_strcpy((bp = (bp + sz1)), "\x1B[0m");
 	*(bp + 4) = 0;
-	puts(buffer);
+	if (!newline) {
+		fputs(buffer, stdout);
+	} else {
+		puts(buffer);
+	}
 	SB_MEM_BUFFER_FREE(buffer);
 #else
-	puts(msg);
+	fputs(msg, stdout);
 #endif
+}
+
+
+void sb_cprint(const char *msg, uint8_t color) {
+	sb_cprint_ex(msg, color, sb_false);
+}
+
+
+void sb_cprintln(const char *msg, uint8_t color) {
+	sb_cprint_ex(msg, color, sb_true);
 }

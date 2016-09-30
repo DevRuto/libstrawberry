@@ -160,13 +160,16 @@
 
 #if defined(_DEBUG) || defined(DEBUG)
 #	define SB_DEBUG							1
-#	define SB_CHANNEL_STR					"Debug"
+#	define SB_CHANNEL_ID					"d"
+#	define SB_CHANNEL_STRING				"Debug"
 #elif defined(_RELEASE) || defined(RELEASE)
 #	define SB_DEBUG							0
-#	define SB_CHANNEL_STR					"Release"
+#	define SB_CHANNEL_ID					"r"
+#	define SB_CHANNEL_STRING				"Release"
 #else
 #	define SB_DEBUG							0
-#	define SB_CHANNEL_STR					"Unspecified"
+#	define SB_CHANNEL_ID					"u"
+#	define SB_CHANNEL_STRING				"Unspecified"
 #endif
 
 

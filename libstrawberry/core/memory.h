@@ -46,8 +46,8 @@
 
 #if (SB_COMPILER == SB_COMPILER_ID_MSC)
 #	define SB_MEM_BUFFER_ALLOC(type, name, size) \
-											type *name = sb_malloc_u(size)
-#	define SB_MEM_BUFFER_FREE(name)			name = sb_free(name)
+											type *name = _malloca(size)
+#	define SB_MEM_BUFFER_FREE(name)			_freea(size)
 #else
 #	define SB_MEM_BUFFER_ALLOC(type, name, size) \
 											type name[size]

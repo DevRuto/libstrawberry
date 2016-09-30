@@ -37,10 +37,10 @@ void test(const char *name, sb_bool_t(*func)()) {
 #define TESTS
 
 int main(int argc, char **argv, char **env) {
-	sb_cprint(sb_version_full(), SB_COLOR_BRIGHT_YELLOW);
-	sb_cprint(sb_compiler_full(), SB_COLOR_BRIGHT_BLUE);
-	sb_cprint(sb_compile_date(), SB_COLOR_RED);
-	sb_cprint(sb_compile_time(), SB_COLOR_GREEN);
+	sb_cprintln(sb_version_full(), SB_COLOR_BRIGHT_YELLOW);
+	sb_cprintln(sb_compiler_full(), SB_COLOR_BRIGHT_BLUE);
+	sb_cprintln(sb_compile_date(), SB_COLOR_RED);
+	sb_cprintln(sb_compile_time(), SB_COLOR_GREEN);
 	return 0;
 
 #ifdef TESTS
