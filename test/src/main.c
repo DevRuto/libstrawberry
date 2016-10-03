@@ -41,6 +41,47 @@ int main(int argc, char **argv, char **env) {
 	sb_cprintln(sb_compiler_full(), SB_COLOR_BRIGHT_BLUE);
 	sb_cprintln(sb_compile_date(), SB_COLOR_RED);
 	sb_cprintln(sb_compile_time(), SB_COLOR_GREEN);
+
+	sb_dictionary_t dictionary;
+	sb_dictionary_init(&dictionary, 0);
+	printf("dict is %lu fat and has %lu thingies\n", dictionary.__size, dictionary.count);
+	sb_dictionary_set(&dictionary, "unkn", 		(void*)0xDEADCAFE);
+	sb_dictionary_set(&dictionary, "loves", 	(void*)0xF00BAAAA);
+	printf("dict is %lu fat and has %lu thingies\n", dictionary.__size, dictionary.count);
+	sb_dictionary_set(&dictionary, "cpck", 		(void*)0xBEEFBABE);
+	sb_dictionary_set(&dictionary, "heella", 	(void*)0xBABABABA);
+	sb_dictionary_set(&dictionary, "much", 		(void*)0xBAABAAB0);
+	printf("dict is %lu fat and has %lu thingies\n", dictionary.__size, dictionary.count);
+
+	sb_dictionary_entry_t *entry;
+#define DICT_TEST(x) \
+	entry = sb_dictionary_get(&dictionary, x);\
+	if (entry) {\
+		printf("%s(%u)=%p\n", entry->key, entry->key_size, entry->value);\
+	} else {\
+		sb_cprintln("thingy not found yo", SB_COLOR_BRIGHT_RED);\
+	}
+
+	DICT_TEST("");
+	DICT_TEST("unkn");
+	DICT_TEST("unikornn");
+	DICT_TEST("loves");
+	DICT_TEST("lotsalove");
+	DICT_TEST("cpck");
+	DICT_TEST("cupcake");
+	DICT_TEST("heella");
+	DICT_TEST("hella");
+	DICT_TEST("much");
+	DICT_TEST(NULL);
+
+	DICT_TEST("unkn");
+	sb_dictionary_set(&dictionary, "unkn", 		(void*)0xCAFEBEEF);
+	DICT_TEST("unkn");
+	sb_dictionary_set(&dictionary, "cpck", 		(void*)0xBABEBEEF);
+	DICT_TEST("cpck");
+
+	sb_dictionary_clear(&dictionary);
+
 	return 0;
 
 #ifdef TESTS
