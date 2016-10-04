@@ -20,7 +20,7 @@ sb_bool_t test_isaac_otp() {
 	sb_crypto_otp_isaac_add(&isaac1, add_enc, string, len);
 	sb_crypto_otp_isaac_sub(&isaac2, sub_dec, add_enc, len);
 
-	sb_vmemdump("Original", string, len);
+	/*sb_vmemdump("Original", string, len);
 	puts("");
 	sb_vmemdump("Encrypted - XOR", xor_enc, len);
 	puts("");
@@ -29,7 +29,7 @@ sb_bool_t test_isaac_otp() {
 	sb_vmemdump("Encrypted - ADD", add_enc, len);
 	puts("");
 	sb_vmemdump("Decrypted - SUB", sub_dec, len);
-	puts("");
+	puts("");*/
 
 	sb_bool_t valid = (sb_memequ(string, xor_dec, len) && sb_memequ(string, sub_dec, len));
 
