@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="Networking\SbSocket.cs" />
     <Compile Include="Crypto\Hashing\SbRIPEMD160.cs" />
+    <Compile Include="Crypto\SbKeygen.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

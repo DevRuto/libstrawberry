@@ -133,11 +133,11 @@
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_LINUX)
 #elif (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
+#	undef _WIN32_WINNT
 #	define _WIN32_WINNT						0x0501
 #	define WIN32_LEAN_AND_MEAN
 #	define NOMINMAX
 #	include <windows.h>
-//#elif (SB_PLATFORM == SB_PLATFORM_ID_ANDROID)
 #else
 #	ifndef IGNORE_UNSUPPORTED_PLATFORM
 #		pragma message("  Platform: "SB_PLATFORM_STRING)

@@ -82,13 +82,13 @@ void _sb_error_reset() {
 
 void _sb_error_fatal_ex(const char *file, const char *func, const uint32_t line, sb_error_t _errno, sb_error_t _errparam) {
 	printf(
-		" === STRAWBERRY - FATAL ERROR ===\n"
+		"=== STRAWBERRY - FATAL ERROR ===\n"
 		"  By: %s\n"
 		"  In: %s:%u\n"
 		"\n"
-		"      %08X\n"
-		"      %08X\n"
-		"      %08X\n"
+		"    %08X\n"
+		"    %08X\n"
+		"    %08X\n"
 		"\n",
 		func,
 		file, line,
@@ -135,6 +135,21 @@ void sb_error_print() {
 			break;
 		case SB_ERROR_VALUE_INVALID:
 			__PRINTERR(SB_STRINGIFY_MACRO(SB_ERROR_VALUE_INVALID), "Invalid value found.");
+			break;
+		case SB_ERROR_ENTRY_NOT_FOUND:
+			__PRINTERR(SB_STRINGIFY_MACRO(SB_ERROR_ENTRY_NOT_FOUND), "Entry not found.");
+			break;
+		case SB_ERROR_FUNCTIONALITY:
+			__PRINTERR(SB_STRINGIFY_MACRO(SB_ERROR_FUNCTIONALITY), "Functionality error.");
+			break;
+		case SB_ERROR_CLEANUP:
+			__PRINTERR(SB_STRINGIFY_MACRO(SB_ERROR_CLEANUP), "Cleanup error.");
+			break;
+		case SB_ERROR_SOCKET_WRITE:
+			__PRINTERR(SB_STRINGIFY_MACRO(SB_ERROR_SOCKET_WRITE), "Socket write error.");
+			break;
+		case SB_ERROR_SOCKET_READ:
+			__PRINTERR(SB_STRINGIFY_MACRO(SB_ERROR_SOCKET_READ), "Socket read error.");
 			break;
 		default:
 			break;

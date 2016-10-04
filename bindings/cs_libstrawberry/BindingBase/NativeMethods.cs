@@ -313,6 +313,18 @@ namespace LibStrawberry.BindingBase {
 
 		#endregion
 
+		#region crypto/keygen.c
+
+		[DllImport(lib, CharSet = cs, CallingConvention = cc)]
+		internal static extern uint sb_crypto_keygen(
+			[Out] byte[] _out,
+			[In ] UIntPtr outsize,
+			[In ] byte[] _in,
+			[In ] UIntPtr insize
+		);
+
+		#endregion
+
 		#region crypto/random.c
 
 		[DllImport(lib, CharSet = cs, CallingConvention = cc)]
@@ -329,7 +341,7 @@ namespace LibStrawberry.BindingBase {
 		#region crypto/seedgen.c
 
 		[DllImport(lib, CharSet = cs, CallingConvention = cc)]
-		internal static extern ulong sb_seedgen(
+		internal static extern ulong sb_crypto_seedgen(
 			[In] ulong noise
 		);
 

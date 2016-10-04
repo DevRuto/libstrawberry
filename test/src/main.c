@@ -32,7 +32,7 @@ void test(const char *name, sb_bool_t(*func)()) {
 	}
 }
 
-//void __sb_simulate_fatal();
+void __sb_simulate_fatal();
 
 #define TESTS
 
@@ -54,12 +54,12 @@ int main(int argc, char **argv, char **env) {
 	printf("dict is %lu fat and has %lu thingies\n", dictionary.__size, dictionary.count);
 
 	sb_dictionary_entry_t *entry;
-#define DICT_TEST(x) \
-	entry = sb_dictionary_get(&dictionary, x);\
-	if (entry) {\
-		printf("%s(%u)=%p\n", entry->key, entry->key_size, entry->value);\
-	} else {\
-		sb_cprintln("thingy not found yo", SB_COLOR_BRIGHT_RED);\
+#define DICT_TEST(x)														\
+	entry = sb_dictionary_get(&dictionary, x);								\
+	if (entry) {															\
+		printf("%s(%lu)=%p\n", entry->key, entry->key_size, entry->value);	\
+	} else {																\
+		sb_cprintln("thingy not found yo", SB_COLOR_BRIGHT_RED);			\
 	}
 
 	DICT_TEST("");
@@ -81,6 +81,8 @@ int main(int argc, char **argv, char **env) {
 	DICT_TEST("cpck");
 
 	sb_dictionary_clear(&dictionary);
+
+	__sb_simulate_fatal();
 
 	return 0;
 

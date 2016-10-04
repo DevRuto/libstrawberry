@@ -41,7 +41,7 @@
 extern "C" {
 #endif
 
-	SBAPI uint64_t sb_seedgen(uint64_t noise);
+	SBAPI uint64_t sb_crypto_seedgen(uint64_t noise);
 
 #ifdef __cplusplus
 }

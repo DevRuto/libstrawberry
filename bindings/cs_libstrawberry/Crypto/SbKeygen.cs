@@ -1,4 +1,4 @@
-/*******************************************************************************
+﻿/*******************************************************************************
 **                                                                            **
 **   The MIT License                                                          **
 **                                                                            **
@@ -30,10 +30,33 @@
 **
 */
 
-#define __FILE_LOCAL__						"crypto/otp/isaac-otp.c"
+using LibStrawberry.BindingBase;
+using System;
+using LibStrawberry.Core;
 
-#include "./isaac-otp.h"
-
-
-//IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-10-03");
-
+namespace LibStrawberry.Crypto {
+	public static class SbKeygen {
+		public static byte[] GetBytes(uint outsize, byte[] input) {
+			if (outsize == 0) {
+				return new byte[0] { };
+			}
+			if (input == null) {
+				throw new ArgumentNullException();
+			}
+			if (input.Length < outsize) {
+				throw new ArgumentException();
+			}
+			byte[] buffer = new byte[outsize];
+			if (NativeMethods.sb_crypto_keygen(buffer, (UIntPtr)outsize, input, (UIntPtr)input.Length) != 1) {
+				buffer = null;
+				if (SbInfo.ThrowExceptions) {
+					throw new SbException(SbExceptionType.Generic);
+				} else {
+					return null;
+				}
+			} else {
+				return buffer;
+			}
+		}
+	}
+}

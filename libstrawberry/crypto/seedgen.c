@@ -42,7 +42,7 @@
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-14");
 
 
-uint64_t sb_seedgen(uint64_t noise) {
+uint64_t sb_crypto_seedgen(uint64_t noise) {
 	uint64_t tsc = sb_time_tsc();
 	return ((tsc + ((SB_ROTR64(sb_time_nsec(), (tsc & 7))) ^ noise)) & ~sb_random64());
 }

@@ -40,7 +40,7 @@
 typedef struct sb_dictionary_entry {
 	char *key;
 	void *value;
-	uint32_t key_size;
+	sb_size_t key_size;
 } sb_dictionary_entry_t;
 
 typedef struct sb_dictionary {

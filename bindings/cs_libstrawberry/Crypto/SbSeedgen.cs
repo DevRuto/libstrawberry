@@ -35,7 +35,7 @@ using LibStrawberry.BindingBase;
 namespace LibStrawberry.Crypto {
 	public static class SbSeedgen {
 		public static ulong GetULong(ulong noise) {
-			return NativeMethods.sb_seedgen(noise);
+			return NativeMethods.sb_crypto_seedgen(noise);
 		}
 	}
 }

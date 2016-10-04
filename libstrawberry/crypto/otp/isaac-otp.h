@@ -36,5 +36,25 @@
 
 #include "../../core/stdincl.h"
 
+#include "../prng/isaac.h"
+
+
+typedef sb_crypto_prng_isaac_ctx_t sb_crypto_otp_isaac_ctx_t;
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+    /*SBAPI sb_bool_t sb_crypto_otp_isaac_init(sb_crypto_otp_isaac_ctx_t *ctx, sb_bool_t preseeded, uint64_t seednonce);
+	SBAPI sb_bool_t sb_crypto_otp_isaac_clear(sb_crypto_prng_isaac_ctx_t *ctx);
+	SBAPI sb_bool_t sb_crypto_otp_isaac_crypt(sb_crypto_prng_isaac_ctx_t *ctx, void *out, void *in, sb_size_t size);
+#define sb_crypto_otp_isaac_encrypt sb_crypto_otp_isaac_crypt
+#define sb_crypto_otp_isaac_decrypt sb_crypto_otp_isaac_crypt*/
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif

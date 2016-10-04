@@ -17,3 +17,5 @@
 !dep/windows/*.lib
 !dep/windows/*.def
 !*.vcxproj
+obj
+

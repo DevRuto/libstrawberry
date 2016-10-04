@@ -84,7 +84,11 @@ static void sb_cprint_ex(const char *msg, uint8_t color, sb_bool_t newline) {
 	}
 	SB_MEM_BUFFER_FREE(buffer);
 #else
-	fputs(msg, stdout);
+	if (!newline) {
+		fputs(msg, stdout);
+	} else {
+		puts(msg);
+	}
 #endif
 }
 
