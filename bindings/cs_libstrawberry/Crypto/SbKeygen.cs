@@ -30,8 +30,9 @@
 **
 */
 
-using LibStrawberry.BindingBase;
 using System;
+
+using LibStrawberry.BindingBase;
 using LibStrawberry.Core;
 
 namespace LibStrawberry.Crypto {
