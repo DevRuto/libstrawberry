@@ -34,6 +34,67 @@
 
 #include "./isaac-otp.h"
 
+#include "../../core/error.h"
+#include "../../core/bits.h"
 
-//IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-10-03");
 
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-10-03");
+
+
+#define CREATE_OTP(name, operator)														\
+sb_bool_t name(sb_crypto_otp_isaac_ctx_t *ctx, void *out, void *in, sb_size_t size) {	\
+	sb_error_reset();																	\
+																						\
+	if (!ctx) {																			\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);											\
+		return sb_false;																\
+	}																					\
+																						\
+	if (!out) {																			\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);											\
+		return sb_false;																\
+	}																					\
+																						\
+	if (!in) {																			\
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);											\
+		return sb_false;																\
+	}																					\
+																						\
+	if (!size) {																		\
+		sb_error_set(SB_ERROR_PARAM_INVALID);											\
+		return sb_false;																\
+	}																					\
+																						\
+	if (size >= sizeof(uint32_t)) {														\
+		uint32_t *out32 = out;															\
+		uint32_t *in32 = in;															\
+		for (;;) {																		\
+			*(out32++) = (*(in32++) operator sb_crypto_prng_isaac(ctx));				\
+			if ((size -= sizeof(uint32_t)) < sizeof(uint32_t)) {						\
+				break;																	\
+			}																			\
+		}																				\
+		if (size) {																		\
+			uint8_t *out8 = (uint8_t*)out32;											\
+			uint8_t *in8 = (uint8_t*)in32;												\
+			for (; size--;) {															\
+				*(out8++) = (*(in8++) operator sb_crypto_prng_isaac(ctx));				\
+			}																			\
+		}																				\
+	} else {																			\
+		uint8_t *out8 = out;															\
+		uint8_t *in8 = in;																\
+		for (; size--;) {																\
+			*(out8++) = (*(in8++) operator sb_crypto_prng_isaac(ctx));					\
+		}																				\
+	}																					\
+																						\
+	return sb_true;																		\
+}
+
+
+CREATE_OTP(sb_crypto_otp_isaac_xor, ^);
+
+CREATE_OTP(sb_crypto_otp_isaac_add, +);
+
+CREATE_OTP(sb_crypto_otp_isaac_sub, -);

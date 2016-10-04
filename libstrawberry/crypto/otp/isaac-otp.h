@@ -46,11 +46,13 @@ typedef sb_crypto_prng_isaac_ctx_t sb_crypto_otp_isaac_ctx_t;
 extern "C" {
 #endif
 
-    /*SBAPI sb_bool_t sb_crypto_otp_isaac_init(sb_crypto_otp_isaac_ctx_t *ctx, sb_bool_t preseeded, uint64_t seednonce);
-	SBAPI sb_bool_t sb_crypto_otp_isaac_clear(sb_crypto_prng_isaac_ctx_t *ctx);
-	SBAPI sb_bool_t sb_crypto_otp_isaac_crypt(sb_crypto_prng_isaac_ctx_t *ctx, void *out, void *in, sb_size_t size);
+#define sb_crypto_otp_isaac_init sb_crypto_prng_isaac_init
+#define sb_crypto_otp_isaac_clear sb_crypto_prng_isaac_clear
+	SBAPI sb_bool_t sb_crypto_otp_isaac_xor(sb_crypto_prng_isaac_ctx_t *ctx, void *out, void *in, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_otp_isaac_add(sb_crypto_prng_isaac_ctx_t *ctx, void *out, void *in, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_otp_isaac_sub(sb_crypto_prng_isaac_ctx_t *ctx, void *out, void *in, sb_size_t size);
 #define sb_crypto_otp_isaac_encrypt sb_crypto_otp_isaac_crypt
-#define sb_crypto_otp_isaac_decrypt sb_crypto_otp_isaac_crypt*/
+#define sb_crypto_otp_isaac_decrypt sb_crypto_otp_isaac_crypt
 
 #ifdef __cplusplus
 }

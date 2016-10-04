@@ -37,8 +37,6 @@
 #include "../core/error.h"
 #include "../core/memory.h"
 
-#include <stdio.h>
-
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-08-23");
 
@@ -231,8 +229,6 @@ sb_size_t sb_crypto_cipher_decrypt_size(sb_crypto_cipher_ctx_t *ctx, void *in, s
 sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void *in, sb_size_t size) {
 	CRYPT_CHECK();
 
-	printf("Gonna write to %016X using %lu bytes from %016X.\n", (uintptr_t)out, size, (uintptr_t)in);
-	
 	SB_MEM_BUFFER_ALLOC(uint8_t, buffer, blocksize);
 	sb_memset(buffer, 0, blocksize);
 
@@ -245,7 +241,6 @@ sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 
 				// TODO: block mode of operation
 
-				printf("               %016X\n", (uintptr_t)optr);
 				sb_memcpy(optr, buffer, blocksize);
 
 				iptr += SB_CRYPTO_BLOCKSIZE_RIJNDAEL;
@@ -276,7 +271,6 @@ sb_bool_t sb_crypto_cipher_encrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 
 			// TODO: block mode of operation
 
-			printf("               %016X\n", (uintptr_t)optr);
 			sb_memcpy(optr, buffer, blocksize);
 			break;
 		case SB_CRYPTO_CIPHER_SALSA20:
