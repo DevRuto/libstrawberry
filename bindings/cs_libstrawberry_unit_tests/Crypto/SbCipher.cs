@@ -44,9 +44,9 @@ namespace cs_libstrawberry_unit_tests
 				byte[] buffer = new byte[16];
 				ulong poff;
 				for (int i = 0; i < 4; ++i) {
-					Assert.IsTrue(cipher.Encrypt(ref buffer, vectors_input[i]));
+					Assert.IsTrue((buffer = cipher.Encrypt(vectors_input[i])) != null);
 					Assert.IsTrue(Enumerable.SequenceEqual(buffer, vectors_128[i]));
-					Assert.IsTrue(cipher.Decrypt(ref buffer, vectors_128[i], out poff));
+					Assert.IsTrue((buffer = cipher.Decrypt(vectors_128[i], out poff)) != null);
 					Assert.IsTrue(poff == 0);
 					Assert.IsTrue(Enumerable.SequenceEqual(buffer, vectors_input[i]));
 				}
@@ -59,9 +59,9 @@ namespace cs_libstrawberry_unit_tests
 				byte[] buffer = new byte[16];
 				ulong poff;
 				for (int i = 0; i < 4; ++i) {
-					Assert.IsTrue(cipher.Encrypt(ref buffer, vectors_input[i]));
+					Assert.IsTrue((buffer = cipher.Encrypt(vectors_input[i])) != null);
 					Assert.IsTrue(Enumerable.SequenceEqual(buffer, vectors_192[i]));
-					Assert.IsTrue(cipher.Decrypt(ref buffer, vectors_192[i], out poff));
+					Assert.IsTrue((buffer = cipher.Decrypt(vectors_192[i], out poff)) != null);
 					Assert.IsTrue(poff == 0);
 					Assert.IsTrue(Enumerable.SequenceEqual(buffer, vectors_input[i]));
 				}
@@ -74,9 +74,9 @@ namespace cs_libstrawberry_unit_tests
 				byte[] buffer = new byte[16];
 				ulong poff;
 				for (int i = 0; i < 4; ++i) {
-					Assert.IsTrue(cipher.Encrypt(ref buffer, vectors_input[i]));
+					Assert.IsTrue((buffer = cipher.Encrypt(vectors_input[i])) != null);
 					Assert.IsTrue(Enumerable.SequenceEqual(buffer, vectors_256[i]));
-					Assert.IsTrue(cipher.Decrypt(ref buffer, vectors_256[i], out poff));
+					Assert.IsTrue((buffer = cipher.Decrypt(vectors_256[i], out poff)) != null);
 					Assert.IsTrue(poff == 0);
 					Assert.IsTrue(Enumerable.SequenceEqual(buffer, vectors_input[i]));
 				}

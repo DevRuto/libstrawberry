@@ -158,35 +158,37 @@ namespace LibStrawberry.Crypto {
 			return (ulong)NativeMethods.sb_crypto_cipher_decrypt_size(ref ctx, data, (UIntPtr)size);
 		}
 
-		public bool Encrypt(ref byte[] _out, byte[] _in) {
-			if (_out == null || _in == null) {
+		public byte[] Encrypt(byte[] _in) {
+			if (_in == null) {
 				throw new ArgumentNullException();
 			}
-			if (NativeMethods.sb_crypto_cipher_encrypt(ref ctx, _out, _in, (UIntPtr)_in.Length) != 1) {
+			byte[] buffer = new byte[this.EncryptSize((ulong)_in.Length)];
+			if (NativeMethods.sb_crypto_cipher_encrypt(ref ctx, buffer, _in, (UIntPtr)_in.Length) != 1) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
-					return false;
+					return null;
 				}
 			}
-			return true;
+			return buffer;
 		}
 
-		public bool Decrypt(ref byte[] _out, byte[] _in, out ulong size) {
-			if (_out == null || _in == null) {
+		public byte[] Decrypt(byte[] _in, out ulong size) {
+			if (_in == null) {
 				throw new ArgumentNullException();
 			}
 			UIntPtr poff = UIntPtr.Zero;
-			if (NativeMethods.sb_crypto_cipher_decrypt(ref ctx, _out, _in, (UIntPtr)_in.Length, poff) != 1) {
+			byte[] buffer = new byte[_in.Length];
+			if (NativeMethods.sb_crypto_cipher_decrypt(ref ctx, buffer, _in, (UIntPtr)_in.Length, poff) != 1) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
 					size = 0;
-					return false;
+					return null;
 				}
 			}
 			size = (ulong)poff;
-			return true;
+			return buffer;
 		}
 	}
 }
