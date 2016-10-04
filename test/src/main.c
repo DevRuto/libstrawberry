@@ -32,7 +32,7 @@ void test(const char *name, sb_bool_t(*func)()) {
 	}
 }
 
-void __sb_simulate_fatal();
+//void __sb_simulate_fatal();
 
 #define TESTS
 
@@ -82,7 +82,7 @@ int main(int argc, char **argv, char **env) {
 
 	sb_dictionary_clear(&dictionary);
 
-	__sb_simulate_fatal();
+	//__sb_simulate_fatal();
 
 	return 0;
 
