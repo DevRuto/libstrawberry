@@ -37,6 +37,9 @@ void test(const char *name, sb_bool_t(*func)()) {
 #define TESTS
 
 int main(int argc, char **argv, char **env) {
+	test("isaac-otp", test_isaac_otp);
+	return 0;
+
 	sb_cprintln(sb_version_full(), SB_COLOR_BRIGHT_YELLOW);
 	sb_cprintln(sb_compiler_full(), SB_COLOR_BRIGHT_BLUE);
 	sb_cprintln(sb_compile_date(), SB_COLOR_RED);

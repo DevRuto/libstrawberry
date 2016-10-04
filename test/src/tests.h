@@ -13,6 +13,7 @@ sb_bool_t test_isaac();
 sb_bool_t test_rabbit();
 sb_bool_t test_diffiehellman();
 sb_bool_t test_cipher();
+sb_bool_t test_isaac_otp();
 
 
 #endif

@@ -37,6 +37,7 @@
 #include "../../core/stdincl.h"
 
 #include "../../core/math.h"
+#include "../../core/time.h"
 
 
 #define SB_CRYPTO_PRNG_ISAAC_SHIFT			8
@@ -60,7 +61,7 @@ extern "C" {
 #endif
 
 	SBAPI sb_bool_t sb_crypto_prng_isaac_init_ex(sb_crypto_prng_isaac_ctx_t *ctx, sb_bool_t preseeded, uint64_t seednonce);
-#define sb_crypto_prng_isaac_init(ctx) sb_crypto_prng_isaac_init_ex(ctx, sb_false, 0)
+#define sb_crypto_prng_isaac_init(ctx) sb_crypto_prng_isaac_init_ex(ctx, sb_false, sb_time_tsc())
 	SBAPI sb_bool_t sb_crypto_prng_isaac_clear(sb_crypto_prng_isaac_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_prng_isaac_update(sb_crypto_prng_isaac_ctx_t *ctx);
 	SBAPI uint32_t sb_crypto_prng_isaac(sb_crypto_prng_isaac_ctx_t *ctx);
