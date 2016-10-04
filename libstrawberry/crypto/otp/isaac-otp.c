@@ -77,15 +77,17 @@ sb_bool_t name(sb_crypto_otp_isaac_ctx_t *ctx, void *out, void *in, sb_size_t si
 		if (size) {																		\
 			uint8_t *out8 = (uint8_t*)out32;											\
 			uint8_t *in8 = (uint8_t*)in32;												\
+			uint32_t r = sb_crypto_prng_isaac(ctx);										\
 			for (; size--;) {															\
-				*(out8++) = (*(in8++) operator sb_crypto_prng_isaac(ctx));				\
+				*(out8++) = (*(in8++) operator ((r >> (8 * size)) & 0xFF));				\
 			}																			\
 		}																				\
 	} else {																			\
 		uint8_t *out8 = out;															\
 		uint8_t *in8 = in;																\
+		uint32_t r = sb_crypto_prng_isaac(ctx);											\
 		for (; size--;) {																\
-			*(out8++) = (*(in8++) operator sb_crypto_prng_isaac(ctx));					\
+			*(out8++) = (*(in8++) operator ((r >> (8 * size)) & 0xFF));					\
 		}																				\
 	}																					\
 																						\
