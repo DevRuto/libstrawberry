@@ -1,3 +1,4 @@
 * text=auto
 *.h linguist-language=C
 *.sh linguist-language=Shell
+*.spec linguist-documentation=true
