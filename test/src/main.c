@@ -1,6 +1,7 @@
 #include "./tests.h"
 
 #include <libstrawberry/core/time.h>
+#include <libstrawberry/core/cli.h>
 
 
 void test(const char *name, sb_bool_t(*func)()) {
@@ -18,6 +19,8 @@ void test(const char *name, sb_bool_t(*func)()) {
 }
 
 int main(int argc, char **argv, char **env) {
+	sb_cprintln("Running tests...", SB_COLOR_BRIGHT_GREEN);
+
 	test("rijndael", test_rijndael);
 	test("salsa20", test_salsa20);
 	test("ripemd160", test_ripemd160);
@@ -25,11 +28,12 @@ int main(int argc, char **argv, char **env) {
 	test("isaac", test_isaac);
 	test("isaac-otp", test_isaac_otp);
 	test("rabbit", test_rabbit);
-	test("haaalp/cipher", test_cipher);
-	test("asym/dh", test_diffiehellman);
+	test("helper/cipher", test_cipher);
+	test("kex/dh", test_diffiehellman);
 	test("sha256", test_sha256);
 
-	puts("end..");
+	sb_cprintln("Done.", SB_COLOR_BRIGHT_GREEN);
+
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 	fgetc(stdin);
 #endif
