@@ -36,11 +36,31 @@
 
 #include "../../core/stdincl.h"
 
-
 typedef struct sb_crypto_sha512_ctx {
-	void *todo;
-	// TODO
+	uint64_t h0;
+	uint64_t h1;
+	uint64_t h2;
+	uint64_t h3;
+	uint64_t h4;
+	uint64_t h5;
+	uint64_t h6;
+	uint64_t h7;
 } sb_crypto_sha512_ctx_t;
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	SBAPI sb_bool_t sb_crypto_sha512_init(sb_crypto_sha512_ctx_t *ctx);
+	SBAPI sb_bool_t sb_crypto_sha512_clear(sb_crypto_sha512_ctx_t *ctx);
+	SBAPI sb_bool_t sb_crypto_sha512_update(sb_crypto_sha512_ctx_t *ctx, uint64_t block[16]);
+	SBAPI sb_bool_t sb_crypto_sha512_finish(sb_crypto_sha512_ctx_t *ctx, uint8_t out[64]);
+	SBAPI sb_bool_t sb_crypto_sha512(uint8_t out[64], void *in, sb_size_t size);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

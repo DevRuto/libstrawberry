@@ -15,6 +15,7 @@ sb_bool_t test_diffiehellman();
 sb_bool_t test_cipher();
 sb_bool_t test_isaac_otp();
 sb_bool_t test_sha256();
+sb_bool_t test_sha512();
 
 
 #endif

@@ -117,7 +117,7 @@
 
 #define SB_IBO_SWAP16(x)					(SB_ROTL16((x), 8))
 #define SB_IBO_SWAP32(x)					((SB_ROTL32((x), 8) & 0x00FF00FF) | (SB_ROTR32((x), 8) & 0xFF00FF00))
-#define SB_IBO_SWAP64(x)					((SB_ROTL64((x), 8) & 0x00FF00FF00FF00FF) | (SB_ROTR64((x), 8) & 0xFF00FF00FF00FF00))
+#define SB_IBO_SWAP64(x)					((SB_ROTL64((x), 16) & 0x00FF00FF00FF00FF) | (SB_ROTR64((x), 16) & 0xFF00FF00FF00FF00))
 
 
 #define SB_HI4(x8)							(((x8) >> 4) & 7)

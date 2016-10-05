@@ -36,11 +36,15 @@
 
 #include "./sha512.h"
 
+#include "../../core/error.h"
+#include "../../core/memory.h"
+#include "../../core/bits.h"
+#include "../../core/math.h"
 
-//IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-08-12");
+
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-08-12");
 
 
-#ifdef PIZZA
 static uint64_t constants[] = {
 	0x428A2F98D728AE22U, 0x7137449123EF65CDU, 0xB5C0FBCFEC4D3B2FU, 0xE9B5DBA58189DBBCU,
 	0x3956C25BF348B538U, 0x59F111F1B605D019U, 0x923F82A4AF194F9BU, 0xAB1C5ED5DA6D8118U,
@@ -63,7 +67,191 @@ static uint64_t constants[] = {
 	0x28DB77F523047D84U, 0x32CAAB7B40C72493U, 0x3C9EBE0A15C9BEBCU, 0x431D67C49C100D4CU,
 	0x4CC5D4BECB3E42B6U, 0x597F299CFC657E2AU, 0x5FCB6FAB3AD6FAECU, 0x6C44198C4A475817U
 };
-#endif
+
+sb_bool_t sb_crypto_sha512_init(sb_crypto_sha512_ctx_t *ctx) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
+	}
+
+	sb_crypto_sha512_clear(ctx);
+
+    ctx->h0 = 0x6A09E667F3BCC908U;
+    ctx->h1 = 0xBB67AE8584CAA73BU;
+    ctx->h2 = 0x3C6EF372FE94F82BU;
+    ctx->h3 = 0xA54FF53A5F1D36F1U;
+    ctx->h4 = 0x510E527FADE682D1U;
+    ctx->h5 = 0x9B05688C2B3E6C1FU;
+    ctx->h6 = 0x1F83D9ABFB41BD6BU;
+    ctx->h7 = 0x5BE0CD19137E2179U;
+
+    return sb_true;
+}
+
+sb_bool_t sb_crypto_sha512_clear(sb_crypto_sha512_ctx_t *ctx) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set(SB_ERROR_NULL_PTR);
+		return sb_false;
+	}
+
+	sb_memset(ctx, 0, sizeof(*ctx));
+
+	return sb_true;
+}
+
+sb_bool_t sb_crypto_sha512_update(sb_crypto_sha512_ctx_t *ctx, uint64_t block[16]) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!block) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
+    register uint64_t
+            a = ctx->h0,
+            b = ctx->h1,
+            c = ctx->h2,
+            d = ctx->h3,
+            e = ctx->h4,
+            f = ctx->h5,
+            g = ctx->h6,
+            h = ctx->h7,
+            s0, s1, ch, temp1, temp2, maj;
+
+    uint64_t w[80];
+
+    register size_t i;
+    for (i = 16; i--;) {
+        w[i] = block[i];
+    }
+
+    for (i = 16; i < 80; ++i) {
+        s0 = SB_ROTR64(w[i-15], 1) ^ SB_ROTR64(w[i-15], 8) ^ (w[i-15] >> 7);
+        s1 = SB_ROTR64(w[i-2], 19) ^ SB_ROTR64(w[i-2], 61) ^ (w[i-2] >> 6);
+        w[i] = w[i-16] + s0 + w[i-7] + s1;
+    }
+
+    // compression
+    for (i = 0; i < 80; ++i) {
+        s1 = SB_ROTR64(e, 14) ^ SB_ROTR64(e, 18) ^ SB_ROTR64(e, 41);
+        ch = (e & f) ^ (~(e) & g);
+        temp1 = h + s1 + ch + constants[i] + w[i];
+        s0 = SB_ROTR64(a, 28) ^ SB_ROTR64(a, 34) ^ SB_ROTR64(a, 39);
+        maj = (a & b) ^ (a & c) ^ (b & c);
+        temp2 = s0 + maj;
+
+        h = g;
+        g = f;
+        f = e;
+        e = d + temp1;
+        d = c;
+        c = b;
+        b = a;
+        a = temp1 + temp2;
+   }
+
+    ctx->h0 += a;
+    ctx->h1 += b;
+    ctx->h2 += c;
+    ctx->h3 += d;
+    ctx->h4 += e;
+    ctx->h5 += f;
+    ctx->h6 += g;
+    ctx->h7 += h;
+
+    return sb_true;
+}
+
+uint64_t swap_uint64( uint64_t val )
+{
+    val = ((val << 8) & 0xFF00FF00FF00FF00ULL ) | ((val >> 8) & 0x00FF00FF00FF00FFULL );
+    val = ((val << 16) & 0xFFFF0000FFFF0000ULL ) | ((val >> 16) & 0x0000FFFF0000FFFFULL );
+    return (val << 32) | (val >> 32);
+}
+
+sb_bool_t sb_crypto_sha512_finish(sb_crypto_sha512_ctx_t *ctx, uint8_t out[64]) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!out) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
+    uint_fast8_t i;
+    for (i = 8; i--;) {
+        out[i     ] = (ctx->h0 >> (56 - (8 * i))) & 0xFF;
+        out[i +  8] = (ctx->h1 >> (56 - (8 * i))) & 0xFF;
+        out[i + 16] = (ctx->h2 >> (56 - (8 * i))) & 0xFF;
+        out[i + 24] = (ctx->h3 >> (56 - (8 * i))) & 0xFF;
+        out[i + 32] = (ctx->h4 >> (56 - (8 * i))) & 0xFF;
+        out[i + 40] = (ctx->h5 >> (56 - (8 * i))) & 0xFF;
+        out[i + 48] = (ctx->h6 >> (56 - (8 * i))) & 0xFF;
+        out[i + 56] = (ctx->h7 >> (56 - (8 * i))) & 0xFF;
+    }
+
+    return sb_true;
+}
+
+sb_bool_t sb_crypto_sha512(uint8_t out[64], void *in, size_t size) {
+    sb_error_reset();
+
+	if (!out) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!in) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
+    sb_crypto_sha512_ctx_t ctx;
+    sb_crypto_sha512_init(&ctx);
+
+    sb_size_t buffer_size = sb_math_round_block(128, (size + 1));
+
+    uint8_t buffer[buffer_size];
+    sb_memcpy(buffer, in, size);
+    sb_memset((buffer + size), 0, buffer_size - size);
+
+    buffer[size] = 0x80;
+
+    buffer[buffer_size - 1] =  (8 * size);
+    buffer[buffer_size - 2] = ((8 * size) >>  8);
+    buffer[buffer_size - 3] = ((8 * size) >> 16);
+    buffer[buffer_size - 4] = ((8 * size) >> 24);
+
+    uint64_t block[16], *in64 = (uint64_t *)buffer;
+
+    sb_size_t i, j;
+    for (i = (buffer_size)/128; i--;) {
+        for (j = 0; j < 16; ++j) {
+            block[j] = swap_uint64(*in64);
+            ++in64;
+        }
+        sb_crypto_sha512_update(&ctx, block);
+    }
+
+    sb_bool_t valid = sb_crypto_sha512_finish(&ctx, out);
+
+    sb_crypto_sha512_clear(&ctx);
+
+    return valid;
+}
 
 #else
 #	ifdef REPORT_EXCLUSION

@@ -3,7 +3,6 @@
 #include <libstrawberry/core/time.h>
 #include <libstrawberry/core/cli.h>
 
-
 void test(const char *name, sb_bool_t(*func)()) {
 	sb_bool_t valid = sb_true;
 	register uint64_t ns_start = sb_time_nsec(), ns_stop;
@@ -33,6 +32,7 @@ int main(int argc, char **argv, char **env) {
 	test("helper/cipher", test_cipher);
 	test("kex/dh", test_diffiehellman);
 	test("sha256", test_sha256);
+	test("sha512", test_sha512);
 
 	sb_cprintln("Done.", SB_COLOR_BRIGHT_GREEN);
 
