@@ -27,9 +27,7 @@ int main(int argc, char **argv, char **env) {
 	test("rabbit", test_rabbit);
 	test("haaalp/cipher", test_cipher);
 	test("asym/dh", test_diffiehellman);
-	test("sha256", test_sha256);
 
-	puts("end..");
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 	fgetc(stdin);
 #endif
