@@ -323,5 +323,8 @@ sb_ssize_t sb_socket_read(sb_socket_ctx_t *sock, void *out, sb_size_t size) {
 	return recv(sock->fd, out, size, 0);
 }
 
-
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
 #endif

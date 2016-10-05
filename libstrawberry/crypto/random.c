@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/random.c"
 
+#ifndef SB_EXCLUDE_CRYPTO_RANDOM
+
 #include "./random.h"
 
 #include "./prng/isaac.h"
@@ -66,3 +68,9 @@ uint64_t sb_random64() {
 	__INIT_FUN();
 	return (((uint64_t)sb_crypto_prng_isaac(&__isaac) << 32) | sb_crypto_prng_isaac(&__isaac));
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

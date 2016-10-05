@@ -32,8 +32,7 @@
 
 #define __FILE_LOCAL__						"misc/gmp.c"
 
-#ifdef HAVE_GMP
-
+#if HAVE_GMP
 
 #include "./gmp.h"
 
@@ -50,5 +49,6 @@ void* sb_mpz_export_ex(void *out, mpz_t in, void *countp, int wordorder, sb_size
 	return mpz_export(out, NULL, wordorder, wordsize, endianness, 0, in);
 }
 
-
+#else
+#	pragma message("Excluded: "__FILE_LOCAL__)
 #endif

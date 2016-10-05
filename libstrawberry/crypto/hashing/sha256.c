@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/hashing/sha256.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_HASHING) && !defined(SB_EXCLUDE_CRYPTO_HASHING_SHA256)
+
 #include "./sha256.h"
 
 #include "../../core/error.h"
@@ -244,3 +246,9 @@ sb_bool_t sb_crypto_sha256(uint8_t out[32], void *in, sb_size_t size) {
 
 	return valid;
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

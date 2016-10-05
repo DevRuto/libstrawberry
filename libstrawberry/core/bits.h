@@ -54,6 +54,22 @@
 #define SB_BIT_14							8192
 #define SB_BIT_15							16384
 #define SB_BIT_16							32768
+#define SB_BIT_17							65536
+#define SB_BIT_18							131072
+#define SB_BIT_19							262144
+#define SB_BIT_20							524288
+#define SB_BIT_21							1048576
+#define SB_BIT_22							2097152
+#define SB_BIT_23							4194304
+#define SB_BIT_24							8388608
+#define SB_BIT_25							16777216
+#define SB_BIT_26							33554432
+#define SB_BIT_27							67108864
+#define SB_BIT_28							134217728
+#define SB_BIT_29							268435456
+#define SB_BIT_30							536870912
+#define SB_BIT_31							1073741824
+#define SB_BIT_32							2147483648
 
 
 #define SB_OR(x, y)							((x) | (y))

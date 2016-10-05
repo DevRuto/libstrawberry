@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"core/cli.c"
 
+#if !defined(SB_EXCLUDE_CORE_CLI)
+
 #include "./cli.h"
 
 #include "./bits.h"
@@ -101,3 +103,9 @@ void sb_cprint(const char *msg, uint8_t color) {
 void sb_cprintln(const char *msg, uint8_t color) {
 	sb_cprint_ex(msg, color, sb_true);
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

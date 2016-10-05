@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/seedgen.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_RANDOM) && !defined(SB_EXCLUDE_CRYPTO_SEEDGEN)
+
 #include "./seedgen.h"
 
 #include "../core/time.h"
@@ -46,3 +48,9 @@ uint64_t sb_crypto_seedgen(uint64_t noise) {
 	uint64_t tsc = sb_time_tsc();
 	return ((tsc + ((SB_ROTR64(sb_time_nsec(), (tsc & 7))) ^ noise)) & ~sb_random64());
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

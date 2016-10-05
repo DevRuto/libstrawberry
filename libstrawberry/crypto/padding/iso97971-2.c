@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/padding/iso97971-2.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_PADDING) && !defined(SB_EXCLUDE_CRYPTO_PADDING_ISO979712)
+
 #include "./iso97971-2.h"
 
 #include "../../core/error.h"
@@ -110,3 +112,9 @@ sb_size_t sb_crypto_pad_iso979712_offset(void *in, sb_size_t havesize) {
 
 	return SB_MIN_SIZE;
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

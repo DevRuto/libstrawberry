@@ -32,8 +32,15 @@
 
 #define __FILE_LOCAL__						"crypto/blockmode.c"
 
+#ifndef SB_EXCLUDE_CRYPTO_BLOCKMODE
+
 #include "./blockmode.h"
 
 
 //IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-29");
 
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

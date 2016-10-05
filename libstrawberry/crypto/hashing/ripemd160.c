@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/hashing/ripemd160.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_HASHING) && !defined(SB_EXCLUDE_CRYPTO_HASHING_RIPEMD160)
+
 #include "./ripemd160.h"
 
 #include "../../core/memory.h"
@@ -389,3 +391,9 @@ sb_bool_t sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size) {
 
 	return retval;
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

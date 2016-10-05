@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/prng/isaac.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_PRNG) && !defined(SB_EXCLUDE_CRYPTO_PRNG_ISAAC)
+
 #include "./isaac.h"
 
 #include "../../core/memory.h"
@@ -194,3 +196,9 @@ uint32_t sb_crypto_prng_isaac(sb_crypto_prng_isaac_ctx_t *ctx) {
 uint32_t sb_crypto_prng_isaac_range(sb_crypto_prng_isaac_ctx_t *ctx, uint32_t min, uint32_t max) {
 	return SB_MATH_RANGE(min, max, sb_crypto_prng_isaac(ctx));
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

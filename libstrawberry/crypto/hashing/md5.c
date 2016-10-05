@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/hashing/md5.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_HASHING) && !defined(SB_EXCLUDE_CRYPTO_HASHING_MD5)
+
 #include "./md5.h"
 
 #include "../../core/error.h"
@@ -352,3 +354,9 @@ sb_bool_t sb_crypto_md5(void *out, void *in, sb_size_t size) {
 	}
 	return success;
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

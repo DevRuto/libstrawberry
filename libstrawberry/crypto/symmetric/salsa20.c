@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/symmetric/salsa20.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_SYMMETRIC) && !defined(SB_EXCLUDE_CRYPTO_SYMMETRIC_SALSA20)
+
 #include "./salsa20.h"
 
 #include "../../core/error.h"
@@ -251,3 +253,9 @@ void sb_crypto_salsa20_process(sb_crypto_salsa20_ctx_t *ctx, void *out, void *in
 		iptr += SB_CRYPTO_BLOCKSIZE_SALSA20;
 	}
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

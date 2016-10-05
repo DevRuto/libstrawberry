@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/keygen.c"
 
+#ifndef SB_EXCLUDE_CRYPTO_KEYGEN
+
 #include "./keygen.h"
 
 #include "../core/error.h"
@@ -99,3 +101,9 @@ sb_bool_t sb_crypto_keygen(void *out, sb_size_t outsize, void *in, sb_size_t ins
 
 	return sb_true;
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

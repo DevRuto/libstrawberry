@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/otp/isaac-otp.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_PRNG) && !defined(SB_EXCLUDE_CRYPTO_PRNG_ISAAC) && !defined(SB_EXCLUDE_CRYPTO_OTP) && !defined(SB_EXCLUDE_CRYPTO_OTP_ISAAC)
+
 #include "./isaac-otp.h"
 
 #include "../../core/error.h"
@@ -100,3 +102,9 @@ CREATE_OTP(sb_crypto_otp_isaac_xor, ^);
 CREATE_OTP(sb_crypto_otp_isaac_add, +);
 
 CREATE_OTP(sb_crypto_otp_isaac_sub, -);
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

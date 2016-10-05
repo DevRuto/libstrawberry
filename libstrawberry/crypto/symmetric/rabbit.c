@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/symmetric/rabbit.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_SYMMETRIC) && !defined(SB_EXCLUDE_CRYPTO_SYMMETRIC_RABBIT)
+
 #include "./rabbit.h"
 
 #include "../../core/error.h"
@@ -265,3 +267,9 @@ sb_bool_t sb_crypto_rabbit_process(sb_crypto_rabbit_ctx_t *ctx, void *out, void 
 
 	return sb_true;
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

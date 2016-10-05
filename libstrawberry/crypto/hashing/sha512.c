@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/hashing/sha512.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_HASHING) && !defined(SB_EXCLUDE_CRYPTO_HASHING_SHA512)
+
 #include "./sha512.h"
 
 
@@ -61,4 +63,10 @@ static uint64_t constants[] = {
 	0x28DB77F523047D84U, 0x32CAAB7B40C72493U, 0x3C9EBE0A15C9BEBCU, 0x431D67C49C100D4CU,
 	0x4CC5D4BECB3E42B6U, 0x597F299CFC657E2AU, 0x5FCB6FAB3AD6FAECU, 0x6C44198C4A475817U
 };
+#endif
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
 #endif

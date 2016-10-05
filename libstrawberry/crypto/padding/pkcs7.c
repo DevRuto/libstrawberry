@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/padding/pkcs7.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_PADDING) && !defined(SB_EXCLUDE_CRYPTO_PADDING_PKCS7)
+
 #include "./pkcs7.h"
 
 #include "../../core/error.h"
@@ -108,3 +110,9 @@ sb_size_t sb_crypto_pad_pkcs7_offset(void *in, sb_size_t havesize) {
 
 	return (havesize - ((uint8_t*)in)[havesize - 1]);
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

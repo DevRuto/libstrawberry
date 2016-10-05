@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/cipher.c"
 
+#ifndef SB_EXCLUDE_CRYPTO_CIPHER
+
 #include "./cipher.h"
 
 #include "../core/error.h"
@@ -330,3 +332,9 @@ sb_bool_t sb_crypto_cipher_decrypt(sb_crypto_cipher_ctx_t *ctx, void *out, void 
 
 
 #undef CRYPT_CHECK
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

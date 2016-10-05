@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"core/types/dictionary.c"
 
+#if !defined(SB_EXCLUDE_CORE_TYPE_DICTIONARY)
+
 #include "./dictionary.h"
 
 #include "../memory.h"
@@ -208,3 +210,9 @@ sb_bool_t sb_dictionary_set(sb_dictionary_t *dictionary, const char *key, void *
 
 	return sb_true;
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif

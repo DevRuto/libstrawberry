@@ -32,7 +32,7 @@
 
 #define __FILE_LOCAL__						"crypto/key_exchange/diffiehellman.c"
 
-#if !defined(SB_EXCLUDE_CRYPTO_KEX_EXCHANGE) && !defined(SB_EXCLUDE_CRYPTO_KEY_EXCHANGE_DIFFIEHELLMAN)
+#if !defined(SB_EXCLUDE_CRYPTO_KEX_EXCHANGE) && !defined(SB_EXCLUDE_CRYPTO_KEX_EXCHANGE_DIFFIEHELLMAN)
 #ifdef HAVE_GMP
 
 
@@ -411,4 +411,8 @@ sb_bool_t sb_crypto_diffiehellman_export_secret(sb_crypto_diffiehellman_ctx_t *c
 #else
 #	error crypto/key_exchange/diffiehellman.c requires libgmp
 #endif
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
 #endif

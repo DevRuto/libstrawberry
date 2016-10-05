@@ -32,6 +32,8 @@
 
 #define __FILE_LOCAL__						"crypto/symmetric/rijndael.c"
 
+#if !defined(SB_EXCLUDE_CRYPTO_SYMMETRIC) && !defined(SB_EXCLUDE_CRYPTO_SYMMETRIC_RIJNDAEL)
+
 #include "./rijndael.h"
 
 #include "../../core/bits.h"
@@ -687,3 +689,9 @@ void sb_crypto_rijndael_decrypt_block(sb_crypto_rijndael_ctx_t *ctx, void *out, 
 	out32[2] = SB_BE32(s2);
 	out32[3] = SB_BE32(s3);
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif
