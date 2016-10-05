@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ################################################################################
 ##                                                                            ##
 ##   The MIT License                                                          ##
@@ -29,8 +31,6 @@
 ##    -
 ##
 ##
-
-#!/bin/sh
 
 printf "\x1B[31;1m"
 grep -rL "The MIT License" . --exclude-dir=dep --exclude-dir=obj --exclude-dir=Properties | grep -e "\.c$" -e "\.h$" -e "\.cs$" -e "\.sh$"

@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ################################################################################
 ##                                                                            ##
 ##   The MIT License                                                          ##
@@ -29,8 +31,6 @@
 ##    -
 ##
 ##
-
-#!/bin/sh
 
 read -p "Are you sure you want to continue? (y/n): " -r -n 1
 echo
