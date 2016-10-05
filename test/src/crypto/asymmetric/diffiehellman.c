@@ -23,7 +23,7 @@ sb_bool_t test_diffiehellman() {
 	if (!alice_size || bob_size != alice_size) {
 		sb_crypto_diffiehellman_clear(&alice);
 		sb_crypto_diffiehellman_clear(&bob);
-        return sb_false;
+		return sb_false;
 	}
 
 	SB_MEM_BUFFER_ALLOC(uint8_t, alice_buffer, alice_size);

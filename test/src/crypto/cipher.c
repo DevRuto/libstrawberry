@@ -26,9 +26,9 @@ sb_bool_t test_cipher() {
 	sb_crypto_cipher_decrypt(&cipher, dt, ct, 32, &poff);
 
 	if (poff && poff == sizeof(plain)) {
-        if (sb_memequ(plain, dt, poff)) {
+		if (sb_memequ(plain, dt, poff)) {
 			valid = sb_true;
-        }
+		}
 	}
 
 	return valid;
