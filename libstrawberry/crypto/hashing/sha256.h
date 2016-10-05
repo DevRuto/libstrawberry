@@ -26,7 +26,7 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
+**    Contributed by nullruto.
 **
 */
 
@@ -38,9 +38,30 @@
 
 
 typedef struct sb_crypto_sha256_ctx {
-	void *todo;
-	// TODO
+	uint32_t h0;
+	uint32_t h1;
+	uint32_t h2;
+	uint32_t h3;
+	uint32_t h4;
+	uint32_t h5;
+	uint32_t h6;
+	uint32_t h7;
 } sb_crypto_sha256_ctx_t;
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	SBAPI sb_bool_t sb_crypto_sha256_init(sb_crypto_sha256_ctx_t *ctx);
+	SBAPI sb_bool_t sb_crypto_sha256_clear(sb_crypto_sha256_ctx_t *ctx);
+	SBAPI sb_bool_t sb_crypto_sha256_update(sb_crypto_sha256_ctx_t *ctx, uint32_t block[16]);
+	SBAPI sb_bool_t sb_crypto_sha256_finish(sb_crypto_sha256_ctx_t *ctx, uint8_t out[32]);
+	SBAPI sb_bool_t sb_crypto_sha256(uint8_t out[32], void *in, sb_size_t size);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif
