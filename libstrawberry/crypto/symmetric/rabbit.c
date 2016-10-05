@@ -127,7 +127,7 @@ sb_bool_t sb_crypto_rabbit_set_iv(sb_crypto_rabbit_ctx_t *ctx, uint64_t iv) {
 	uint32_t _iv[2],
 			 i0, i1, i2, i3;
 
-	*(uint64_t*)_iv = iv;
+	*((uint64_t*)_iv) = iv; // XXX: strict-aliasing
 	i0 = SB_LE32(_iv[0]);
 	i2 = SB_LE32(_iv[1]);
 	i1 = ((i0 >> 16) | (i2 & 0xFFFF0000));

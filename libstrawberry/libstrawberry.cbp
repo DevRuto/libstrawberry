@@ -32,7 +32,7 @@
 					<Add option="-O2" />
 					<Add option="-fPIC" />
 					<Add option="-Wno-unused-const-variable" />
-					<Add option="-Wno-strict-aliasing" />
+					<Add option="-fno-strict-aliasing" />
 					<Add option="-DRELEASE" />
 				</Compiler>
 				<Linker>
@@ -105,7 +105,7 @@
 					<Add option="-O2" />
 					<Add option="-fPIC" />
 					<Add option="-Wno-unused-const-variable" />
-					<Add option="-Wno-strict-aliasing" />
+					<Add option="-fno-strict-aliasing" />
 					<Add option="-DRELEASE" />
 				</Compiler>
 				<Linker>

@@ -311,8 +311,8 @@ sb_bool_t sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 	sb_memset(&ctx->buffer[used], 0, available - 8);
 
 	ctx->lo <<= 3;
-	*(uint32_t*)(&ctx->buffer[56]) = SB_LE32(ctx->lo);
-	*(uint32_t*)(&ctx->buffer[60]) = SB_LE32(ctx->hi);
+	*((uint32_t*)(&ctx->buffer[56])) = SB_LE32(ctx->lo); // XXX: strict-aliasing
+	*((uint32_t*)(&ctx->buffer[60])) = SB_LE32(ctx->hi); // XXX: strict-aliasing
 
 	sb_crypto_md5_internal_update(ctx, ctx->buffer, 64);
 
