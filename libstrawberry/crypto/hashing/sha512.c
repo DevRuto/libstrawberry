@@ -70,6 +70,7 @@ static uint64_t constants[] = {
 	0x4CC5D4BECB3E42B6U, 0x597F299CFC657E2AU, 0x5FCB6FAB3AD6FAECU, 0x6C44198C4A475817U
 };
 
+
 sb_bool_t sb_crypto_sha512_init(sb_crypto_sha512_ctx_t *ctx) {
 	sb_error_reset();
 
@@ -92,6 +93,7 @@ sb_bool_t sb_crypto_sha512_init(sb_crypto_sha512_ctx_t *ctx) {
     return sb_true;
 }
 
+
 sb_bool_t sb_crypto_sha512_clear(sb_crypto_sha512_ctx_t *ctx) {
 	sb_error_reset();
 
@@ -104,6 +106,7 @@ sb_bool_t sb_crypto_sha512_clear(sb_crypto_sha512_ctx_t *ctx) {
 
 	return sb_true;
 }
+
 
 sb_bool_t sb_crypto_sha512_update(sb_crypto_sha512_ctx_t *ctx, uint64_t block[16]) {
 	sb_error_reset();
@@ -173,6 +176,7 @@ sb_bool_t sb_crypto_sha512_update(sb_crypto_sha512_ctx_t *ctx, uint64_t block[16
     return sb_true;
 }
 
+
 sb_bool_t sb_crypto_sha512_finish(sb_crypto_sha512_ctx_t *ctx, uint8_t out[64]) {
 	sb_error_reset();
 
@@ -200,6 +204,7 @@ sb_bool_t sb_crypto_sha512_finish(sb_crypto_sha512_ctx_t *ctx, uint8_t out[64]) 
 
     return sb_true;
 }
+
 
 sb_bool_t sb_crypto_sha512(uint8_t out[64], void *in, size_t size) {
     sb_error_reset();
