@@ -31,6 +31,7 @@ int main(int argc, char **argv, char **env) {
 	test("rabbit", test_rabbit);
 	test("helper/cipher", test_cipher);
 	test("kex/dh", test_diffiehellman);
+	test("sha224", test_sha224);
 	test("sha256", test_sha256);
 	test("sha512", test_sha512);
 
