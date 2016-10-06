@@ -35,6 +35,7 @@
 
 
 #include <stdint.h>
+#include <byteswap.h>
 #include "./platform.h"
 
 
@@ -115,14 +116,38 @@
 #define SB_LFSR(x,y)						(((x) & 1) ? ((((x) ^ 0x80000055) >> (y)) | 0x80000000) : ((x) >> (y)))
 
 
-#define SB_IBO_SWAP16(x)					(SB_ROTL16((x), 8))
-#define SB_IBO_SWAP32(x)					((SB_ROTL32((x), 8) & 0x00FF00FF) | (SB_ROTR32((x), 8) & 0xFF00FF00))
-#define SB_IBO_SWAP64(x)					((SB_ROTL64((x), 16) & 0x00FF00FF00FF00FF) | (SB_ROTR64((x), 16) & 0xFF00FF00FF00FF00))
+#if ((SB_COMPILER == SB_COMPILER_ID_GCC) || (SB_COMPILER == SB_COMPILER_ID_LLVM)) && SB_HAVE_INTRINSICS
+#	define SB_IBO_SWAP16(x)					__builtin_bswap16(x)
+#	define SB_IBO_SWAP32(x)					__builtin_bswap32(x)
+#	define SB_IBO_SWAP64(x)					__builtin_bswap64(x)
+#else
+#	define SB_IBO_SWAP16(x)					(					\
+		(((x) & 0xFF00            ) >>  8) |					\
+		(((x) & 0x00FF            ) <<  8)						\
+	)
+
+#	define SB_IBO_SWAP32(x)					(					\
+		(((x) & 0xFF000000        ) >> 24) |					\
+		(((x) & 0x00FF0000        ) >>  8) |					\
+		(((x) & 0x0000FF00        ) <<  8) |					\
+		(((x) & 0x000000FF        ) << 24)						\
+	)
+
+#	define SB_IBO_SWAP64(x)					(					\
+		(((x) & 0xFF00000000000000) >> 56) |					\
+		(((x) & 0x00FF000000000000) >> 40) |					\
+		(((x) & 0x0000FF0000000000) >> 24) |					\
+		(((x) & 0x000000FF00000000) >>  8) |					\
+		(((x) & 0x00000000FF000000) <<  8) |					\
+		(((x) & 0x0000000000FF0000) << 24) |					\
+		(((x) & 0x000000000000FF00) << 40) |					\
+		(((x) & 0x00000000000000FF) << 56)						\
+	)
+#endif
 
 
 #define SB_HI4(x8)							(((x8) >> 4) & 7)
 #define SB_LO4(x8)							((x8) & 7)
-#define SB_HI5(x)							(x)
 #define SB_HI8(x16)							(((x16) >> 8) & 0xFF)
 #define SB_LO8(x16)							((x16) & 0xFF)
 #define SB_HI16(x32)						(((x32) >> 16) & 0xFFFF)

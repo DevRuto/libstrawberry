@@ -34,6 +34,8 @@
 
 #if !defined(SB_EXCLUDE_CRYPTO_HASHING) && !defined(SB_EXCLUDE_CRYPTO_HASHING_SHA512)
 
+#define SB_INTRINSICS
+
 #include "./sha512.h"
 
 #include "../../core/error.h"
@@ -42,7 +44,7 @@
 #include "../../core/math.h"
 
 
-IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-08-12");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-10-06");
 
 
 static uint64_t constants[] = {
@@ -171,13 +173,6 @@ sb_bool_t sb_crypto_sha512_update(sb_crypto_sha512_ctx_t *ctx, uint64_t block[16
     return sb_true;
 }
 
-uint64_t swap_uint64( uint64_t val )
-{
-    val = ((val << 8) & 0xFF00FF00FF00FF00ULL ) | ((val >> 8) & 0x00FF00FF00FF00FFULL );
-    val = ((val << 16) & 0xFFFF0000FFFF0000ULL ) | ((val >> 16) & 0x0000FFFF0000FFFFULL );
-    return (val << 32) | (val >> 32);
-}
-
 sb_bool_t sb_crypto_sha512_finish(sb_crypto_sha512_ctx_t *ctx, uint8_t out[64]) {
 	sb_error_reset();
 
@@ -224,7 +219,8 @@ sb_bool_t sb_crypto_sha512(uint8_t out[64], void *in, size_t size) {
 
     sb_size_t buffer_size = sb_math_round_block(128, (size + 1));
 
-    uint8_t buffer[buffer_size];
+    SB_MEM_BUFFER_ALLOC(uint8_t, buffer, buffer_size);
+
     sb_memcpy(buffer, in, size);
     sb_memset((buffer + size), 0, buffer_size - size);
 
@@ -240,11 +236,13 @@ sb_bool_t sb_crypto_sha512(uint8_t out[64], void *in, size_t size) {
     sb_size_t i, j;
     for (i = (buffer_size)/128; i--;) {
         for (j = 0; j < 16; ++j) {
-            block[j] = swap_uint64(*in64);
+			block[j] = SB_BE64(*in64);
             ++in64;
         }
         sb_crypto_sha512_update(&ctx, block);
     }
+
+    SB_MEM_BUFFER_FREE(buffer);
 
     sb_bool_t valid = sb_crypto_sha512_finish(&ctx, out);
 

@@ -218,27 +218,30 @@ sb_bool_t sb_crypto_sha256(uint8_t out[32], void *in, sb_size_t size) {
 	sb_crypto_sha256_ctx_t ctx;
 	sb_crypto_sha256_init(&ctx);
 
-	sb_size_t size_rounded = sb_math_round_block(64, (size + 1));
+	sb_size_t buffer_size = sb_math_round_block(64, (size + 1));
 
-	uint8_t output[size_rounded];
-	sb_memcpy(output, in, size);
-	sb_memset((output + size), 0, size_rounded - size);
+	SB_MEM_BUFFER_ALLOC(uint8_t, buffer, buffer_size);
 
-	output[size] = 0x80;
-	output[size_rounded - 1] =  (8 * size);
-	output[size_rounded - 2] = ((8 * size) >>  8);
-	output[size_rounded - 3] = ((8 * size) >> 16);
-	output[size_rounded - 4] = ((8 * size) >> 24);
+	sb_memcpy(buffer, in, size);
+	sb_memset((buffer + size), 0, buffer_size - size);
 
-	uint32_t block[16], *in32 = (uint32_t*)output;
+	buffer[size] = 0x80;
+	buffer[buffer_size - 1] =  (8 * size);
+	buffer[buffer_size - 2] = ((8 * size) >>  8);
+	buffer[buffer_size - 3] = ((8 * size) >> 16);
+	buffer[buffer_size - 4] = ((8 * size) >> 24);
+
+	uint32_t block[16], *in32 = (uint32_t*)buffer;
 	sb_size_t i, j;
-	for (i = (size_rounded / 64); i--;) {
+	for (i = (buffer_size / 64); i--;) {
 		for (j = 0; j < 16; ++j) {
 			block[j] = SB_BE32(*in32);
 			++in32;
 		}
 		sb_crypto_sha256_update(&ctx, block);
 	}
+
+	SB_MEM_BUFFER_FREE(buffer);
 
 	sb_bool_t valid = sb_crypto_sha256_finish(&ctx, out);
 
