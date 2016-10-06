@@ -190,6 +190,7 @@
     <ClInclude Include="core\math.h" />
     <ClInclude Include="core\memory.h" />
     <ClInclude Include="core\platform.h" />
+    <ClInclude Include="core\poison.h" />
     <ClInclude Include="core\sbapi.h" />
     <ClInclude Include="core\stdincl.h" />
     <ClInclude Include="core\time.h" />
