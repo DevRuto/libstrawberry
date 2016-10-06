@@ -35,7 +35,6 @@
 
 
 #include <stdint.h>
-#include <byteswap.h>
 #include "./platform.h"
 
 
