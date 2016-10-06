@@ -115,6 +115,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-DLIBSTRAWBERRY_EXPORTS" />
 			<Add option="-DHAVE_GMP" />
 			<Add option="-DREPORT_EXCLUSION" />
 			<Add option="-DSB_OPT_MLOCK" />
@@ -145,6 +146,7 @@
 		</Unit>
 		<Unit filename="core/memory.h" />
 		<Unit filename="core/platform.h" />
+		<Unit filename="core/poison.h" />
 		<Unit filename="core/sbapi.h" />
 		<Unit filename="core/stdincl.h" />
 		<Unit filename="core/time.c">

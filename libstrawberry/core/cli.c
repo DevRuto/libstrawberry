@@ -34,6 +34,8 @@
 
 #if !defined(SB_EXCLUDE_CORE_CLI)
 
+#define SB_POISON_EXCLUDE_MEMORY
+
 #include "./cli.h"
 
 #include "./bits.h"
@@ -66,7 +68,7 @@ static void sb_cprint_ex(const char *msg, uint8_t color, sb_bool_t newline) {
 		return;
 	}
 #ifdef SB_CLI_COLORS
-	sb_size_t sz0 = 7, sz1 = strlen(msg);
+	sb_size_t sz0 = 7, sz1 = sb_strlen(msg);
 	char aecc[7] = "\x1B[37;1m";
 	aecc[3] = (0x30 | (color & 7));
 	if (!SB_FLAG(color, SB_COLOR_BRIGHT)) {

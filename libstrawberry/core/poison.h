@@ -30,64 +30,30 @@
 **
 */
 
-#ifndef __SB_CORE_MEMORY_H
-#define __SB_CORE_MEMORY_H
+#ifndef __SB_CORE_POISON_H
+#define __SB_CORE_POISON_H
 
 
-#include "./stdincl.h"
-
-#include "./cli.h"
-
-
-#define SB_PRIORITY_MEMORY					100
-
+#include "./platform.h"
 
 #if (SB_COMPILER == SB_COMPILER_ID_MSC)
-#	include <malloc.h>
-#	define SB_MEM_BUFFER_ALLOC(type, name, size) \
-											type *name = _malloca(size)
-#	define SB_MEM_BUFFER_FREE(name)			_freea(name)
+#	pragma warning (error: 4995)
+#	define SB_POISON(x)						__pragma(deprecated(x))
 #else
-#	define SB_MEM_BUFFER_ALLOC(type, name, size) \
-											type name[size]
-#	define SB_MEM_BUFFER_FREE(name)
+#	define SB_POISON(x)						_Pragma(SB_STRINGIFY_MACRO(GCC poison x))
 #endif
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	SBAPI void* sb_malloc_u(sb_size_t size);
-	SBAPI void* sb_malloc_s(sb_size_t size);
-	SBAPI void* sb_calloc_u(sb_size_t size);
-	SBAPI void* sb_calloc_s(sb_size_t size);
-	SBAPI void* sb_realloc_u(void *ptr, sb_size_t size);
-	SBAPI void* sb_realloc_s(void *ptr, sb_size_t size);
-	SBAPI void* sb_cpyalloc_u(void *ptr, sb_size_t size);
-	SBAPI void* sb_cpyalloc_s(void *ptr, sb_size_t size);
-	SBAPI void* sb_ntcpyalloc_u(void *ptr, sb_size_t size);
-	SBAPI void* sb_ntcpyalloc_s(void *ptr, sb_size_t size);
-	SBAPI void* sb_free(void *ptr);
-
-	SBAPI void sb_memcpy(void *dst, void *src, sb_size_t size);
-	SBAPI void sb_memset(void *dst, int value, sb_size_t size);
-	SBAPI int sb_memcmp(void *cmp1, void *cmp2, sb_size_t size);
-#define sb_memequ(cmp1, cmp2, size) (sb_memcmp((cmp1), (cmp2), (size)) == 0)
-
-	SBAPI sb_size_t sb_strlen(const char *str);
-	SBAPI void sb_strcpy(char *dst, const char *str);
-	SBAPI void sb_strappend(char **dst, const char *str);
-
-	SBAPI void sb_memdump_ex(void *src, sb_size_t size, sb_size_t columns);
-	SBAPI void sb_memdump(void *src, sb_size_t size);
-	SBAPI void sb_vmemdump_ex(const char *msg, void *src, sb_size_t size, sb_size_t columns);
-	SBAPI void sb_vmemdump(const char *msg, void *src, sb_size_t size);
-	SBAPI void sb_cvmemdump_ex(const char *msg, uint8_t color, void *src, sb_size_t size, sb_size_t columns);
-	SBAPI void sb_cvmemdump(const char *msg, uint8_t color, void *src, sb_size_t size);
-
-#ifdef __cplusplus
-}
+#ifndef SB_POISON_EXCLUDE_MEMORY
+	SB_POISON(malloc);
+	SB_POISON(calloc);
+	SB_POISON(realloc);
+	SB_POISON(free);
+	SB_POISON(memset);
+	SB_POISON(memcpy);
+	SB_POISON(strlen);
+	SB_POISON(strcpy);
+	SB_POISON(strcmp);
 #endif
 
 

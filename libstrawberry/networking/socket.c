@@ -293,7 +293,7 @@ sb_ssize_t sb_socket_write_str(sb_socket_ctx_t *sock, const char *str) {
 		return -6;
 	}
 
-	return sb_socket_write(sock, (char*)str, strlen(str));
+	return sb_socket_write(sock, (char*)str, sb_strlen(str));
 }
 
 

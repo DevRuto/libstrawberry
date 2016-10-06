@@ -32,10 +32,13 @@
 
 #define __FILE_LOCAL__						"core/memory.c"
 
+#define SB_POISON_EXCLUDE_MEMORY
+
 #include "./memory.h"
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 #	define mlock						VirtualLock
@@ -211,16 +214,24 @@ int32_t sb_memcmp(void *cmp1, void *cmp2, sb_size_t size) {
 }
 
 
+sb_size_t sb_strlen(const char *str) {
+	if (!str) {
+		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
+	}
+	return strlen(str);
+}
+
+
 void sb_strcpy(char *dst, const char *str) {
 	if (dst && str) {
-		sb_memcpy(dst, (void*)str, strlen(str));
+		sb_memcpy(dst, (void*)str, sb_strlen(str));
 	}
 }
 
 
 void sb_strappend(char **dst, const char *str) {
 	if (dst && *dst && str) {
-		sb_size_t size = strlen(str);
+		sb_size_t size = sb_strlen(str);
 		sb_memcpy(*dst, (void*)str, size);
 		*dst = (void*)(((uintptr_t)*dst) + size);
 	}

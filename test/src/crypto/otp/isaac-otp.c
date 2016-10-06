@@ -10,7 +10,7 @@ sb_bool_t test_isaac_otp() {
 
 	char string[] = "UNKNCPCK. This is a test string thingy thing.";
 
-	sb_size_t len = strlen(string);
+	sb_size_t len = sb_strlen(string);
 
 	SB_MEM_BUFFER_ALLOC(uint8_t, xor_enc, len);
 	SB_MEM_BUFFER_ALLOC(uint8_t, xor_dec, len);

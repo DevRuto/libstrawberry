@@ -101,7 +101,7 @@ sb_bool_t sb_dictionary_get_index(sb_dictionary_t *dictionary, const char *key, 
 	}
 
 	if (key) {
-		sb_size_t i, keylen = strlen(key);
+		sb_size_t i, keylen = sb_strlen(key);
 		sb_dictionary_entry_t *entry;
 		//for (i = 0; i < dictionary->__size; ++i) {
 		for (i = dictionary->__size; i--;) {
@@ -148,7 +148,7 @@ sb_dictionary_entry_t* sb_dictionary_get(sb_dictionary_t *dictionary, const char
 		return NULL;
 	}
 
-	sb_size_t i, key_size = strlen(key);
+	sb_size_t i, key_size = sb_strlen(key);
 	sb_dictionary_entry_t *entry;
 	//for (i = 0; i < dictionary->__size; ++i) {
 	for (i = dictionary->__size; i--;) {
@@ -188,7 +188,7 @@ sb_bool_t sb_dictionary_set(sb_dictionary_t *dictionary, const char *key, void *
 			dictionary->entries = sb_realloc_u(dictionary->entries, sizeof(*dictionary->entries) * dictionary->__size);
 
 			sb_dictionary_entry_t *entry = &dictionary->entries[index];
-			entry->key_size = strlen(key);
+			entry->key_size = sb_strlen(key);
 			entry->key = sb_ntcpyalloc_u((void*)key, entry->key_size);
 			entry->value = value;
 			++(dictionary->count);
@@ -198,7 +198,7 @@ sb_bool_t sb_dictionary_set(sb_dictionary_t *dictionary, const char *key, void *
 				return sb_false;
 			} else {
 				sb_dictionary_entry_t *entry = &dictionary->entries[index];
-				entry->key_size = strlen(key);
+				entry->key_size = sb_strlen(key);
 				entry->key = sb_ntcpyalloc_u((void*)key, entry->key_size);
 				entry->value = value;
 				++(dictionary->count);

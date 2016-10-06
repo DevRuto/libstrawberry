@@ -26,7 +26,7 @@ sb_bool_t test_ripemd160() {
 
 	uint32_t i;
 	for (i = 0; i < 6; ++i) {
-		sb_crypto_ripemd160(digest, tests[i], strlen(tests[i]));
+		sb_crypto_ripemd160(digest, tests[i], sb_strlen(tests[i]));
 		if (sb_memcmp(digest, results[i], 20)) {
 			valid = sb_false;
 			status("ripemd160", "http://homes.esat.kuleuven.be/~bosselae/ripemd160.html", status_failed);

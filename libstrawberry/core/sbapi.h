@@ -34,14 +34,28 @@
 #define __SB_CORE_SBAPI_H
 
 
-#ifdef _MSC_VER
+#include "./platform.h"
+
+
+#if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 #	ifdef LIBSTRAWBERRY_EXPORTS
 #		define SBAPI						__declspec(dllexport)
 #	else
 #		define SBAPI						__declspec(dllimport)
 #	endif
-#else
+#elif (SB_COMPILER == SB_COMPILER_ID_GCC) || (SB_COMPILER == SB_COMPILER_ID_LLVM)
+#	ifdef LIBSTRAWBERRY_EXPORTS
+#		define SBAPI						__attribute__((visibility("default")))
+#	endif
+#	define SBSYS							__attribute__((visibility("hidden")))
+#endif
+
+#ifndef SBAPI
 #	define SBAPI
+#endif
+
+#ifndef SBSYS
+#	define SBSYS
 #endif
 
 
