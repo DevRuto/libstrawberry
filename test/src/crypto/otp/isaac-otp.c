@@ -12,11 +12,15 @@ sb_bool_t test_isaac_otp() {
 
 	sb_size_t len = strlen(string);
 
-	uint8_t xor_enc[len], xor_dec[len];
+	SB_MEM_BUFFER_ALLOC(uint8_t, xor_enc, len);
+	SB_MEM_BUFFER_ALLOC(uint8_t, xor_dec, len);
+
 	sb_crypto_otp_isaac_xor(&isaac1, xor_enc, string, len);
 	sb_crypto_otp_isaac_xor(&isaac2, xor_dec, xor_enc, len);
 
-	uint8_t add_enc[len], sub_dec[len];
+	SB_MEM_BUFFER_ALLOC(uint8_t, add_enc, len);
+	SB_MEM_BUFFER_ALLOC(uint8_t, sub_dec, len);
+
 	sb_crypto_otp_isaac_add(&isaac1, add_enc, string, len);
 	sb_crypto_otp_isaac_sub(&isaac2, sub_dec, add_enc, len);
 
@@ -32,6 +36,11 @@ sb_bool_t test_isaac_otp() {
 	puts("");*/
 
 	sb_bool_t valid = (sb_memequ(string, xor_dec, len) && sb_memequ(string, sub_dec, len));
+
+	SB_MEM_BUFFER_FREE(xor_enc);
+	SB_MEM_BUFFER_FREE(xor_dec);
+	SB_MEM_BUFFER_FREE(add_enc);
+	SB_MEM_BUFFER_FREE(sub_dec);
 
 	sb_crypto_otp_isaac_clear(&isaac1);
 	sb_crypto_otp_isaac_clear(&isaac2);

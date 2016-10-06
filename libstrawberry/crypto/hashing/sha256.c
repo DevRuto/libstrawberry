@@ -228,12 +228,14 @@ sb_bool_t sb_crypto_sha256(uint8_t out[32], void *in, sb_size_t size) {
 	sb_memset((buffer + size), 0, buffer_size - size);
 
 	buffer[size] = 0x80;
-	buffer[buffer_size - 1] =  (8 * size);
-	buffer[buffer_size - 2] = ((8 * size) >>  8);
-	buffer[buffer_size - 3] = ((8 * size) >> 16);
-	buffer[buffer_size - 4] = ((8 * size) >> 24);
+
+	buffer[buffer_size - 1] = ( (8 * size)        & 0xFF);
+	buffer[buffer_size - 2] = (((8 * size) >>  8) & 0xFF);
+	buffer[buffer_size - 3] = (((8 * size) >> 16) & 0xFF);
+	buffer[buffer_size - 4] = (((8 * size) >> 24) & 0xFF);
 
 	uint32_t block[16], *in32 = (uint32_t*)buffer;
+
 	sb_size_t i, j;
 	for (i = (buffer_size / 64); i--;) {
 		for (j = 0; j < 16; ++j) {

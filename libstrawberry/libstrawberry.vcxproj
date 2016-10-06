@@ -203,6 +203,7 @@
     <ClInclude Include="crypto\hashing\sha512.h" />
     <ClInclude Include="crypto\keygen.h" />
     <ClInclude Include="crypto\key_exchange\diffiehellman.h" />
+    <ClInclude Include="crypto\otp\isaac-otp.h" />
     <ClInclude Include="crypto\padding\iso97971-2.h" />
     <ClInclude Include="crypto\padding\pkcs7.h" />
     <ClInclude Include="crypto\padding\zero.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="crypto\hashing\sha512.c" />
     <ClCompile Include="crypto\keygen.c" />
     <ClCompile Include="crypto\key_exchange\diffiehellman.c" />
+    <ClCompile Include="crypto\otp\isaac-otp.c" />
     <ClCompile Include="crypto\padding\iso97971-2.c" />
     <ClCompile Include="crypto\padding\pkcs7.c" />
     <ClCompile Include="crypto\padding\zero.c" />
