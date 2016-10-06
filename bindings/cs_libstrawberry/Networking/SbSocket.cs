@@ -76,14 +76,14 @@ namespace LibStrawberry.Networking {
 		public SbSocket(string node = null, SbSocketFlag flags = 0) {
 			this.Node = node;
 			if (node != null) {
-				if (NativeMethods.sb_socket_init(ref ctx, node, (uint)flags) != 1) {
+				if (!NativeMethods.sb_socket_init(ref ctx, node, (uint)flags)) {
 					throw new SbException(SbExceptionType.Initialization);
 				}
 			}
 		}
 
 		public SbSocket(ulong fd, SbSocketFlag flags = 0) {
-			if (NativeMethods.sb_socket_fromfd(ref ctx, fd, (uint)flags) != 1) {
+			if (!NativeMethods.sb_socket_fromfd(ref ctx, fd, (uint)flags)) {
 				throw new SbException(SbExceptionType.Initialization);
 			}
 		}
@@ -108,7 +108,7 @@ namespace LibStrawberry.Networking {
 			if (disposing) {
 				// Free managed objects here.
 			}
-			if (NativeMethods.sb_socket_clear(ref ctx) != 1) {
+			if (!NativeMethods.sb_socket_clear(ref ctx)) {
 				throw new SbException(SbExceptionType.Disposal) { DeemedFatal = true };
 			}
 		}
@@ -128,7 +128,7 @@ namespace LibStrawberry.Networking {
 				throw new SbException();
 			}
 			this.Port = port;
-			if (NativeMethods.sb_socket_start(ref ctx, port) != 1) {
+			if (!NativeMethods.sb_socket_start(ref ctx, port)) {
 				throw new SbException(SbExceptionType.Generic);
 			}
 		}
@@ -141,24 +141,24 @@ namespace LibStrawberry.Networking {
 				throw new SbException(SbExceptionType.Initialization);
 			}
 			this.Node = node;
-			if (NativeMethods.sb_socket_init(ref ctx, node, (uint)this.Flags) != 1) {
+			if (!NativeMethods.sb_socket_init(ref ctx, node, (uint)this.Flags)) {
 				throw new SbException(SbExceptionType.Initialization);
 			}
 			this.Port = port;
-			if (NativeMethods.sb_socket_start(ref ctx, port) != 1) {
+			if (!NativeMethods.sb_socket_start(ref ctx, port)) {
 				throw new SbException(SbExceptionType.Generic);
 			}
 		}
 
 		public void Stop() {
-			if (NativeMethods.sb_socket_stop(ref ctx) != 1) {
+			if (!NativeMethods.sb_socket_stop(ref ctx)) {
 				throw new SbException(SbExceptionType.Generic);
 			} 
 		}
 
 		public SbSocket Accept() {
 			sb_socket_ctx_t nctx = new sb_socket_ctx_t();
-			if (NativeMethods.sb_socket_accept(ref ctx, ref nctx, UIntPtr.Zero, UIntPtr.Zero) != 1) {
+			if (!NativeMethods.sb_socket_accept(ref ctx, ref nctx, UIntPtr.Zero, UIntPtr.Zero)) {
 				throw new SbException();
 			}
 			return new SbSocket(ref nctx);

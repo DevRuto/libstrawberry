@@ -269,7 +269,7 @@ void sb_vmemdump(const char *msg, void *src, sb_size_t size) {
 
 void sb_cvmemdump_ex(const char *msg, uint8_t color, void *src, sb_size_t size, sb_size_t columns) {
 	if (msg) {
-		sb_cprint(msg, color);
+		sb_cprintln(msg, color);
 	}
 	sb_memdump_ex(src, size, columns);
 }

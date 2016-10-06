@@ -48,7 +48,7 @@ namespace LibStrawberry.Crypto {
 				throw new ArgumentException();
 			}
 			byte[] buffer = new byte[outsize];
-			if (NativeMethods.sb_crypto_keygen(buffer, (UIntPtr)outsize, input, (UIntPtr)input.Length) != 1) {
+			if (!NativeMethods.sb_crypto_keygen(buffer, (UIntPtr)outsize, input, (UIntPtr)input.Length)) {
 				buffer = null;
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);

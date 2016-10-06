@@ -59,7 +59,7 @@ namespace LibStrawberry.Crypto.Hashing {
 		private sb_crypto_ripemd160_ctx_t ctx = new sb_crypto_ripemd160_ctx_t();
 
 		public SbRIPEMD160() {
-			if (NativeMethods.sb_crypto_ripemd160_init(ref ctx) != 1) {
+			if (!NativeMethods.sb_crypto_ripemd160_init(ref ctx)) {
 				throw new SbException(SbExceptionType.Initialization);
 			}
 		}
@@ -77,7 +77,7 @@ namespace LibStrawberry.Crypto.Hashing {
 			if (disposing) {
 				// Free managed objects here.
 			}
-			if (NativeMethods.sb_crypto_ripemd160_clear(ref ctx) != 1) {
+			if (!NativeMethods.sb_crypto_ripemd160_clear(ref ctx)) {
 				throw new SbException(SbExceptionType.Disposal) { DeemedFatal = true };
 			}
 		}
@@ -96,7 +96,7 @@ namespace LibStrawberry.Crypto.Hashing {
 			if (data.Length != 64) {
 				throw new ArgumentException();
 			}
-			if (NativeMethods.sb_crypto_ripemd160_update(ref ctx, data) != 1) {
+			if (!NativeMethods.sb_crypto_ripemd160_update(ref ctx, data)) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -113,7 +113,7 @@ namespace LibStrawberry.Crypto.Hashing {
 			if (data.Length > 64) {
 				throw new ArgumentException();
 			}
-			if (NativeMethods.sb_crypto_ripemd160_finish(ref ctx, data, (UIntPtr)data.Length) != 1) {
+			if (!NativeMethods.sb_crypto_ripemd160_finish(ref ctx, data, (UIntPtr)data.Length)) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -125,7 +125,7 @@ namespace LibStrawberry.Crypto.Hashing {
 
 		public byte[] GetDigest() {
 			byte[] digest = new byte[20];
-			if (NativeMethods.sb_crypto_ripemd160_get_digest(ref ctx, digest) != 1) {
+			if (!NativeMethods.sb_crypto_ripemd160_get_digest(ref ctx, digest)) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {

@@ -107,7 +107,7 @@ namespace LibStrawberry.Crypto {
 			if (padding == SbCipherPaddingAlgorithm.Default) {
 				padding = SbCipherPaddingAlgorithm.ISO979712;
 			}
-			if (NativeMethods.sb_crypto_cipher_init(ref ctx, (ushort)algorithm, (byte)padding, (byte)flags, bits, key) != 1) {
+			if (!NativeMethods.sb_crypto_cipher_init(ref ctx, (ushort)algorithm, (byte)padding, (byte)flags, bits, key)) {
 				throw new SbException(SbExceptionType.Initialization);
 			}
 		}
@@ -125,7 +125,7 @@ namespace LibStrawberry.Crypto {
 			if (disposing) {
 				// Free managed objects here.
 			}
-			if (NativeMethods.sb_crypto_cipher_clear(ref ctx) != 1) {
+			if (!NativeMethods.sb_crypto_cipher_clear(ref ctx)) {
 				throw new SbException(SbExceptionType.Disposal) { DeemedFatal = true };
 			}
 		}
@@ -138,7 +138,7 @@ namespace LibStrawberry.Crypto {
 		#endregion
 
 		public bool Reset() {
-			if (NativeMethods.sb_crypto_cipher_reset(ref ctx) != 1) {
+			if (!NativeMethods.sb_crypto_cipher_reset(ref ctx)) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -163,7 +163,7 @@ namespace LibStrawberry.Crypto {
 				throw new ArgumentNullException();
 			}
 			byte[] buffer = new byte[this.EncryptSize((ulong)_in.Length)];
-			if (NativeMethods.sb_crypto_cipher_encrypt(ref ctx, buffer, _in, (UIntPtr)_in.Length) != 1) {
+			if (!NativeMethods.sb_crypto_cipher_encrypt(ref ctx, buffer, _in, (UIntPtr)_in.Length)) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {
@@ -179,7 +179,7 @@ namespace LibStrawberry.Crypto {
 			}
 			UIntPtr poff = UIntPtr.Zero;
 			byte[] buffer = new byte[_in.Length];
-			if (NativeMethods.sb_crypto_cipher_decrypt(ref ctx, buffer, _in, (UIntPtr)_in.Length, poff) != 1) {
+			if (!NativeMethods.sb_crypto_cipher_decrypt(ref ctx, buffer, _in, (UIntPtr)_in.Length, ref poff)) {
 				if (SbInfo.ThrowExceptions) {
 					throw new SbException(SbExceptionType.Generic);
 				} else {

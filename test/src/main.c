@@ -19,7 +19,7 @@ void test(const char *name, sb_bool_t(*func)()) {
 
 int main(int argc, char **argv, char **env) {
 	sb_println(sb_version_full());
-	printf("Features: %016lX\n\n", sb_features());
+	printf("Features: %016lX\n\n", (unsigned long)sb_features());
 	sb_cprintln("Running tests...", SB_COLOR_BRIGHT_GREEN);
 
 	test("rijndael", test_rijndael);
