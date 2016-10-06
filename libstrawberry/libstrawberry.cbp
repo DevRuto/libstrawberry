@@ -182,6 +182,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="crypto/hashing/sha256.h" />
+		<Unit filename="crypto/hashing/sha384.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="crypto/hashing/sha384.h" />
 		<Unit filename="crypto/hashing/sha512.c">
 			<Option compilerVar="CC" />
 		</Unit>

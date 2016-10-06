@@ -33,6 +33,7 @@ int main(int argc, char **argv, char **env) {
 	test("kex/dh", test_diffiehellman);
 	test("sha224", test_sha224);
 	test("sha256", test_sha256);
+	test("sha384", test_sha384);
 	test("sha512", test_sha512);
 
 	sb_cprintln("Done.", SB_COLOR_BRIGHT_GREEN);

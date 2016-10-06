@@ -76,6 +76,9 @@
 		<Unit filename="src/crypto/hashing/sha256.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/crypto/hashing/sha384.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/crypto/hashing/sha512.c">
 			<Option compilerVar="CC" />
 		</Unit>
