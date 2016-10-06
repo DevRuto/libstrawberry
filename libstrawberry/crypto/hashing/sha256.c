@@ -190,14 +190,14 @@ sb_bool_t sb_crypto_sha256_finish(sb_crypto_sha256_ctx_t *ctx, uint8_t out[32]) 
 
 	uint_fast8_t i;
 	for (i = 4; i--;) {
-		out[i     ] = (ctx->h0 >> (24 - (8 * i))) & 0xFF;
-		out[i +  4] = (ctx->h1 >> (24 - (8 * i))) & 0xFF;
-		out[i +  8] = (ctx->h2 >> (24 - (8 * i))) & 0xFF;
-		out[i + 12] = (ctx->h3 >> (24 - (8 * i))) & 0xFF;
-		out[i + 16] = (ctx->h4 >> (24 - (8 * i))) & 0xFF;
-		out[i + 20] = (ctx->h5 >> (24 - (8 * i))) & 0xFF;
-		out[i + 24] = (ctx->h6 >> (24 - (8 * i))) & 0xFF;
-		out[i + 28] = (ctx->h7 >> (24 - (8 * i))) & 0xFF;
+		out[i     ] = ((ctx->h0 >> (24 - (8 * i))) & 0xFF);
+		out[i +  4] = ((ctx->h1 >> (24 - (8 * i))) & 0xFF);
+		out[i +  8] = ((ctx->h2 >> (24 - (8 * i))) & 0xFF);
+		out[i + 12] = ((ctx->h3 >> (24 - (8 * i))) & 0xFF);
+		out[i + 16] = ((ctx->h4 >> (24 - (8 * i))) & 0xFF);
+		out[i + 20] = ((ctx->h5 >> (24 - (8 * i))) & 0xFF);
+		out[i + 24] = ((ctx->h6 >> (24 - (8 * i))) & 0xFF);
+		out[i + 28] = ((ctx->h7 >> (24 - (8 * i))) & 0xFF);
 	}
 
 	return sb_true;
