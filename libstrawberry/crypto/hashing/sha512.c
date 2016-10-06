@@ -43,6 +43,8 @@
 #include "../../core/bits.h"
 #include "../../core/math.h"
 
+#include "../../core/poison.h"
+
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-10-06");
 
@@ -134,7 +136,7 @@ sb_bool_t sb_crypto_sha512_update(sb_crypto_sha512_ctx_t *ctx, uint64_t block[16
 
 	uint64_t w[80];
 
-	register size_t i;
+	register sb_size_t i;
 	for (i = 16; i--;) {
 		w[i] = block[i];
 	}

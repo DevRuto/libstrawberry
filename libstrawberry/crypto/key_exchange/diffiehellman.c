@@ -44,6 +44,8 @@
 #include "../../core/memory.h"
 #include "../../misc/gmp.h"
 
+#include "../../core/poison.h"
+
 
 IDENTID(__FILE_LOCAL__, "0.2", "1", "2016-09-08");
 

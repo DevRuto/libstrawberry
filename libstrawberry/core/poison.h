@@ -36,6 +36,7 @@
 
 #include "./platform.h"
 
+
 #if (SB_COMPILER == SB_COMPILER_ID_MSC)
 #	pragma warning (error: 4995)
 #	define SB_POISON(x)						__pragma(deprecated(x))
@@ -44,6 +45,8 @@
 #endif
 
 
+SB_POISON(include);
+
 #ifndef SB_POISON_EXCLUDE_MEMORY
 	SB_POISON(malloc);
 	SB_POISON(calloc);
@@ -51,10 +54,14 @@
 	SB_POISON(free);
 	SB_POISON(memset);
 	SB_POISON(memcpy);
+	SB_POISON(memcmp);
 	SB_POISON(strlen);
 	SB_POISON(strcpy);
 	SB_POISON(strcmp);
 #endif
+
+SB_POISON(size_t);
+SB_POISON(int);
 
 
 #endif

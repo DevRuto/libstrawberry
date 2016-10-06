@@ -36,16 +36,18 @@
 
 #include "./gmp.h"
 
+#include "../core/poison.h"
+
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-04");
 
 
-void sb_mpz_import_ex(mpz_t out, void *in, sb_size_t length, int wordorder, sb_size_t wordsize, int endianness, sb_size_t nails) {
+void sb_mpz_import_ex(mpz_t out, void *in, sb_size_t length, uint32_t wordorder, sb_size_t wordsize, uint32_t endianness, sb_size_t nails) {
 	mpz_import(out, length, wordorder, wordsize, endianness, 0, in);
 }
 
 
-void* sb_mpz_export_ex(void *out, mpz_t in, void *countp, int wordorder, sb_size_t wordsize, int endianness, sb_size_t nails) {
+void* sb_mpz_export_ex(void *out, mpz_t in, void *countp, uint32_t wordorder, sb_size_t wordsize, uint32_t endianness, sb_size_t nails) {
 	return mpz_export(out, NULL, wordorder, wordsize, endianness, 0, in);
 }
 

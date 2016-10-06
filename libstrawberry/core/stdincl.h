@@ -45,10 +45,6 @@
 
 #include "./bits.h"
 
-#if defined(LIBSTRAWBERRY_EXPORTS) && !SB_DEBUG
-#	include "./poison.h"
-#endif
-
 
 #define SB_VERSION_MAJOR					0
 #define SB_VERSION_MINOR					1

@@ -39,6 +39,8 @@
 
 #include "../core/error.h"
 
+#include "../core/poison.h"
+
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-30");
 
@@ -59,7 +61,7 @@ sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
 	if (!wsaStartup) {
-		int err;
+		uint32_t err;
 		if (!(err = WSAStartup(MAKEWORD(2, 2), &wsaData))) {
 			wsaStartup = sb_true;
 		} else {
@@ -80,7 +82,7 @@ sb_bool_t sb_socket_init(sb_socket_ctx_t *sock, const char *node, uint32_t flags
 	hints.ai_flags = (SB_FLAG(flags, SB_SOCKET_SERVER) ? AI_PASSIVE : 0);
 	hints.ai_protocol = 0;
 
-	int err;
+	uint32_t err;
 	if ((err = getaddrinfo(node, NULL, &hints, &sock->addrinfo)) != 0) {
 		sb_error_set_ex(SB_ERROR_INITIALIZATION, err);
 		return sb_false;

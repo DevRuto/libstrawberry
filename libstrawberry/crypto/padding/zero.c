@@ -40,6 +40,8 @@
 #include "../../core/memory.h"
 #include "../../core/math.h"
 
+#include "../../core/poison.h"
+
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-08-10");
 

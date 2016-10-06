@@ -43,6 +43,8 @@
 
 #include <stdio.h>
 
+#include "./poison.h"
+
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-22");
 

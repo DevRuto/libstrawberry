@@ -43,6 +43,8 @@
 #include "../../core/bits.h"
 #include "../../core/math.h"
 
+#include "../../core/poison.h"
+
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-10-06");
 
@@ -131,7 +133,7 @@ sb_bool_t sb_crypto_sha384_update(sb_crypto_sha384_ctx_t *ctx, uint64_t block[16
 
     uint64_t w[80];
 
-    register size_t i;
+    register sb_size_t i;
     for (i = 16; i--;) {
         w[i] = block[i];
     }
@@ -199,7 +201,7 @@ sb_bool_t sb_crypto_sha384_finish(sb_crypto_sha384_ctx_t *ctx, uint8_t out[48]) 
     return sb_true;
 }
 
-sb_bool_t sb_crypto_sha384(uint8_t out[48], void *in, size_t size) {
+sb_bool_t sb_crypto_sha384(uint8_t out[48], void *in, sb_size_t size) {
     sb_error_reset();
 
 	if (!out) {
