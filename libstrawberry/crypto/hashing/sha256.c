@@ -34,6 +34,8 @@
 
 #if !defined(SB_EXCLUDE_CRYPTO_HASHING) && !defined(SB_EXCLUDE_CRYPTO_HASHING_SHA256)
 
+#define SB_INTRINSICS
+
 #include "./sha256.h"
 
 #include "../../core/error.h"
