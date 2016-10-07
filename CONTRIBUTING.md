@@ -54,7 +54,7 @@
 <optional system includes + \n>
 <optional internal includes + \n>
 \n
-<poison header + \n>
+<include poison header + \n>
 \n
 \n
 <identid macro>
