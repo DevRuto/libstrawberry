@@ -51,6 +51,12 @@
     <ClCompile Include="src\crypto\otp\isaac-otp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\crypto\hashing\sha224.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crypto\hashing\sha384.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdincl.h">
