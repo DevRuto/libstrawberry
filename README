@@ -6,3 +6,12 @@
 
      Cross-platform cryptography/networking library written in C.
 
+
+
+      TODO
+     ======
+     > Block modes of operations.
+     > Helpers.
+     > Expand crypto arsenal.
+     > Optimizations.
+
