@@ -26,7 +26,7 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
+**    Contributed by nullruto.
 **
 */
 
@@ -34,12 +34,16 @@
 
 #if !defined(SB_EXCLUDE_CRYPTO_HASHING) && !defined(SB_EXCLUDE_CRYPTO_HASHING_SHA384)
 
+#define SB_INTRINSICS
+
 #include "./sha384.h"
 
 #include "../../core/error.h"
 #include "../../core/memory.h"
 #include "../../core/bits.h"
 #include "../../core/math.h"
+
+#include "../../core/poison.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-10-06");
@@ -129,7 +133,7 @@ sb_bool_t sb_crypto_sha384_update(sb_crypto_sha384_ctx_t *ctx, uint64_t block[16
 
     uint64_t w[80];
 
-    register size_t i;
+    register sb_size_t i;
     for (i = 16; i--;) {
         w[i] = block[i];
     }
@@ -186,18 +190,18 @@ sb_bool_t sb_crypto_sha384_finish(sb_crypto_sha384_ctx_t *ctx, uint8_t out[48]) 
 
     uint_fast8_t i;
     for (i = 8; i--;) {
-        out[i     ] = (ctx->h0 >> (56 - (8 * i))) & 0xFF;
-        out[i +  8] = (ctx->h1 >> (56 - (8 * i))) & 0xFF;
-        out[i + 16] = (ctx->h2 >> (56 - (8 * i))) & 0xFF;
-        out[i + 24] = (ctx->h3 >> (56 - (8 * i))) & 0xFF;
-        out[i + 32] = (ctx->h4 >> (56 - (8 * i))) & 0xFF;
-        out[i + 40] = (ctx->h5 >> (56 - (8 * i))) & 0xFF;
+		out[i     ] = ((ctx->h0 >> (56 - (8 * i))) & 0xFF);
+		out[i +  8] = ((ctx->h1 >> (56 - (8 * i))) & 0xFF);
+		out[i + 16] = ((ctx->h2 >> (56 - (8 * i))) & 0xFF);
+		out[i + 24] = ((ctx->h3 >> (56 - (8 * i))) & 0xFF);
+		out[i + 32] = ((ctx->h4 >> (56 - (8 * i))) & 0xFF);
+		out[i + 40] = ((ctx->h5 >> (56 - (8 * i))) & 0xFF);
     }
 
     return sb_true;
 }
 
-sb_bool_t sb_crypto_sha384(uint8_t out[48], void *in, size_t size) {
+sb_bool_t sb_crypto_sha384(uint8_t out[48], void *in, sb_size_t size) {
     sb_error_reset();
 
 	if (!out) {
@@ -215,16 +219,17 @@ sb_bool_t sb_crypto_sha384(uint8_t out[48], void *in, size_t size) {
 
     sb_size_t buffer_size = sb_math_round_block(128, (size + 1));
 
-    uint8_t buffer[buffer_size];
+    SB_MEM_BUFFER_ALLOC(uint8_t, buffer, buffer_size);
+
     sb_memcpy(buffer, in, size);
     sb_memset((buffer + size), 0, buffer_size - size);
 
     buffer[size] = 0x80;
 
-    buffer[buffer_size - 1] =  (8 * size);
-    buffer[buffer_size - 2] = ((8 * size) >>  8);
-    buffer[buffer_size - 3] = ((8 * size) >> 16);
-    buffer[buffer_size - 4] = ((8 * size) >> 24);
+	buffer[buffer_size - 1] = ( (8 * size)        & 0xFF);
+	buffer[buffer_size - 2] = (((8 * size) >>  8) & 0xFF);
+	buffer[buffer_size - 3] = (((8 * size) >> 16) & 0xFF);
+	buffer[buffer_size - 4] = (((8 * size) >> 24) & 0xFF);
 
     uint64_t block[16], *in64 = (uint64_t *)buffer;
 
@@ -236,6 +241,8 @@ sb_bool_t sb_crypto_sha384(uint8_t out[48], void *in, size_t size) {
         }
         sb_crypto_sha384_update(&ctx, block);
     }
+
+    SB_MEM_BUFFER_FREE(buffer);
 
     sb_bool_t valid = sb_crypto_sha384_finish(&ctx, out);
 

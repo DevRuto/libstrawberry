@@ -40,6 +40,8 @@
 
 #include "./bits.h"
 
+#include "./poison.h"
+
 
 IDENTID(__FILE_LOCAL__, "0.2", "1", "2016-09-12");
 

@@ -48,11 +48,15 @@
 \n
 <define __FILE_LOCAL__>
 \n
+<feature exclusion line + \n>
+\n
 <optional feature definitions + \n>
 <include own header file>
 \n
 <optional system includes + \n>
 <optional internal includes + \n>
+\n
+<include poison header + \n>
 \n
 \n
 <identid macro>
@@ -63,6 +67,8 @@ function
 \n
 \n
 function
+\n
+<report feature exclusion + \n>
 \n
 ```
 
@@ -102,6 +108,8 @@ function
 
 #define __FILE_LOCAL__                      "sub/dir/example.c"
 
+#if !defined(SB_EXCLUDE_SUB_DIR) && !defined(SB_EXCLUDE_SUB_DIR_EXAMPLE)
+
 #define SB_INTRINSICS
 
 #include "./example.h"
@@ -109,6 +117,8 @@ function
 #include <stdio.h>
 
 #include "../../core/time.h"
+
+#include "../../core/poison.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-10-05");
@@ -129,6 +139,12 @@ void bar() {
         puts("foo() hasn't been executed yet.");
     }
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif
 
 ```
 

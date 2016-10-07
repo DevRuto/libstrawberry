@@ -26,7 +26,7 @@
 ********************************************************************************
 **
 **  Notes:
-**    -
+**    Contributed by nullruto.
 **
 */
 
@@ -42,6 +42,8 @@
 #include "../../core/memory.h"
 #include "../../core/bits.h"
 #include "../../core/math.h"
+
+#include "../../core/poison.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-10-06");
@@ -134,7 +136,7 @@ sb_bool_t sb_crypto_sha512_update(sb_crypto_sha512_ctx_t *ctx, uint64_t block[16
 
 	uint64_t w[80];
 
-	register size_t i;
+	register sb_size_t i;
 	for (i = 16; i--;) {
 		w[i] = block[i];
 	}
@@ -192,14 +194,14 @@ sb_bool_t sb_crypto_sha512_finish(sb_crypto_sha512_ctx_t *ctx, uint8_t out[64]) 
 
 	uint_fast8_t i;
 	for (i = 8; i--;) {
-		out[i     ] = (ctx->h0 >> (56 - (8 * i))) & 0xFF;
-		out[i +  8] = (ctx->h1 >> (56 - (8 * i))) & 0xFF;
-		out[i + 16] = (ctx->h2 >> (56 - (8 * i))) & 0xFF;
-		out[i + 24] = (ctx->h3 >> (56 - (8 * i))) & 0xFF;
-		out[i + 32] = (ctx->h4 >> (56 - (8 * i))) & 0xFF;
-		out[i + 40] = (ctx->h5 >> (56 - (8 * i))) & 0xFF;
-		out[i + 48] = (ctx->h6 >> (56 - (8 * i))) & 0xFF;
-		out[i + 56] = (ctx->h7 >> (56 - (8 * i))) & 0xFF;
+		out[i     ] = ((ctx->h0 >> (56 - (8 * i))) & 0xFF);
+		out[i +  8] = ((ctx->h1 >> (56 - (8 * i))) & 0xFF);
+		out[i + 16] = ((ctx->h2 >> (56 - (8 * i))) & 0xFF);
+		out[i + 24] = ((ctx->h3 >> (56 - (8 * i))) & 0xFF);
+		out[i + 32] = ((ctx->h4 >> (56 - (8 * i))) & 0xFF);
+		out[i + 40] = ((ctx->h5 >> (56 - (8 * i))) & 0xFF);
+		out[i + 48] = ((ctx->h6 >> (56 - (8 * i))) & 0xFF);
+		out[i + 56] = ((ctx->h7 >> (56 - (8 * i))) & 0xFF);
 	}
 
 	return sb_true;

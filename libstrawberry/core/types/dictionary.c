@@ -39,6 +39,8 @@
 #include "../memory.h"
 #include "../error.h"
 
+#include "../poison.h"
+
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-07-30");
 

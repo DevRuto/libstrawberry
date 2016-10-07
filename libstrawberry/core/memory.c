@@ -32,8 +32,6 @@
 
 #define __FILE_LOCAL__						"core/memory.c"
 
-#define SB_POISON_EXCLUDE_MEMORY
-
 #include "./memory.h"
 
 #include <stdlib.h>
@@ -53,6 +51,9 @@
 
 #include "error.h"
 
+#define SB_POISON_EXCLUDE_MEMORY
+#include "./poison.h"
+
 
 IDENTID(__FILE_LOCAL__, "0.2", "1", "2016-08-14");
 
@@ -69,7 +70,7 @@ void* sb_malloc_u(sb_size_t size) {
 void* sb_malloc_s(sb_size_t size) {
 	void *ptr = sb_malloc_u(size);
 
-	int err;
+	uint32_t err;
 	if (!mlock_valid((err = mlock(ptr, size)))) {
 		sb_free(ptr);
 		sb_error_fatal_ex(SB_ERROR_FATAL_LOCK_FAILURE, err);
@@ -110,7 +111,7 @@ void* sb_realloc_u(void *ptr, sb_size_t size) {
 void* sb_realloc_s(void *ptr, sb_size_t size) {
 	void *p = sb_realloc_u(ptr, size);
 
-	int err;
+	uint32_t err;
 	if (!mlock_valid((err = mlock(p, size)))) {
 		sb_free(p);
 		sb_error_fatal_ex(SB_ERROR_FATAL_LOCK_FAILURE, err);
@@ -198,7 +199,7 @@ void sb_memcpy(void *dst, void *src, sb_size_t size) {
 }
 
 
-void sb_memset(void *dst, int value, sb_size_t size) {
+void sb_memset(void *dst, uint32_t value, sb_size_t size) {
 	if (!dst) {
 		sb_error_fatal(SB_ERROR_FATAL_PTR_INVALID);
 	}

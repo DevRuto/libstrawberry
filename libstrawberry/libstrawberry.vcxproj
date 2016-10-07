@@ -200,7 +200,9 @@
     <ClInclude Include="crypto\cipher.h" />
     <ClInclude Include="crypto\hashing\md5.h" />
     <ClInclude Include="crypto\hashing\ripemd160.h" />
+    <ClInclude Include="crypto\hashing\sha224.h" />
     <ClInclude Include="crypto\hashing\sha256.h" />
+    <ClInclude Include="crypto\hashing\sha384.h" />
     <ClInclude Include="crypto\hashing\sha512.h" />
     <ClInclude Include="crypto\keygen.h" />
     <ClInclude Include="crypto\key_exchange\diffiehellman.h" />
@@ -228,7 +230,9 @@
     <ClCompile Include="crypto\cipher.c" />
     <ClCompile Include="crypto\hashing\md5.c" />
     <ClCompile Include="crypto\hashing\ripemd160.c" />
+    <ClCompile Include="crypto\hashing\sha224.c" />
     <ClCompile Include="crypto\hashing\sha256.c" />
+    <ClCompile Include="crypto\hashing\sha384.c" />
     <ClCompile Include="crypto\hashing\sha512.c" />
     <ClCompile Include="crypto\keygen.c" />
     <ClCompile Include="crypto\key_exchange\diffiehellman.c" />

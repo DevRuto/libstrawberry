@@ -38,6 +38,8 @@
 
 #include "./core/time.h"
 
+#include "./core/poison.h"
+
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-30");
 
@@ -78,7 +80,7 @@ const char* sb_compile_time() {
 
 
 const uint64_t sb_features() {
-	return 0
+	return (0
 #ifndef SB_EXCLUDE_CORE_TYPE_DICTIONARY
 		| SB_FEATURE_CORE_TYPE_DICTIONARY
 #endif
@@ -91,8 +93,14 @@ const uint64_t sb_features() {
 #ifndef SB_EXCLUDE_CRYPTO_HASHING_RIPEMD160
 		| SB_FEATURE_CRYPTO_HASHING_RIPEMD160
 #endif
+#ifndef SB_EXCLUDE_CRYPTO_HASHING_SHA224
+		| SB_FEATURE_CRYPTO_HASHING_SHA224
+#endif
 #ifndef SB_EXCLUDE_CRYPTO_HASHING_SHA256
 		| SB_FEATURE_CRYPTO_HASHING_SHA256
+#endif
+#ifndef SB_EXCLUDE_CRYPTO_HASHING_SHA384
+		| SB_FEATURE_CRYPTO_HASHING_SHA384
 #endif
 #ifndef SB_EXCLUDE_CRYPTO_HASHING_SHA512
 		| SB_FEATURE_CRYPTO_HASHING_SHA512
@@ -166,7 +174,7 @@ const uint64_t sb_features() {
 #ifdef SB_ERROR_REPORTING
 		| SB_FEATURE_ERROR_REPORTING
 #endif
-		| 0;
+);
 
 }
 
@@ -177,7 +185,7 @@ static void __sb_const() {
 
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
-int APIENTRY DllMain(HMODULE hModule, DWORD ulCallReason, LPVOID lpReserved) {
+uint32_t APIENTRY DllMain(HMODULE hModule, DWORD ulCallReason, LPVOID lpReserved) {
 	switch (ulCallReason) {
 		case DLL_PROCESS_ATTACH:
 			__sb_const();

@@ -71,7 +71,7 @@ extern "C" {
 	SBAPI void* sb_free(void *ptr);
 
 	SBAPI void sb_memcpy(void *dst, void *src, sb_size_t size);
-	SBAPI void sb_memset(void *dst, int value, sb_size_t size);
+	SBAPI void sb_memset(void *dst, uint32_t value, sb_size_t size);
 	SBAPI int sb_memcmp(void *cmp1, void *cmp2, sb_size_t size);
 #define sb_memequ(cmp1, cmp2, size) (sb_memcmp((cmp1), (cmp2), (size)) == 0)
 

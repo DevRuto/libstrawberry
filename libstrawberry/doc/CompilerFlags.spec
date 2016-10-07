@@ -52,8 +52,14 @@ SB_EXCLUDE_CRYPTO_HASHING_MD5
 SB_EXCLUDE_CRYPTO_HASHING_RIPEMD160
 	Specifies that RIPEMD160 should be excluded.
 
+SB_EXCLUDE_CRYPTO_HASHING_SHA224
+	Specifies that SHA-224 should be excluded.
+
 SB_EXCLUDE_CRYPTO_HASHING_SHA256
 	Specifies that SHA-256 should be excluded.
+
+SB_EXCLUDE_CRYPTO_HASHING_SHA384
+	Specifies that SHA-384 should be excluded.
 
 SB_EXCLUDE_CRYPTO_HASHING_SHA512
 	Specifies that SHA-512 should be excluded.

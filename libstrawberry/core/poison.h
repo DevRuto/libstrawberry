@@ -36,13 +36,16 @@
 
 #include "./platform.h"
 
+
 #if (SB_COMPILER == SB_COMPILER_ID_MSC)
-#	pragma warning (error: 4995)
+//#	pragma warning (error: 4995)
 #	define SB_POISON(x)						__pragma(deprecated(x))
 #else
 #	define SB_POISON(x)						_Pragma(SB_STRINGIFY_MACRO(GCC poison x))
 #endif
 
+
+SB_POISON(include);
 
 #ifndef SB_POISON_EXCLUDE_MEMORY
 	SB_POISON(malloc);
@@ -51,9 +54,23 @@
 	SB_POISON(free);
 	SB_POISON(memset);
 	SB_POISON(memcpy);
+	SB_POISON(memcmp);
 	SB_POISON(strlen);
 	SB_POISON(strcpy);
 	SB_POISON(strcmp);
+#endif
+
+SB_POISON(size_t);
+
+
+#if (SB_COMPILER == SB_COMPILER_ID_MSC)
+#	pragma warning (disable: 4081)
+#endif
+
+SB_POISON(int);
+
+#if (SB_COMPILER == SB_COMPILER_ID_MSC)
+#	pragma warning (default: 4081)
 #endif
 
 
