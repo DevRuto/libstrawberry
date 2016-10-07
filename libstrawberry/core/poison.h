@@ -38,7 +38,7 @@
 
 
 #if (SB_COMPILER == SB_COMPILER_ID_MSC)
-#	pragma warning (error: 4995)
+//#	pragma warning (error: 4995)
 #	define SB_POISON(x)						__pragma(deprecated(x))
 #else
 #	define SB_POISON(x)						_Pragma(SB_STRINGIFY_MACRO(GCC poison x))
@@ -61,7 +61,17 @@ SB_POISON(include);
 #endif
 
 SB_POISON(size_t);
+
+
+#if (SB_COMPILER == SB_COMPILER_ID_MSC)
+#	pragma warning (disable: 4081)
+#endif
+
 SB_POISON(int);
+
+#if (SB_COMPILER == SB_COMPILER_ID_MSC)
+#	pragma warning (default: 4081)
+#endif
 
 
 #endif
