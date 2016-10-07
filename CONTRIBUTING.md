@@ -48,6 +48,8 @@
 \n
 <define __FILE_LOCAL__>
 \n
+<feature exclusion line + \n>
+\n
 <optional feature definitions + \n>
 <include own header file>
 \n
@@ -65,6 +67,8 @@ function
 \n
 \n
 function
+\n
+<report feature exclusion + \n>
 \n
 ```
 
@@ -104,6 +108,8 @@ function
 
 #define __FILE_LOCAL__                      "sub/dir/example.c"
 
+#if !defined(SB_EXCLUDE_SUB_DIR) && !defined(SB_EXCLUDE_SUB_DIR_EXAMPLE)
+
 #define SB_INTRINSICS
 
 #include "./example.h"
@@ -133,6 +139,12 @@ void bar() {
         puts("foo() hasn't been executed yet.");
     }
 }
+
+#else
+#	ifdef REPORT_EXCLUSION
+#		pragma message("Excluded: "__FILE_LOCAL__)
+#	endif
+#endif
 
 ```
 
