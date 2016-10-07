@@ -54,6 +54,8 @@
 <optional system includes + \n>
 <optional internal includes + \n>
 \n
+<poison header + \n>
+\n
 \n
 <identid macro>
 \n
@@ -109,6 +111,8 @@ function
 #include <stdio.h>
 
 #include "../../core/time.h"
+
+#include "../../core/poison.h"
 
 
 IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-10-05");
