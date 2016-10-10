@@ -244,7 +244,7 @@ sb_sockfd_t sb_socket_acceptfd(sb_socket_ctx_t *sock, struct sockaddr *saddr, so
 		return SB_INVALID_SOCKET;
 	}
 
-	return SB_GOOD_SOCKFD(accept(sock->fd, saddr, saddrlen));
+	return accept(sock->fd, saddr, saddrlen);
 }
 
 
