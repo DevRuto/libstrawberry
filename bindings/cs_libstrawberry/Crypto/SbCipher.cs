@@ -188,6 +188,9 @@ namespace LibStrawberry.Crypto {
 				}
 			}
 			size = (ulong)poff;
+			if (size > 0) {
+				Array.Resize(ref buffer, (int)(size & 0x7FFFFFFF)); // TODO: support ulong
+			}
 			return buffer;
 		}
 	}
