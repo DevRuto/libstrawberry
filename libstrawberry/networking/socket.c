@@ -42,7 +42,7 @@
 #include "../core/poison.h"
 
 
-IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-09-30");
+IDENTID(__FILE_LOCAL__, "0.1", "1", "2016-10-10");
 
 
 #if (SB_PLATFORM == SB_PLATFORM_ID_WINDOWS)
@@ -244,14 +244,7 @@ sb_sockfd_t sb_socket_acceptfd(sb_socket_ctx_t *sock, struct sockaddr *saddr, so
 		return SB_INVALID_SOCKET;
 	}
 
-	if (!saddr && !saddrlen) {
-		struct sockaddr _saddr;
-		socklen_t _saddrlen;
-
-		return accept(sock->fd, &_saddr, &_saddrlen);
-	} else {
-		return accept(sock->fd, saddr, saddrlen);
-	}
+	return SB_GOOD_SOCKFD(accept(sock->fd, saddr, saddrlen));
 }
 
 

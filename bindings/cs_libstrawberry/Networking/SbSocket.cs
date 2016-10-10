@@ -34,6 +34,7 @@ using System;
 using System.Runtime.InteropServices;
 
 using LibStrawberry.BindingBase;
+using LibStrawberry.Core;
 
 namespace LibStrawberry.Networking {
 	[StructLayout(LayoutKind.Sequential)]
@@ -159,9 +160,14 @@ namespace LibStrawberry.Networking {
 		public SbSocket Accept() {
 			sb_socket_ctx_t nctx = new sb_socket_ctx_t();
 			if (!NativeMethods.sb_socket_accept(ref ctx, ref nctx, UIntPtr.Zero, UIntPtr.Zero)) {
-				throw new SbException();
+				if (SbError.GetAsCode() == SbError.Code.Success) {
+					return null;
+				} else {
+					throw new SbException();
+				}
+			} else {
+				return new SbSocket(ref nctx);
 			}
-			return new SbSocket(ref nctx);
 		}
 
 		public long Write(byte[] data) {
