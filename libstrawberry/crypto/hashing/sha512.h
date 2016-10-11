@@ -36,6 +36,11 @@
 
 #include "../../core/stdincl.h"
 
+
+#define SB_CRYPTO_HASHING_SHA512_DIGEST_SIZE \
+											64
+
+
 typedef struct sb_crypto_sha512_ctx {
 	uint64_t h0;
 	uint64_t h1;
@@ -55,8 +60,8 @@ extern "C" {
 	SBAPI sb_bool_t sb_crypto_sha512_init(sb_crypto_sha512_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_sha512_clear(sb_crypto_sha512_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_sha512_update(sb_crypto_sha512_ctx_t *ctx, uint64_t block[16]);
-	SBAPI sb_bool_t sb_crypto_sha512_finish(sb_crypto_sha512_ctx_t *ctx, uint8_t out[64]);
-	SBAPI sb_bool_t sb_crypto_sha512(uint8_t out[64], void *in, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_sha512_finish(sb_crypto_sha512_ctx_t *ctx, uint8_t out[SB_CRYPTO_HASHING_SHA512_DIGEST_SIZE]);
+	SBAPI sb_bool_t sb_crypto_sha512(uint8_t out[SB_CRYPTO_HASHING_SHA512_DIGEST_SIZE], void *in, sb_size_t size);
 
 #ifdef __cplusplus
 }
