@@ -37,6 +37,10 @@
 #include "../../core/stdincl.h"
 
 
+#define SB_CRYPTO_HASHING_SHA256_DIGEST_SIZE \
+											32
+
+
 typedef struct sb_crypto_sha256_ctx {
 	uint32_t h0;
 	uint32_t h1;
@@ -56,8 +60,8 @@ extern "C" {
 	SBAPI sb_bool_t sb_crypto_sha256_init(sb_crypto_sha256_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_sha256_clear(sb_crypto_sha256_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_sha256_update(sb_crypto_sha256_ctx_t *ctx, uint32_t block[16]);
-	SBAPI sb_bool_t sb_crypto_sha256_finish(sb_crypto_sha256_ctx_t *ctx, uint8_t out[32]);
-	SBAPI sb_bool_t sb_crypto_sha256(uint8_t out[32], void *in, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_sha256_finish(sb_crypto_sha256_ctx_t *ctx, uint8_t out[SB_CRYPTO_HASHING_SHA256_DIGEST_SIZE]);
+	SBAPI sb_bool_t sb_crypto_sha256(uint8_t out[SB_CRYPTO_HASHING_SHA256_DIGEST_SIZE], void *in, sb_size_t size);
 
 #ifdef __cplusplus
 }

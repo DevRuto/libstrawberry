@@ -47,17 +47,17 @@
 #include "../../core/poison.h"
 
 
-IDENTID(__FILE_LOCAL__, "0.2", "1", "2016-09-08");
+IDENTID(__FILE_LOCAL__, "0.3", "1", "2016-10-10");
 
 
-struct __sb_crypto_diffiehellman_ctx {
+typedef struct __sb_crypto_diffiehellman_ctx {
 	mpz_t g;	// generator
 	mpz_t m;	// modulo
 	mpz_t pr;	// private
 	mpz_t pu;	// public
 	mpz_t s;	// secret
 	gmp_randstate_t rand;
-};
+} __sb_crypto_diffiehellman_ctx_t;
 
 
 static void sb_crypto_diffiehellman_perform(mpz_t out, mpz_t x, mpz_t y, mpz_t m) {
@@ -108,7 +108,8 @@ sb_bool_t sb_crypto_diffiehellman_init(sb_crypto_diffiehellman_ctx_t *ctx, uint1
 	mpz_init(ictx->s);
 
 	gmp_randinit_mt(ictx->rand);
-	if (seed != 0) {
+
+	if (seed) {
 		gmp_randseed_ui(ictx->rand, seed);
 	}
 
@@ -127,22 +128,26 @@ sb_bool_t sb_crypto_diffiehellman_clear(sb_crypto_diffiehellman_ctx_t *ctx) {
 	}
 
 	if (!ctx->data) {
-		// This shouldn't be nulled.
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
 		return sb_false;
 	}
 
-	__sb_crypto_diffiehellman_ctx_t *ictx = ctx->data;
 
-	mpz_clear(ictx->g);
-	mpz_clear(ictx->m);
-	mpz_clear(ictx->pr);
-	mpz_clear(ictx->pu);
-	mpz_clear(ictx->s);
+	if (!SB_FLAG(ctx->flags, SB_CRYPTO_DIFFIEHELLMAN_DONE)) {
+		__sb_crypto_diffiehellman_ctx_t *ictx = ctx->data;
 
-	gmp_randclear(ictx->rand);
+		mpz_clear(ictx->g);
+		mpz_clear(ictx->m);
+		mpz_clear(ictx->pr);
+		mpz_clear(ictx->pu);
+		mpz_clear(ictx->s);
 
-	ictx = ctx->data = sb_free(ctx->data);
+		gmp_randclear(ictx->rand);
+
+		ictx = NULL;
+	}
+
+	ctx->data = sb_free(ctx->data);
 
 	ctx->bits = 0;
 
@@ -160,6 +165,11 @@ sb_bool_t sb_crypto_diffiehellman_generate_base(sb_crypto_diffiehellman_ctx_t *c
 
 	if (!ctx->data) {
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
+	if (SB_FLAG(ctx->flags, SB_CRYPTO_DIFFIEHELLMAN_DONE)) {
+		sb_error_set(SB_ERROR_STATE_INVALID);
 		return sb_false;
 	}
 
@@ -192,6 +202,11 @@ sb_bool_t sb_crypto_diffiehellman_generate_keys(sb_crypto_diffiehellman_ctx_t *c
 		return sb_false;
 	}
 
+	if (SB_FLAG(ctx->flags, SB_CRYPTO_DIFFIEHELLMAN_DONE)) {
+		sb_error_set(SB_ERROR_STATE_INVALID);
+		return sb_false;
+	}
+
 	__sb_crypto_diffiehellman_ctx_t *ictx = ctx->data;
 
 	mpz_urandomb(ictx->pr, ictx->rand, ctx->bits);
@@ -210,10 +225,7 @@ sb_bool_t sb_crypto_diffiehellman_generate(sb_crypto_diffiehellman_ctx_t *ctx) {
 		return sb_false;
 	}
 
-	sb_crypto_diffiehellman_generate_base(ctx);
-	sb_crypto_diffiehellman_generate_keys(ctx);
-
-	return sb_true;
+	return (sb_crypto_diffiehellman_generate_base(ctx) && sb_crypto_diffiehellman_generate_keys(ctx));
 }
 
 
@@ -227,6 +239,11 @@ sb_bool_t sb_crypto_diffiehellman_generate_secret(sb_crypto_diffiehellman_ctx_t 
 
 	if (!ctx->data) {
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
+	if (SB_FLAG(ctx->flags, SB_CRYPTO_DIFFIEHELLMAN_DONE)) {
+		sb_error_set(SB_ERROR_STATE_INVALID);
 		return sb_false;
 	}
 
@@ -250,6 +267,46 @@ sb_bool_t sb_crypto_diffiehellman_generate_secret(sb_crypto_diffiehellman_ctx_t 
 }
 
 
+sb_bool_t sb_crypto_diffiehellman_finish(sb_crypto_diffiehellman_ctx_t *ctx) {
+	sb_error_reset();
+
+	if (!ctx) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 1);
+		return sb_false;
+	}
+
+	if (!ctx->data) {
+		sb_error_set_ex(SB_ERROR_NULL_PTR, 2);
+		return sb_false;
+	}
+
+	if (SB_FLAG(ctx->flags, SB_CRYPTO_DIFFIEHELLMAN_DONE)) {
+		sb_error_set(SB_ERROR_STATE_INVALID);
+		return sb_false;
+	}
+
+	__sb_crypto_diffiehellman_ctx_t *ictx = ctx->data;
+
+	mpz_clear(ictx->g);
+	mpz_clear(ictx->m);
+	mpz_clear(ictx->pr);
+	mpz_clear(ictx->pu);
+
+	gmp_randclear(ictx->rand);
+
+	void *ndata = sb_malloc_s(sb_crypto_diffiehellman_port_size(ctx));
+	sb_crypto_diffiehellman_export_secret(ctx, ndata);
+	mpz_clear(ictx->s);
+
+	ictx = NULL;
+
+	ctx->data = ndata;
+	ctx->flags |= SB_CRYPTO_DIFFIEHELLMAN_DONE;
+
+	return sb_true;
+}
+
+
 sb_bool_t sb_crypto_diffiehellman_copy_base(sb_crypto_diffiehellman_ctx_t *dst, sb_crypto_diffiehellman_ctx_t *src) {
 	sb_error_reset();
 
@@ -263,6 +320,11 @@ sb_bool_t sb_crypto_diffiehellman_copy_base(sb_crypto_diffiehellman_ctx_t *dst, 
 		return sb_false;
 	}
 
+	if (SB_FLAG(dst->flags, SB_CRYPTO_DIFFIEHELLMAN_DONE)) {
+		sb_error_set_ex(SB_ERROR_STATE_INVALID, 1);
+		return sb_false;
+	}
+
 	if (!src) {
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);
 		return sb_false;
@@ -270,6 +332,11 @@ sb_bool_t sb_crypto_diffiehellman_copy_base(sb_crypto_diffiehellman_ctx_t *dst, 
 
 	if (!src->data) {
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 4);
+		return sb_false;
+	}
+
+	if (SB_FLAG(src->flags, SB_CRYPTO_DIFFIEHELLMAN_DONE)) {
+		sb_error_set_ex(SB_ERROR_STATE_INVALID, 2);
 		return sb_false;
 	}
 
@@ -297,6 +364,11 @@ sb_bool_t sb_crypto_diffiehellman_copy_keys(sb_crypto_diffiehellman_ctx_t *dst, 
 		return sb_false;
 	}
 
+	if (SB_FLAG(dst->flags, SB_CRYPTO_DIFFIEHELLMAN_DONE)) {
+		sb_error_set_ex(SB_ERROR_STATE_INVALID, 1);
+		return sb_false;
+	}
+
 	if (!src) {
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);
 		return sb_false;
@@ -304,6 +376,11 @@ sb_bool_t sb_crypto_diffiehellman_copy_keys(sb_crypto_diffiehellman_ctx_t *dst, 
 
 	if (!src->data) {
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 4);
+		return sb_false;
+	}
+
+	if (SB_FLAG(src->flags, SB_CRYPTO_DIFFIEHELLMAN_DONE)) {
+		sb_error_set_ex(SB_ERROR_STATE_INVALID, 2);
 		return sb_false;
 	}
 
@@ -336,6 +413,11 @@ sb_size_t sb_crypto_diffiehellman_port_size(sb_crypto_diffiehellman_ctx_t *ctx) 
 		return sb_false;									\
 	}														\
 															\
+	if (SB_FLAG(ctx->flags, SB_CRYPTO_DIFFIEHELLMAN_DONE)) {\
+		sb_error_set(SB_ERROR_STATE_INVALID);				\
+		return sb_false;									\
+	}														\
+															\
 	if (!in) {												\
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);				\
 		return sb_false;									\
@@ -347,17 +429,17 @@ sb_size_t sb_crypto_diffiehellman_port_size(sb_crypto_diffiehellman_ctx_t *ctx) 
 
 
 sb_bool_t sb_crypto_diffiehellman_import_generator(sb_crypto_diffiehellman_ctx_t *ctx, void *in) {
-	DH_IMPORT(ctx->data->g, sb_crypto_diffiehellman_port_size(ctx));
+	DH_IMPORT(((__sb_crypto_diffiehellman_ctx_t*)ctx->data)->g, sb_crypto_diffiehellman_port_size(ctx));
 }
 
 
 sb_bool_t sb_crypto_diffiehellman_import_modulo(sb_crypto_diffiehellman_ctx_t *ctx, void *in) {
-	DH_IMPORT(ctx->data->m, sb_crypto_diffiehellman_port_size(ctx));
+	DH_IMPORT(((__sb_crypto_diffiehellman_ctx_t*)ctx->data)->m, sb_crypto_diffiehellman_port_size(ctx));
 }
 
 
 sb_bool_t sb_crypto_diffiehellman_import_public(sb_crypto_diffiehellman_ctx_t *ctx, void *in) {
-	DH_IMPORT(ctx->data->pu, sb_crypto_diffiehellman_port_size(ctx));
+	DH_IMPORT(((__sb_crypto_diffiehellman_ctx_t*)ctx->data)->pu, sb_crypto_diffiehellman_port_size(ctx));
 }
 
 
@@ -377,6 +459,11 @@ sb_bool_t sb_crypto_diffiehellman_import_public(sb_crypto_diffiehellman_ctx_t *c
 		return sb_false;									\
 	}														\
 															\
+	if (SB_FLAG(ctx->flags, SB_CRYPTO_DIFFIEHELLMAN_DONE)) {\
+		sb_error_set(SB_ERROR_STATE_INVALID);				\
+		return sb_false;									\
+	}														\
+															\
 	if (!out) {												\
 		sb_error_set_ex(SB_ERROR_NULL_PTR, 3);				\
 		return sb_false;									\
@@ -388,22 +475,22 @@ sb_bool_t sb_crypto_diffiehellman_import_public(sb_crypto_diffiehellman_ctx_t *c
 
 
 sb_bool_t sb_crypto_diffiehellman_export_generator(sb_crypto_diffiehellman_ctx_t *ctx, void *out) {
-	DH_EXPORT(ctx->data->g);
+	DH_EXPORT(((__sb_crypto_diffiehellman_ctx_t*)ctx->data)->g);
 }
 
 
 sb_bool_t sb_crypto_diffiehellman_export_modulo(sb_crypto_diffiehellman_ctx_t *ctx, void *out) {
-	DH_EXPORT(ctx->data->m);
+	DH_EXPORT(((__sb_crypto_diffiehellman_ctx_t*)ctx->data)->m);
 }
 
 
 sb_bool_t sb_crypto_diffiehellman_export_public(sb_crypto_diffiehellman_ctx_t *ctx, void *out) {
-	DH_EXPORT(ctx->data->pu);
+	DH_EXPORT(((__sb_crypto_diffiehellman_ctx_t*)ctx->data)->pu);
 }
 
 
 sb_bool_t sb_crypto_diffiehellman_export_secret(sb_crypto_diffiehellman_ctx_t *ctx, void *out) {
-	DH_EXPORT(ctx->data->s);
+	DH_EXPORT(((__sb_crypto_diffiehellman_ctx_t*)ctx->data)->s);
 }
 
 

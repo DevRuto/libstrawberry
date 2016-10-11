@@ -35,16 +35,19 @@
 
 
 #include "../../core/stdincl.h"
+#include "../../core/bits.h"
 
 
 #define SB_CRYPTO_DIFFIEHELLMAN_DEFAULT_BITCOUNT \
 											1536
 
+#define SB_CRYPTO_DIFFIEHELLMAN_DONE		SB_BIT_1
 
-typedef struct __sb_crypto_diffiehellman_ctx __sb_crypto_diffiehellman_ctx_t;
+
 typedef struct sb_crypto_diffiehellman_ctx {
-	__sb_crypto_diffiehellman_ctx_t *data;
+	void *data;
 	uint16_t bits;
+	uint16_t flags;
 } sb_crypto_diffiehellman_ctx_t;
 
 

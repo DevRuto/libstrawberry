@@ -175,7 +175,7 @@ sb_bool_t sb_crypto_sha384_update(sb_crypto_sha384_ctx_t *ctx, uint64_t block[16
     return sb_true;
 }
 
-sb_bool_t sb_crypto_sha384_finish(sb_crypto_sha384_ctx_t *ctx, uint8_t out[48]) {
+sb_bool_t sb_crypto_sha384_finish(sb_crypto_sha384_ctx_t *ctx, uint8_t out[SB_CRYPTO_HASHING_SHA384_DIGEST_SIZE]) {
 	sb_error_reset();
 
 	if (!ctx) {
@@ -201,7 +201,7 @@ sb_bool_t sb_crypto_sha384_finish(sb_crypto_sha384_ctx_t *ctx, uint8_t out[48]) 
     return sb_true;
 }
 
-sb_bool_t sb_crypto_sha384(uint8_t out[48], void *in, sb_size_t size) {
+sb_bool_t sb_crypto_sha384(uint8_t out[SB_CRYPTO_HASHING_SHA384_DIGEST_SIZE], void *in, sb_size_t size) {
     sb_error_reset();
 
 	if (!out) {

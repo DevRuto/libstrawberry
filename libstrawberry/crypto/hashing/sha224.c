@@ -177,7 +177,7 @@ sb_bool_t sb_crypto_sha224_update(sb_crypto_sha224_ctx_t *ctx, uint32_t block[16
 }
 
 
-sb_bool_t sb_crypto_sha224_finish(sb_crypto_sha224_ctx_t *ctx, uint8_t out[28]) {
+sb_bool_t sb_crypto_sha224_finish(sb_crypto_sha224_ctx_t *ctx, uint8_t out[SB_CRYPTO_HASHING_SHA224_DIGEST_SIZE]) {
 	sb_error_reset();
 
 	if (!ctx) {
@@ -205,7 +205,7 @@ sb_bool_t sb_crypto_sha224_finish(sb_crypto_sha224_ctx_t *ctx, uint8_t out[28]) 
 }
 
 
-sb_bool_t sb_crypto_sha224(uint8_t out[28], void *in, sb_size_t size) {
+sb_bool_t sb_crypto_sha224(uint8_t out[SB_CRYPTO_HASHING_SHA224_DIGEST_SIZE], void *in, sb_size_t size) {
 	sb_error_reset();
 
 	if (!out) {

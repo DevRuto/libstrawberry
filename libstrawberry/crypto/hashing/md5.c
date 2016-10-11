@@ -284,7 +284,7 @@ sb_bool_t sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t siz
 }
 
 
-sb_bool_t sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
+sb_bool_t sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, uint8_t out[SB_CRYPTO_HASHING_MD5_DIGEST_SIZE]) {
 	sb_error_reset();
 
 	if (!ctx) {
@@ -320,7 +320,7 @@ sb_bool_t sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 
 	sb_crypto_md5_internal_update(ctx, ctx->buffer, 64);
 
-	uint32_t *out32 = out;
+	uint32_t *out32 = (uint32_t*)out;
 	out32[0] = SB_LE32(ctx->a);
 	out32[1] = SB_LE32(ctx->b);
 	out32[2] = SB_LE32(ctx->c);
@@ -332,7 +332,7 @@ sb_bool_t sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out) {
 }
 
 
-sb_bool_t sb_crypto_md5(void *out, void *in, sb_size_t size) {
+sb_bool_t sb_crypto_md5(uint8_t out[SB_CRYPTO_HASHING_MD5_DIGEST_SIZE], void *in, sb_size_t size) {
 	sb_error_reset();
 
 	sb_bool_t success = sb_true;

@@ -4,13 +4,12 @@
 * Use tabs.
 * Place **two** newlines between functions.
 * Pre-increment and pre-decrement where possible, as opposed to post-incrementing/post-decrementing.
-* When possible, reverse loops. Ex.:
-`for (i = 10; i--;)` as opposed to `for (i = 0; i < 10; ++i)`.
+* When possible, reverse loops. Ex.: `for (i = 10; i--;)` as opposed to `for (i = 0; i < 10; ++i)`.
 * Keep error reporting in mind.
-* Use "fixed" relative paths for internal includes. Ex.: ```#include "./time.h"``` as opposed to ```#include "time.h"```.
-* Use **UPPERCASE** hexadecimal values. Ex.: ```0xBEEFBAAFU``` as opposed to ```0xbeefbaafu```.
-* Use **UPPERCASE** type specifications for literal expressions where you use them. Ex.: ```1U``` as opposed to ```1u```.
-* Specify operator precedence. Ex.: ```i = (foo + bar)``` as opposed to ```i = foo + bar```.
+* Use "fixed" relative paths for internal includes. Ex.: `#include "./time.h"` as opposed to `#include "time.h"`.
+* Use **UPPERCASE** hexadecimal values. Ex.: `0xBEEFBAAFU` as opposed to `0xbeefbaafu`.
+* Use **UPPERCASE** type specifications for literal expressions where you use them. Ex.: `1U` as opposed to `1u`.
+* Specify associativity. Ex.: `i = (foo + bar)` as opposed to `i = foo + bar`.
 
 ## File format
 ```

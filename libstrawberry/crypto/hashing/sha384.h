@@ -36,6 +36,11 @@
 
 #include "../../core/stdincl.h"
 
+
+#define SB_CRYPTO_HASHING_SHA384_DIGEST_SIZE \
+											48
+
+
 typedef struct sb_crypto_sha384_ctx {
 	uint64_t h0;
 	uint64_t h1;
@@ -55,8 +60,8 @@ extern "C" {
 	SBAPI sb_bool_t sb_crypto_sha384_init(sb_crypto_sha384_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_sha384_clear(sb_crypto_sha384_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_sha384_update(sb_crypto_sha384_ctx_t *ctx, uint64_t block[16]);
-	SBAPI sb_bool_t sb_crypto_sha384_finish(sb_crypto_sha384_ctx_t *ctx, uint8_t out[48]);
-	SBAPI sb_bool_t sb_crypto_sha384(uint8_t out[48], void *in, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_sha384_finish(sb_crypto_sha384_ctx_t *ctx, uint8_t out[SB_CRYPTO_HASHING_SHA384_DIGEST_SIZE]);
+	SBAPI sb_bool_t sb_crypto_sha384(uint8_t out[SB_CRYPTO_HASHING_SHA384_DIGEST_SIZE], void *in, sb_size_t size);
 
 #ifdef __cplusplus
 }

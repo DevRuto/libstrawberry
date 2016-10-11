@@ -331,7 +331,7 @@ sb_bool_t sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, s
 }
 
 
-sb_bool_t sb_crypto_ripemd160_get_digest(sb_crypto_ripemd160_ctx_t *ctx, uint8_t digest[20]) {
+sb_bool_t sb_crypto_ripemd160_get_digest(sb_crypto_ripemd160_ctx_t *ctx, uint8_t digest[SB_CRYPTO_HASHING_RIPEMD160_DIGEST_SIZE]) {
 	sb_error_reset();
 
 	if (!ctx) {
@@ -356,7 +356,7 @@ sb_bool_t sb_crypto_ripemd160_get_digest(sb_crypto_ripemd160_ctx_t *ctx, uint8_t
 }
 
 
-sb_bool_t sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size) {
+sb_bool_t sb_crypto_ripemd160(uint8_t digest[SB_CRYPTO_HASHING_RIPEMD160_DIGEST_SIZE], void *data, sb_size_t size) {
 	sb_error_reset();
 
 	if (!digest) {

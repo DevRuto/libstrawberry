@@ -39,6 +39,10 @@
 #include "../../core/bits.h"
 
 
+#define SB_CRYPTO_HASHING_RIPEMD160_DIGEST_SIZE \
+											20
+
+
 typedef struct sb_crypto_ripemd160_ctx {
 	uint32_t data[5];
 } sb_crypto_ripemd160_ctx_t;
@@ -52,8 +56,8 @@ extern "C" {
 	SBAPI sb_bool_t sb_crypto_ripemd160_clear(sb_crypto_ripemd160_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_ripemd160_update(sb_crypto_ripemd160_ctx_t *ctx, uint32_t X[16]);
 	SBAPI sb_bool_t sb_crypto_ripemd160_finish(sb_crypto_ripemd160_ctx_t *ctx, void *in, sb_size_t size);
-	SBAPI sb_bool_t sb_crypto_ripemd160_get_digest(sb_crypto_ripemd160_ctx_t *ctx, uint8_t digest[20]);
-	SBAPI sb_bool_t sb_crypto_ripemd160(uint8_t digest[20], void *data, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_ripemd160_get_digest(sb_crypto_ripemd160_ctx_t *ctx, uint8_t digest[SB_CRYPTO_HASHING_RIPEMD160_DIGEST_SIZE]);
+	SBAPI sb_bool_t sb_crypto_ripemd160(uint8_t digest[SB_CRYPTO_HASHING_RIPEMD160_DIGEST_SIZE], void *data, sb_size_t size);
 
 #ifdef __cplusplus
 }

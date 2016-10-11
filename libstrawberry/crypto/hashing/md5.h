@@ -37,6 +37,9 @@
 #include "../../core/stdincl.h"
 
 
+#define SB_CRYPTO_HASHING_MD5_DIGEST_SIZE	16
+
+
 typedef struct sb_crypto_md5_ctx {
 	uint32_t lo;
 	uint32_t hi;
@@ -56,8 +59,8 @@ extern "C" {
 	SBAPI sb_bool_t sb_crypto_md5_init(sb_crypto_md5_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_md5_clear(sb_crypto_md5_ctx_t *ctx);
 	SBAPI sb_bool_t sb_crypto_md5_update(sb_crypto_md5_ctx_t *ctx, void *in, sb_size_t size);
-	SBAPI sb_bool_t sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, void *out);
-	SBAPI sb_bool_t sb_crypto_md5(void *out, void *in, sb_size_t size);
+	SBAPI sb_bool_t sb_crypto_md5_finish(sb_crypto_md5_ctx_t *ctx, uint8_t out[SB_CRYPTO_HASHING_MD5_DIGEST_SIZE]);
+	SBAPI sb_bool_t sb_crypto_md5(uint8_t out[SB_CRYPTO_HASHING_MD5_DIGEST_SIZE], void *in, sb_size_t size);
 
 #ifdef __cplusplus
 }

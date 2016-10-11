@@ -62,8 +62,8 @@ namespace LibStrawberry.BindingBase {
 						throw new SbException(SbExceptionType.Initialization) { DeemedFatal = true };
 						//break;
 					case PlatformID.Unix:
-						throw new SbException(SbExceptionType.Initialization) { DeemedFatal = true };
-						//break;
+						//throw new SbException(SbExceptionType.Initialization) { DeemedFatal = true };
+						break;
 					default:
 						throw new SbException(SbExceptionType.Initialization) { DeemedFatal = true };
 				}

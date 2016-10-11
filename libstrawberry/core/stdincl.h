@@ -99,7 +99,6 @@ extern "C" {
 	SBAPI const char* sb_compile_time();
 	SBAPI const uint64_t sb_features();
 
-
 #ifdef __cplusplus
 }
 #endif
